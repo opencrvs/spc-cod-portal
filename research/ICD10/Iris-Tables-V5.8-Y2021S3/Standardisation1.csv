@@ -1,0 +1,12 @@
+MainKey,Rank,FilterIn,FilterOut,ActionVar,Likelihood,Prompt,YearStart,YearEnd,DateIn,UserIn,DateOut,UserOut,Comments,NoApplyForDT,AddResultInDT
+"100Status","0010","[(]?chronic[)]?","Chronic",,,,2005,9999,"2011-04-02 00:00:00","larjoha",,,,,
+"100Status","0020","[(]?acute[)]?","Acute",,,,2005,9999,"2010-08-19 00:00:00","Witting",,,,,
+"100Status","0030","[(]?congenital[)]?","Congenital",,,,2005,9999,"2010-08-19 00:00:00","Witting",,,,,
+"100Status","0040","[(]?sequel(ae)?(\sof)?[)]?","Sequel",,,,2005,9999,"2011-04-03 00:00:00","larjoha",,,,,
+"201Cancer","030","metastases (to|of) ([a-z]*) and ([a-z]*)","$2 metastases, $3 metastases",,,,2005,9999,"2011-04-02 00:00:00","larjoha",,,,,
+"250Date","00010","(on\s)?\(?(20\d\d(.|-)?\d\d(.|-)?\d\d)\)?",,"YYYYMMDD",,,2005,9999,"2011-05-04 00:00:00","larjoha",,,,,
+"300Other","0010","[+]",",",,,,2005,9999,"2011-01-17 00:00:00","larjoha",,,,,
+"300Other","0020","&",",",,,,2005,9999,"2009-04-26 00:00:00","weber",,,,,
+"400And","001","(lung|liver|heart|kidney|cardiovascular|renal)\sand\s(\w+)\sfailure","$1 failure, $2 failure",,,,2010,2011,"2011-02-03 00:00:00","larjoha",,,,,
+"500Brackets","0010","[(]",,,,,2005,9999,"2011-02-03 00:00:00","larjoha","2011-04-02 00:00:00","larjoha",,,
+"500Brackets","0020","[)]",,,,,2005,9999,"2011-02-03 00:00:00","larjoha","2011-04-02 00:00:00","larjoha",,,

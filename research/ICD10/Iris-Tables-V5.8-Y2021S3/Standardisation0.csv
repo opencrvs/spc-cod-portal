@@ -1,0 +1,3 @@
+MainKey,Rank,FilterIn,FilterOut,ActionVar,Likelihood,Prompt,YearStart,YearEnd,DateIn,UserIn,DateOut,UserOut,Comments,NoApplyForDT,AddResultInDT
+"0010Aspiration","0010","\bPneumonia\s?\(?Aspiration\)?\b","Pneumonia Aspiration",,,,2010,9999,"2018-04-12 00:00:00","Iris",,,"FilterOut should be at the dictionary",,
+"0010Aspiration","0020","\bPneumonitis\s?\(?Aspiration\)?\b","Pneumonitis Aspiration",,,,2010,9999,"2018-04-12 00:00:00","Iris",,,"FilterOut should be at the dictionary",,
