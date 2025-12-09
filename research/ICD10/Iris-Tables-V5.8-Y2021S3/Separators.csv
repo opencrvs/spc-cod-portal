@@ -1,0 +1,9 @@
+MainKey,Rank,FilterIn,FilterOut,ActionVar,Likelihood,Prompt,YearStart,YearEnd,DateIn,UserIn,DateOut,UserOut,Comments,NoApplyForDT,AddResultInDT
+"200Seperator","0010","and",",",,,,2005,9999,"2009-03-25 00:00:00","weber",,,,,
+"200Seperator","0020","with",",",,,,2005,9999,"2009-03-25 00:00:00","weber",,,,,
+"200Seperator","0030","due to","|",,,,2005,9999,"2009-03-25 00:00:00","weber",,,,,
+"200Seperator","0040","\(",",",,,,2005,9999,"2011-04-02 00:00:00","larjoha",,,,,
+"200Seperator","0050","\)",",",,,,2005,9999,"2011-04-02 00:00:00","larjoha",,,,,
+"300Seperator","0030","\s-\s",",",,,,2005,9999,"2009-03-25 00:00:00","weber",,,,,
+"300Seperator","0040",";",",",,,,2005,9999,"2009-03-25 00:00:00","weber",,,,,
+"300Seperator","0050","\s\+\s",", ",,,,2010,2010,"2010-12-10 00:00:00","larjoha",,,,,
