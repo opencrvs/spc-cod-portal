@@ -156,8 +156,9 @@ export const Workqueues = defineWorkqueues([
       }
     ]
   },
+
   {
-    slug: 'in-review',
+    slug: 'ready-for-coding', // actually a re-purposed workqueue for ready to print
     icon: 'FileSearch',
     name: {
       id: 'workqueues.inReview.title',
@@ -165,25 +166,21 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of ready for review workqueue'
     },
     query: {
-      status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [InherentFlags.REJECTED]
+        noneOf: [InherentFlags.CORRECTION_REQUESTED],
+        anyOf: [InherentFlags.PENDING_CERTIFICATION]
       },
+      status: { type: 'exact', term: 'REGISTERED' },
       updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
     },
-    actions: [
-      {
-        type: 'DEFAULT',
-        conditionals: []
-      }
-    ],
+    actions: [],
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
         label: {
-          defaultMessage: 'Sent for review',
+          defaultMessage: 'Registered',
           description: 'This is the label for the workqueue column',
-          id: 'workqueue.in-review.column.sent-for-update'
+          id: 'workqueue.ready-to-print.column.registered'
         },
         value: event.field('updatedAt')
       }

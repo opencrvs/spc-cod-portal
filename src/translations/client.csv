@@ -37,7 +37,7 @@ advancedSearch.form.recordStatusDeclared,Option for form field: status of record
 advancedSearch.form.recordStatusInReview,Option for form field: status of record,In review
 advancedSearch.form.recordStatusInprogress,Option for form field: status of record,In progress
 advancedSearch.form.recordStatusNotified,Option for form field: status of record,Notified
-advancedSearch.form.recordStatusRegistered,Option for form field: status of record,Registered
+advancedSearch.form.recordStatusRegistered,Option for form field: status of record,Encoded
 advancedSearch.form.recordStatusRequireUpdate,Option for form field: status of record,Requires updates
 advancedSearch.form.recordStatusValidated,Option for form field: status of record,Validated
 advancedSearch.form.registrationDetails,The title of Registration details accordion,Coding details
@@ -122,7 +122,7 @@ buttons.print,Print button text,Print
 buttons.printDeclaration,,Print declaration
 buttons.publish,Publish button text on form config,Publish
 buttons.refresh,Refresh button,Refresh
-buttons.register,Label for button on register confirmation modal,Register
+buttons.register,Label for button on register confirmation modal,Encode
 buttons.reinstate,Label for reinstate button,Reinstate
 buttons.reject,A label for reject link,Reject
 buttons.rejectDeclaration,Reject declaration button text,Reject declaration
@@ -252,7 +252,7 @@ constants.deaths,A label from the deaths event,Deaths
 constants.declaration,A label for declaration,declaration
 constants.declarationCollectedOn,Label for the workflow timestamp when the status is collected,Certificate collected on
 constants.declarationFailedOn,Label for the workflow timestamp when the status is failed,Failed to send on
-constants.declarationRegisteredOn,Label for the workflow timestamp when the status is registered,Registered on
+constants.declarationRegisteredOn,Label for the workflow timestamp when the status is registered,Encoded on
 constants.declarationRejectedOn,Label for the workflow timestamp when the status is rejected,Declaration rejected on
 constants.declarationRequestedCorrectionOn,Label for the workflow timestamp when the status is requested correction,Declaration requested correction on
 constants.declarationSentForExternalValidationOn,Label for the workflow timestamp when the status is waiting_validation,Declaration sent for external validation on
@@ -352,12 +352,12 @@ constants.policeOfficer,The description for Police Officer type,Police Officer
 constants.reason,Label for Reason the declaration was rejected,Reason
 constants.record,Label for header table header Record,Record
 constants.refresh,label for refresh,refresh
-constants.registered,A label for registered,Registered
-constants.registered.status,A label for registered,Registered
-constants.registeredAt,Label for comparison row registeredAt type,Registered at
-constants.registeredBy,Label for comparison row registeredBy type,Registered by
-constants.registeredInTargetd,A label for Registered in {registrationTargetDays} days,Registered in {registrationTargetDays} days
-constants.registeredWithinTargetd,A label for Registered {registrationTargetDays} within  days of event,Registered within{lineBreak}{registrationTargetDays} days of event
+constants.registered,A label for registered,Encoded
+constants.registered.status,A label for registered,Encoded
+constants.registeredAt,Label for comparison row registeredAt type,Encoded at
+constants.registeredBy,Label for comparison row registeredBy type,Encoded by
+constants.registeredInTargetd,A label for Registered in {registrationTargetDays} days,Encoded in {registrationTargetDays} days
+constants.registeredWithinTargetd,A label for Registered {registrationTargetDays} within  days of event,Encoded within{lineBreak}{registrationTargetDays} days of event
 constants.registrationAgent,The description for REGISTRATION_AGENT role,Registration Agent
 constants.registrationNumber,Label for registered number,Reg no.
 constants.rejected,A label for rejected,rejected
@@ -754,8 +754,8 @@ countries.YEM,,Yemen
 countries.ZAF,,South Africa
 countries.ZMB,,Zambia
 countries.ZWE,,Zimbabwe
-dashboard.completenessTitle,Completeness title,Statistics Dashboard
-dashboard.registrationsTitle,Registrations title,Export records for coding
+dashboard.completenessTitle,Completeness title,Completeness Dashboard
+dashboard.registrationsTitle,Registrations title,Registrations Dashboard
 dashboard.registryTitle,Registry title,Registry
 duplicates.button.markAsDuplicate,Mark as duplicate button text,Mark as duplicate
 duplicates.button.notDuplicate,Not a duplicate button text,Not a duplicate
@@ -766,8 +766,8 @@ duplicates.content.header,Declaration details header of two duplicate ones,Decla
 duplicates.content.markAsDuplicate,Mark as duplicate content confirmation title message,Mark {trackingId} as duplicate?
 duplicates.content.markAsDuplicateReason,Review page header for duplicates declarations,Please describe your reason
 duplicates.content.notDuplicateConfirmationTitle,Not a duplicate content confirmation title message,Are you sure {name} ({trackingId}) is not duplicate?
-duplicates.content.registeredAt,Registered at label for duplicates comparison,Registered at
-duplicates.content.registeredBy,Registered by label for duplicates comparison,Registered by
+duplicates.content.registeredAt,Encoded at label for duplicates comparison,Encoded at
+duplicates.content.registeredBy,Encoded by label for duplicates comparison,Encoded by
 duplicates.content.subtitle,Duplicates content subtitle message,"This record was flagged as a potential duplicate of: {trackingIds}. Please review these by clicking on each tracking ID in the tab section to view a side-by-side comparison below, and confirm if this record is a duplicate"
 duplicates.content.title,Duplicates content title message,Is {name} ({trackingId}) a duplicate?
 duplicates.review.header,Review page header for duplicates declarations,Potential {event} duplicate review
@@ -1025,7 +1025,7 @@ event.death.action.form.section.refugeeNumberDetails.label,Field for entering Re
 event.death.action.form.section.relationshipToDeceased.label,This is the label for the relationship to deceased field,Relationship to deceased
 event.death.action.form.section.signedAffidavit.fileName,This is the label for the file name,Signed Affidavit
 event.death.action.form.section.signedAffidavit.label,This is the label for uploading a signed affidavit,Signed Affidavit (Optional)
-event.death.action.register.label,This is shown as the action name anywhere the user can trigger the action from,Register
+event.death.action.register.label,This is shown as the action name anywhere the user can trigger the action from,Encode
 event.death.action.request-correction.label,This is shown as the action name anywhere the user can trigger the action from,Correct record
 event.death.action.validate.label,This is shown as the action name anywhere the user can trigger the action from,Validate
 event.death.label,This is what this event is referred as in the system,Death
@@ -1038,7 +1038,7 @@ event.death.summary.eventDetails.placeOfDeath.label,Label for place of death,Pla
 event.death.summary.informant.contact.empty,This is shown when there is no informant information,No contact details provided
 event.death.summary.informant.contact.label,This is the label for the informant information,Contact
 event.death.summary.informant.contact.value,This is the contact value of the informant,{informant.phoneNo} {informant.email}
-event.death.title,This is the title of the summary,{deceased.name.firstname} {deceased.name.surname}
+event.death.title,This is the title of the summary,{deceased.country}: {deceased.certificateKey}
 event.default.action.certificate.template.type.label,Select certificate template,Type
 event.default.action.certificate.template.type.notFound,Select certificate template options not found,"No template available for this event, contact Admin"
 event.history.role,Label for the role in event history,"{role, select, LOCAL_REGISTRAR {Local Registrar} FIELD_AGENT {Field Agent} POLICE_OFFICER {Police Officer} REGISTRATION_AGENT {Registration Agent} HEALTHCARE_WORKER {Healthcare Worker} HOSPITAL_CLERK {Hospital Clerk} LOCAL_SYSTEM_ADMIN {Administrator} NATIONAL_REGISTRAR {Registrar General} PERFORMANCE_MANAGER {Operations Manager} NATIONAL_SYSTEM_ADMIN {National Administrator} COMMUNITY_LEADER {Community Leader} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} other {Unknown}}"
@@ -1095,7 +1095,7 @@ event.tennis-club-membership.action.form.section.passportDetails.label,Field for
 event.tennis-club-membership.action.form.section.refugeeNumberDetails.label,Field for entering Refugee Number details,Refugee Number Details
 event.tennis-club-membership.action.form.section.relationshipToMember.label,This is the label for the relationship to member field,Relationship to Member
 event.tennis-club-membership.action.form.section.signedAffidavit.label,This is the label for uploading a signed affidavit,Signed Affidavit (Optional)
-event.tennis-club-membership.action.register.label,This is shown as the action name anywhere the user can trigger the action from,Register
+event.tennis-club-membership.action.register.label,This is shown as the action name anywhere the user can trigger the action from,Encode
 event.tennis-club-membership.action.requestCorrection.form.section.corrector,This is the title of the section,Correction requester
 event.tennis-club-membership.action.requestCorrection.form.section.verify,This is the title of the section,Verify their identity
 event.tennis-club-membership.action.requestCorrection.label,This is shown as the action name anywhere the user can trigger the action from,Request correction
@@ -1783,7 +1783,7 @@ recordAudit.regStatus.correctionRequested,Label for when someone requested corre
 recordAudit.regStatus.declared,,Declaration started
 recordAudit.regStatus.declared.sentNotification,Field agent sent notification,Sent notification for review
 recordAudit.regStatus.issued,,Issued
-recordAudit.regStatus.registered,,Registered
+recordAudit.regStatus.registered,,Encoded
 recordAudit.regStatus.rejected,,Rejected
 recordAudit.regStatus.updatedDeclaration,,Updated
 recordAudit.regStatus.waitingValidation,,Waiting for validation
@@ -1804,7 +1804,7 @@ regHome.outbox.retry,Label for Retry button in Outbox shown for records that fai
 regHome.outbox.statusArchiving,Label for application status Archiving,Archiving...
 regHome.outbox.statusCertifying,Label for declaration status Certifying,Certifying...
 regHome.outbox.statusIssuing,Label for declaration status Issuing,Issuing...
-regHome.outbox.statusRegistering,Label for declaration status Registering,Registering...
+regHome.outbox.statusRegistering,Label for declaration status Registering,Encodeing...
 regHome.outbox.statusReinstating,Label for application status Reinstating,Reinstating...
 regHome.outbox.statusRejecting,Label for declaration status Rejecting,Sending for updates...
 regHome.outbox.statusRequestingCorrection,Label for declaration status Requesting correction,Correcting...
@@ -1830,7 +1830,7 @@ regHome.sentForUpdates,The title of sent for updates tab,Sent for updates
 regHome.table.label,Results label at the top of the data table component,Results
 regHome.table.label.action,Label for action in work queue list item,Action
 regHome.table.label.declarationDate,Label for declaration date in work queue list item,Declaration sent
-regHome.table.label.registeredDate,Label for date of registration in work queue list item,Registered
+regHome.table.label.registeredDate,Label for date of registration in work queue list item,Encoded
 regHome.val.regAgent.tooltip,Text to display for validated declaration as tooltip,Declaration has been validated and waiting for approval
 regHome.validated.registrar.tooltip,Text to display for validated declaration as tooltip,Declaration has been validated by a registration agent
 regHome.waitingForExternalValidation,The title of waiting for external validation,Waiting for external validation
@@ -1902,7 +1902,7 @@ review.actions.description.confirmComplete,Description for review action compone
 review.actions.description.confirmInComplete,Description for review action component when incomplete declaration,The informant will receive an {deliveryMethod} with a tracking ID that they can use to provide the additional mandatory information required for registration.
 review.actions.description.hasError,Description for review action component when declaration has errors on fields,Please ensure all fields are either empty or have a valid value in them.
 review.actions.title.declarationStatus,Title for review action component,"Declaration {completeDeclaration, select, true {complete} other {incomplete}}"
-review.actions.title.registerActionTitle,,Register event
+review.actions.title.registerActionTitle,,Send for coding
 review.birthRegistration.queryError,The error message shown when a query fails,An error occurred while fetching birth registration
 review.button.approve,Label for Send For Approval button,Send for approval
 review.declare.confirm,The label for review action button when declaring,Send for review
@@ -1941,16 +1941,16 @@ review.inputs.terms,Label for signature terms,"We, the undersigned declare under
 review.inputs.witnessOneSignature,Label for informants signature input,Signature of Witness 1
 review.inputs.witnessTwoSignature,Label for informants signature input,Signature of Witness 2
 review.modal.desc.submitConfirmation,Submit description text on modal,"{completeDeclaration, select, true {This declaration will be sent for review.} other {This incomplete declaration will be sent for review.}}"
-review.modal.title.registerConfirmation,Title for register confirmation modal,Register the {event}?
+review.modal.title.registerConfirmation,Title for register confirmation modal,Encode the {event}?
 review.modal.title.submitConfirmation,Submit title text on modal,"{completeDeclaration, select, true {Send for review?} other {Send for review?}}"
-review.register.confirm,The label for register button of review action,Register
+review.register.confirm,The label for register button of review action,Encode
 review.register.confirmModal.cancel,The label for modal cancel button when registering,Cancel
-review.register.confirmModal.confirm,The label for modal confirm button when registering,Register
+review.register.confirmModal.confirm,The label for modal confirm button when registering,Encode
 review.register.confirmModal.description,The description for review action modal when registering,‎
-review.register.confirmModal.title,The title for review action modal when registering,Register the {event}?
-review.register.description.complete,The description for registration action when form is complete,"By clicking register, you confirm that the information entered is correct and the event can be registered."
+review.register.confirmModal.title,The title for review action modal when registering,Encode the {event}?
+review.register.description.complete,The description for registration action when form is complete,"On submission, an SPC Regional Coding Group officer will process the coding through Iris at the next available opportunity"
 review.register.reject,The label for reject button of review action,Reject
-review.register.title,The title shown when reviewing a record to register,Register event
+review.register.title,The title shown when reviewing a record to register,Send for coding
 review.rej.form.reasons.missSupDoc,Label for rejection option missing supporting doc,Missing supporting documents
 review.rejection.form,Rejection form name,Rejection form
 review.rejection.form.commentLabel,,Comments
@@ -2119,7 +2119,7 @@ user.profile.audit.description.certified,Description for certified declaration,C
 user.profile.audit.description.declared,Description for complete declaration,Declaration started
 user.profile.audit.description.inProgress,Description for incomplete declaration,Sent incomplete
 user.profile.audit.description.issued,Description for Issued declaration,Issued
-user.profile.audit.description.registered,Description for registered declaration,Registered
+user.profile.audit.description.registered,Description for registered declaration,Encoded
 user.profile.audit.description.rejected,Description for rejected declaration,Rejected
 user.profile.audit.description.updated,Description for updated declaration,Updated
 user.profile.audit.description.validated,Description for validated declaration,Sent for approval
