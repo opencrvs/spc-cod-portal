@@ -28,6 +28,7 @@ export const irisOutput = defineFormPage({
     {
       id: 'irisOutput.data',
       type: FieldType.DATA,
+      analytics: true,
       label: {
         defaultMessage: 'Iris Output',
         description: 'Form section title for iris output',
@@ -74,6 +75,7 @@ export const irisOutput = defineFormPage({
         description: 'Label for the comment field in the review section'
       },
       defaultValue: 'Default',
+      analytics: true,
       required: false
     }
   ]

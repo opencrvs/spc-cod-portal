@@ -77,7 +77,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.date',
       type: FieldType.DATE,
       required: true,
-      secured: true,
+      analytics: true,
       validation: [
         {
           message: {
@@ -118,6 +118,7 @@ export const eventDetails = defineFormPage({
       ],
       defaultValue: 0,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Manner of death default for Iris ICD10',
         description: 'This is the label for the field',
@@ -144,6 +145,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.otherImmediateCauseOfDeath',
       type: FieldType.TEXT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Other immediate cause of death',
         description: 'This is the label for the field',
@@ -189,6 +191,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.otherAntecedentCause1',
       type: FieldType.TEXT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Other antecedent cause 1',
         description: 'This is the label for the field',
@@ -234,6 +237,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.otherAntecedentCause2',
       type: FieldType.TEXT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Other antecedent cause 2',
         description: 'This is the label for the field',
@@ -277,6 +281,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.otherAntecedentCause3',
       type: FieldType.TEXT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Other antecedent cause 3',
         description: 'This is the label for the field',
@@ -320,6 +325,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.otherAntecedentCause4',
       type: FieldType.TEXT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Other antecedent cause 4',
         description: 'This is the label for the field',
@@ -350,6 +356,7 @@ export const eventDetails = defineFormPage({
       id: 'eventDetails.comments',
       type: FieldType.TEXTAREA,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Comments',
         description:
