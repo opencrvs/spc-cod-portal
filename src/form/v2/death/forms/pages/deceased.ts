@@ -420,6 +420,7 @@ export const deceased = defineFormPage({
       id: 'deceased.certificateKey',
       type: FieldType.TEXT,
       required: true,
+      analytics: true,
       label: {
         defaultMessage: 'Certificate Key',
         description: 'This is the label for the field',
@@ -430,6 +431,7 @@ export const deceased = defineFormPage({
       id: 'deceased.dob',
       type: FieldType.DATE,
       required: true,
+      analytics: true,
       validation: [
         {
           message: {
@@ -482,6 +484,7 @@ export const deceased = defineFormPage({
       id: `deceased.age`,
       type: FieldType.AGE,
       required: true,
+      analytics: true,
       label: {
         defaultMessage: `Age of deceased`,
         description: 'This is the label for the field',
@@ -516,6 +519,7 @@ export const deceased = defineFormPage({
       id: 'deceased.gender',
       type: FieldType.SELECT,
       required: true,
+      analytics: true,
       label: {
         defaultMessage: 'Sex',
         description: 'This is the label for the field',
@@ -527,6 +531,7 @@ export const deceased = defineFormPage({
       id: `deceased.country`,
       type: FieldType.SELECT,
       required: true,
+      analytics: true,
       label: {
         defaultMessage: 'Country',
         description: 'This is the label for the field',
@@ -538,6 +543,7 @@ export const deceased = defineFormPage({
       id: `deceased.fijiAdmin1`,
       type: FieldType.SELECT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
@@ -555,6 +561,7 @@ export const deceased = defineFormPage({
       id: `deceased.tongaAdmin1`,
       type: FieldType.SELECT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
@@ -572,6 +579,7 @@ export const deceased = defineFormPage({
       id: `deceased.kiribatiAdmin1`,
       type: FieldType.SELECT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
@@ -591,6 +599,7 @@ export const deceased = defineFormPage({
       id: `deceased.niueAdmin1`,
       type: FieldType.SELECT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
@@ -608,6 +617,7 @@ export const deceased = defineFormPage({
       id: `deceased.palauAdmin1`,
       type: FieldType.SELECT,
       required: false,
+      analytics: true,
       label: {
         defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',

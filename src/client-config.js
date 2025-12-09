@@ -39,7 +39,7 @@
           defaultMessage: 'Registrations Dashboard',
           description: 'Menu item for registrations dashboard'
         },
-        url: `http://localhost:4444/public/dashboard/03be04d6-bde0-4fa7-9141-21cea2a7518b#bordered=false&titled=false&refresh=300` // Filled in below
+        url: `http://localhost:4444/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300` // Filled in below
       },
       {
         id: 'completeness',

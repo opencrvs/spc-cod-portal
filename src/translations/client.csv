@@ -1052,7 +1052,7 @@ event.summary.event.label,Label for the event field,Event
 event.summary.flags.label,Flags of the event,Flags
 event.summary.flags.placeholder,Message when no flags are present,No flags
 event.summary.registrationNumber.empty,No registration number message,No registration number
-event.summary.registrationNumber.label,Label for the registration number field,Registration Number
+event.summary.registrationNumber.label,Label for the registration number field,Internal reference number
 event.summary.registrationNumber.value,Value for the registration number field,{event.registrationNumber}
 event.summary.status.label,Label for the status field,Status
 event.summary.status.value,Value for the status field,"{event.status, select, CREATED {Draft} NOTIFIED {Notified} VALIDATED {Validated} DRAFT {Draft} DECLARED {Declared} REGISTERED {Registered} CERTIFIED {Certified} REJECTED {Requires update} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} other {Unknown}}"
