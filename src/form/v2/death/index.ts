@@ -8,12 +8,7 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import {
-  ActionType,
-  ConditionalType,
-  defineConfig,
-  field
-} from '@opencrvs/toolkit/events'
+import { ActionType, defineConfig, field } from '@opencrvs/toolkit/events'
 import {
   DEATH_DECLARATION_REVIEW,
   DEATH_DECLARATION_FORM
@@ -21,7 +16,6 @@ import {
 import { Event } from '@countryconfig/form/types/types'
 import { DEATH_CERTIFICATE_COLLECTOR_FORM } from '../death/forms/printForm'
 import { advancedSearchDeath } from './advancedSearch'
-import { PlaceOfDeath } from './forms/pages/eventDetails'
 import { DEATH_CORRECTION_FORM } from './forms/correctionForm'
 import { dedupConfig } from './dedupConfig'
 
@@ -29,19 +23,19 @@ export const deathEvent = defineConfig({
   id: Event.Death,
   declaration: DEATH_DECLARATION_FORM,
   label: {
-    defaultMessage: 'Death',
+    defaultMessage: 'Death coding',
     description: 'This is what this event is referred as in the system',
     id: 'event.death.label'
   },
   dateOfEvent: field('eventDetails.date'),
   title: {
-    defaultMessage: '{deceased.name.firstname} {deceased.name.surname}',
+    defaultMessage: '{deceased.country}: {deceased.certificateKey}',
     description: 'This is the title of the summary',
     id: 'event.death.title'
   },
   fallbackTitle: {
     id: 'event.tennis-club-membership.fallbackTitle',
-    defaultMessage: 'No name provided',
+    defaultMessage: 'No details provided',
     description:
       'This is a fallback title if actual title resolves to empty string'
   },
@@ -57,107 +51,29 @@ export const deathEvent = defineConfig({
         }
       },
       {
-        fieldId: 'eventDetails.placeOfDeath',
+        fieldId: 'deceased.gender',
         emptyValueMessage: {
-          defaultMessage: 'No place of death',
-          description:
-            'This is shown when there is no place of death information',
-          id: 'event.death.summary.eventDetails.placeOfDeath.empty'
+          defaultMessage: 'No gender specified',
+          description: 'This is shown when there is no gender information',
+          id: 'event.death.summary.eventDetails.gender.empty'
         },
         label: {
-          defaultMessage: 'Place of death',
-          description: 'Label for place of death',
-          id: 'event.death.summary.eventDetails.placeOfDeath.label'
-        },
-        conditionals: [
-          {
-            type: ConditionalType.SHOW,
-            conditional: field('eventDetails.placeOfDeath').isFalsy()
-          }
-        ]
+          defaultMessage: 'Sex',
+          description: 'This is the label for the field',
+          id: 'event.death.action.declare.form.section.deceased.field.gender.label'
+        }
       },
       {
-        fieldId: 'eventDetails.deathLocation',
+        fieldId: 'deceased.dob',
         emptyValueMessage: {
-          defaultMessage: 'No place of death',
-          description:
-            'This is shown when there is no death location information',
-          id: 'event.death.summary.eventDetails.deathLocation.empty'
+          defaultMessage: 'No dob specified',
+          description: 'This is shown when there is no dob information',
+          id: 'event.death.summary.eventDetails.dob.empty'
         },
         label: {
-          defaultMessage: 'Place of death',
-          description: 'Label for place of death',
-          id: 'event.death.summary.eventDetails.deathLocation.label'
-        },
-        conditionals: [
-          {
-            type: ConditionalType.SHOW,
-            conditional: field('eventDetails.placeOfDeath').isEqualTo(
-              PlaceOfDeath.HEALTH_FACILITY
-            )
-          }
-        ]
-      },
-      {
-        fieldId: 'deceased.address',
-        emptyValueMessage: {
-          defaultMessage: 'No place of death',
-          description:
-            'This is shown when there is no death location information',
-          id: 'event.death.summary.eventDetails.placeOfDeath.empty'
-        },
-        label: {
-          defaultMessage: 'Place of death',
-          description: 'Label for place of death',
-          id: 'event.death.summary.eventDetails.placeOfDeath.label'
-        },
-        conditionals: [
-          {
-            type: ConditionalType.SHOW,
-            conditional: field('eventDetails.placeOfDeath').isEqualTo(
-              PlaceOfDeath.DECEASED_USUAL_RESIDENCE
-            )
-          }
-        ]
-      },
-      {
-        fieldId: 'eventDetails.deathLocationOther',
-        emptyValueMessage: {
-          defaultMessage: 'No place of death',
-          description:
-            'This is shown when there is no death location information',
-          id: 'event.death.summary.eventDetails.placeOfDeath.empty'
-        },
-        label: {
-          defaultMessage: 'Place of death',
-          description: 'Label for place of death',
-          id: 'event.death.summary.eventDetails.placeOfDeath.label'
-        },
-        conditionals: [
-          {
-            type: ConditionalType.SHOW,
-            conditional: field('eventDetails.placeOfDeath').isEqualTo(
-              PlaceOfDeath.OTHER
-            )
-          }
-        ]
-      },
-      {
-        id: 'informant.contact',
-        emptyValueMessage: {
-          defaultMessage: 'No contact details provided',
-          description: 'This is shown when there is no informant information',
-          id: 'event.death.summary.informant.contact.empty'
-        },
-        label: {
-          defaultMessage: 'Contact',
-          description: 'This is the label for the informant information',
-          id: 'event.death.summary.informant.contact.label'
-        },
-        value: {
-          defaultMessage: '{informant.phoneNo} {informant.email}',
-          description: 'This is the contact value of the informant',
-          id: 'event.death.summary.informant.contact.value'
+          defaultMessage: 'Date of birth',
+          description: 'This is the label for the field',
+          id: 'event.death.action.declare.form.section.deceased.field.dob.label'
         }
       }
     ]

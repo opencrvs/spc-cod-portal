@@ -1,18 +1,9 @@
 id,name,partOf,locationType
-2OKicPQMNI,HQ Office,Location/BxrIbNW7f3K,CRVS_OFFICE
-JEhYJ82xRI,Isamba District Office,Location/ntoX1PkiWri,CRVS_OFFICE
-JWMRGwDBXK,Ibombo District Office,Location/oEBf29y8JP8,CRVS_OFFICE
-HKASqwkASD,Itambo District Office,Location/QTtxiWj8ONP,CRVS_OFFICE
-eaBXhNiLMp,Ezhi District Office,Location/ydyJb1RAy4U,CRVS_OFFICE
-okQp4uKCz0,Ilanga District Office,Location/HPGiE9Jjh2r,CRVS_OFFICE
-R5n2eHaSpB,Irundu District Office,Location/SvFNQpplnch,CRVS_OFFICE
-GzanivmNaP,Zobwe District Office,Location/Oapn6R4rt3D,CRVS_OFFICE
-2stAtvOCwl,Afue District Office,Location/nO68NTtcdw2,CRVS_OFFICE
-p9TC08l373,Embe District Office,Location/BxrIbNW7f3K,CRVS_OFFICE
-Hal1YwlBw7,Ienge District Office,Location/NLjvK1QsrN3,CRVS_OFFICE
-OgMqVlKHoN,Funabuli District Office,Location/idR0pJWLqcR,CRVS_OFFICE
-FHTLilSEgD,Pili District Office,Location/FuvOOwvBw0p,CRVS_OFFICE
-jMEPmtRKQ9,Ama District Office,Location/SQT8xjbvWwf,CRVS_OFFICE
-hfFdA2JI3T,Nsali District Office,Location/hywxVKv48Xp,CRVS_OFFICE
-mNCAv7oKj8,Soka District Office,Location/jCJxK8sFH40,CRVS_OFFICE
-H0EaOnzz0a,Chibiya District Office,Location/R22tRIhdm5Y,CRVS_OFFICE
+2OKicPQMNI,SPC Regional Coding Group Office,Location/67sSu3vWKw3obyFK77CqrM,CRVS_OFFICE
+JEhYJ82xRI,Fiji Office,Location/67sSu3vWKw3obyFK77CqrM,CRVS_OFFICE
+JWMRGwDBXK,Niue Office,Location/6XAFs8AMJeb6ejHavyUtWH,CRVS_OFFICE
+HKASqwkASD,Tuvalu Office,Location/edXhJEEXiQ8KpXV6GgTuPL,CRVS_OFFICE
+eaBXhNiLMp,Tonga Office,Location/cEBbfkFGyjT2WLTUAhoP6Y,CRVS_OFFICE
+okQp4uKCz0,Kiribati Office,Location/xspzoXJxqZb9Z5mkN7dafy,CRVS_OFFICE
+R5n2eHaSpB,Palau Office,Location/rbMrnFtEGeGirjH7djprjc,CRVS_OFFICE
+GzanivmNaP,Nauru Office,Location/gLSKTowCNDLoXJJufE2TCr,CRVS_OFFICE

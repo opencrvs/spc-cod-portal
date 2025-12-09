@@ -8,20 +8,15 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { tennisClubMembershipEvent } from '@countryconfig/form/tennis-club-membership'
-import { birthEvent } from '@countryconfig/form/v2/birth'
 import { deathEvent } from '@countryconfig/form/v2/death'
 import * as Hapi from '@hapi/hapi'
-import { sendInformantNotification } from '../notification/informantNotification'
 import { ActionConfirmationRequest } from '../registration'
 
 export function getCustomEventsHandler(
   _: Hapi.Request,
   h: Hapi.ResponseToolkit
 ) {
-  return h
-    .response([tennisClubMembershipEvent, birthEvent, deathEvent])
-    .code(200)
+  return h.response([deathEvent]).code(200)
 }
 
 export async function onAnyActionHandler(
@@ -33,7 +28,8 @@ export async function onAnyActionHandler(
   const token = request.auth.artifacts.token as string
 
   const event = request.payload
-  await sendInformantNotification({ event, token })
+
+  // Disabling usual notifications await sendInformantNotification({ event, token })
 
   return h.response().code(200)
 }

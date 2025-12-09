@@ -1,19 +1,9 @@
-import {
-  and,
-  ConditionalType,
-  defineActionForm,
-  field,
-  FieldType,
-  not,
-  PageTypes
-} from '@opencrvs/toolkit/events'
-import { correctionFormRequesters } from './requester'
-import { deathcorrectionRequesterIdentityVerify } from './requester-identity-verify'
+import { defineActionForm, PageTypes } from '@opencrvs/toolkit/events'
 
 export const DEATH_CORRECTION_FORM = defineActionForm({
   label: {
     id: 'event.death.action.correction.form.label',
-    defaultMessage: 'Correct record',
+    defaultMessage: 'Correct coding record',
     description: 'This is the label for the death correction form'
   },
   pages: [
@@ -26,182 +16,49 @@ export const DEATH_CORRECTION_FORM = defineActionForm({
         description: 'This is the title of the section'
       },
       fields: [
-        ...correctionFormRequesters,
         {
-          id: 'details.divider',
-          type: FieldType.DIVIDER,
+          id: 'correction.requester.relationshop.intro',
+          type: 'PAGE_HEADER',
           label: {
-            id: 'event.death.action.correction.form.section.details.divider.label',
-            defaultMessage: '',
-            description: 'This is the title of the section'
-          },
-          conditionals: [
-            {
-              type: ConditionalType.SHOW,
-              conditional: field('requester.type').isEqualTo('SOMEONE_ELSE')
-            }
-          ]
+            id: 'correction.requester.relationshop.intro.label',
+            defaultMessage:
+              'Note: In the case that the child is now of legal age (18) then only they should be able to request a change to their birth record.',
+            description: 'The title for the corrector form'
+          }
         },
         {
-          id: 'reason.option',
-          type: FieldType.SELECT,
-          required: true,
+          id: 'correction.requester.relationship',
+          type: 'RADIO_GROUP',
           label: {
-            id: 'event.death.action.correction.form.section.reason.title',
-            defaultMessage: 'Reason for correction',
-            description: 'This is the title of the section'
+            id: 'correction.corrector.title',
+            defaultMessage: 'Who is requesting a change to this record?',
+            description: 'The title for the corrector form'
           },
+          defaultValue: '',
           options: [
             {
-              value: 'CLERICAL_ERROR',
+              value: 'MR_OFFICER',
               label: {
-                defaultMessage:
-                  'Myself or an agent made a mistake (Clerical error)',
-                description: 'Label for the clerical error option',
-                id: 'event.death.action.correction.reason.option.clericalError.label'
+                defaultMessage: 'Medical Records Officer',
+                description: 'Name for user role Medical Records Officer',
+                id: 'userRole.medicalRecordsOfficer'
               }
             },
             {
-              value: 'MATERIAL_ERROR',
+              value: 'CODING_OFFICER',
               label: {
-                defaultMessage:
-                  'Informant provided incorrect information (Material error)',
-                description: 'Label for the material error option',
-                id: 'event.death.action.correction.reason.option.materialError.label'
-              }
-            },
-            {
-              value: 'MATERIAL_OMISSION',
-              label: {
-                defaultMessage:
-                  'Informant did not provide this information (Material omission)',
-                description: 'Label for the material omission option',
-                id: 'event.death.action.correction.reason.option.materialOmission.label'
-              }
-            },
-            {
-              value: 'JUDICIAL_ORDER',
-              label: {
-                defaultMessage:
-                  'Requested to do so by the court (Judicial order)',
-                description: 'Label for the judicial order option',
-                id: 'event.death.action.correction.reason.option.judicialOrder.label'
+                defaultMessage: 'Regional Coding Officer',
+                description: 'Name for user role Regional Coding Officer',
+                id: 'userRole.regionalCodingOfficer'
               }
             },
             {
               value: 'OTHER',
               label: {
-                defaultMessage: 'Other',
-                description: 'Label for the other option',
-                id: 'event.death.action.correction.reason.option.other.label'
-              }
-            }
-          ]
-        },
-        {
-          id: 'reason.other',
-          type: FieldType.TEXT,
-          required: true,
-          label: {
-            defaultMessage: 'Specify reason',
-            description: 'Label for the reason',
-            id: 'event.death.action.correction.reason.other.label'
-          },
-          conditionals: [
-            {
-              type: ConditionalType.SHOW,
-              conditional: field('reason.option').isEqualTo('OTHER')
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'requester.identity.verify',
-      type: PageTypes.enum.VERIFICATION,
-      title: {
-        id: 'event.death.action.correction.form.section.requester.identity.verify.title',
-        defaultMessage: 'Verify ID',
-        description: 'This is the title of the section'
-      },
-      conditional: and(
-        not(field('requester.type').isEqualTo('ANOTHER_AGENT')),
-        not(field('requester.type').isEqualTo('ME'))
-      ),
-      fields: deathcorrectionRequesterIdentityVerify,
-      actions: {
-        verify: {
-          label: {
-            defaultMessage: 'Verified',
-            description: 'This is the label for the verification button',
-            id: 'event.death.action.correction.form.verify'
-          }
-        },
-        cancel: {
-          label: {
-            defaultMessage: 'Identity does not match',
-            description:
-              'This is the label for the verification cancellation button',
-            id: 'event.death.action.correction.form.cancel'
-          },
-          confirmation: {
-            title: {
-              defaultMessage: 'Correct without proof of ID?',
-              description:
-                'This is the title for the verification cancellation modal',
-              id: 'event.death.action.correction.form.cancel.confirmation.title'
-            },
-            body: {
-              defaultMessage:
-                'Please be aware that if you proceed, you will be responsible for making a change to this record without the necessary proof of identification',
-              description:
-                'This is the body for the verification cancellation modal',
-              id: 'event.death.action.correction.form.cancel.confirmation.body'
-            }
-          }
-        }
-      }
-    },
-    {
-      id: 'documents',
-      type: PageTypes.enum.FORM,
-      title: {
-        id: 'event.death.action.correction.form.section.supporting-documents.title',
-        defaultMessage: 'Upload supporting documents',
-        description: 'This is the title of the section'
-      },
-      fields: [
-        {
-          id: 'documents.supportingDocs',
-          type: FieldType.FILE_WITH_OPTIONS,
-          label: {
-            defaultMessage: 'Supporting documents',
-            description: 'Label for the supporting documents field',
-            id: 'event.death.action.correction.documents.supportingDocs.label'
-          },
-          options: [
-            {
-              value: 'AFFIDAVIT',
-              label: {
-                defaultMessage: 'Affidavit',
-                description: 'Label for the affidavit option',
-                id: 'event.death.action.correction.documents.supportingDocs.affidavit.label'
-              }
-            },
-            {
-              value: 'COURT_DOCUMENT',
-              label: {
-                defaultMessage: 'Court Document',
-                description: 'Label for the court document option',
-                id: 'event.death.action.correction.documents.supportingDocs.courtDocument.label'
-              }
-            },
-            {
-              value: 'OTHER',
-              label: {
-                defaultMessage: 'Other',
-                description: 'Label for the other option',
-                id: 'event.death.action.correction.documents.supportingDocs.other.label'
+                id: 'correction.corrector.others',
+                defaultMessage: 'Someone else',
+                description:
+                  'Label for someone else option in certificate correction form'
               }
             }
           ]
@@ -209,30 +66,21 @@ export const DEATH_CORRECTION_FORM = defineActionForm({
       ]
     },
     {
-      id: 'fees',
+      id: 'correction-request.additional-details',
       type: PageTypes.enum.FORM,
       title: {
-        id: 'event.death.action.correction.form.section.fees.title',
-        defaultMessage: 'Collect fees',
+        id: 'event.tennis-club-membership.action.requestCorrection.form.section.corrector',
+        defaultMessage: 'Reason for correction',
         description: 'This is the title of the section'
       },
       fields: [
         {
-          id: 'fees.amount',
-          type: FieldType.NUMBER,
-          required: true,
+          id: 'correction.request.reason',
+          type: 'TEXT',
           label: {
-            defaultMessage: 'Fee total',
-            description: 'Label for the amount field',
-            id: 'event.death.action.correction.fees.amount.label'
-          },
-          configuration: {
-            min: 0,
-            prefix: {
-              defaultMessage: '$',
-              description: 'Prefix for the amount field',
-              id: 'event.death.action.correction.fees.amount.prefix'
-            }
+            id: 'correction.reason.title',
+            defaultMessage: 'Reason for correction?',
+            description: 'The title for the corrector form'
           }
         }
       ]

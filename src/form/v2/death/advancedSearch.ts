@@ -9,59 +9,19 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import {
-  AdvancedSearchConfig,
-  ConditionalType,
-  event,
-  field,
-  TranslationConfig
-} from '@opencrvs/toolkit/events'
-import { createSelectOptions } from '../utils'
-
-const PlaceOfDeath = {
-  HEALTH_FACILITY: 'HEALTH_FACILITY',
-  DECEASED_USUAL_RESIDENCE: 'DECEASED_USUAL_RESIDENCE',
-  OTHER: 'OTHER'
-} as const
-
-const placeOfDeathMessageDescriptors = {
-  HEALTH_FACILITY: {
-    defaultMessage: 'Health Institution',
-    description: 'Select item for Health Institution',
-    id: 'form.field.label.healthInstitution'
-  },
-  DECEASED_USUAL_RESIDENCE: {
-    defaultMessage: 'Residential address',
-    description: 'Select item for Private Home',
-    id: 'form.field.label.privateHome'
-  },
-  OTHER: {
-    defaultMessage: 'Other',
-    description: 'Select item for Other location',
-    id: 'form.field.label.otherInstitution'
-  }
-} satisfies Record<keyof typeof PlaceOfDeath, TranslationConfig>
-
-const placeOfDeathOptions = createSelectOptions(
-  PlaceOfDeath,
-  placeOfDeathMessageDescriptors
-)
+import { AdvancedSearchConfig, event, field } from '@opencrvs/toolkit/events'
 
 const deceasedPrefix = {
   id: 'death.search.criteria.label.prefix.deceased',
   defaultMessage: "Deceased's",
   description: 'Deceased prefix'
 }
-const informantPrefix = {
-  id: 'death.search.criteria.label.prefix.informant',
-  defaultMessage: "Informant's",
-  description: 'Informant prefix'
-}
+
 export const advancedSearchDeath = [
   {
     title: {
-      defaultMessage: 'Registration details',
-      description: 'The title of Registration details accordion',
+      defaultMessage: 'Coding details',
+      description: 'The title of Coding details accordion',
       id: 'advancedSearch.form.registrationDetails'
     },
     fields: [
@@ -78,59 +38,18 @@ export const advancedSearchDeath = [
       id: 'advancedSearch.form.deceasedDetails'
     },
     fields: [
+      field('deceased.country', {
+        searchCriteriaLabelPrefix: deceasedPrefix
+      }).exact(),
+      field('deceased.certificateKey', {
+        searchCriteriaLabelPrefix: deceasedPrefix
+      }).exact(),
       field('deceased.dob', {
         searchCriteriaLabelPrefix: deceasedPrefix
       }).range(),
-      field('deceased.name', {
-        validations: [],
-        conditionals: []
-      }).fuzzy(),
       field('deceased.gender', {
         searchCriteriaLabelPrefix: deceasedPrefix
       }).exact()
-    ]
-  },
-  {
-    title: {
-      defaultMessage: 'Event details',
-      description: 'The title of Event details accordion',
-      id: 'advancedSearch.form.eventDetails'
-    },
-    fields: [
-      field('eventDetails.placeOfDeath', {
-        options: placeOfDeathOptions
-      }).exact(),
-      field('eventDetails.deathLocation', {
-        searchCriteriaLabelPrefix: deceasedPrefix
-      }).exact(),
-      field('deceased.address', {
-        conditionals: [
-          {
-            type: ConditionalType.SHOW,
-            conditional: field('eventDetails.placeOfDeath').isEqualTo(
-              PlaceOfDeath.DECEASED_USUAL_RESIDENCE
-            )
-          }
-        ]
-      }).exact(),
-      field('eventDetails.deathLocationOther', {}).exact()
-    ]
-  },
-  {
-    title: {
-      defaultMessage: 'Informant details',
-      description: 'The title of Informant details accordion',
-      id: 'advancedSearch.form.informantDetails'
-    },
-    fields: [
-      field('informant.dob', {
-        conditionals: [],
-        searchCriteriaLabelPrefix: informantPrefix
-      }).range(),
-      field('informant.name', {
-        conditionals: [],
-        validations: []
-      }).fuzzy()
     ]
   }
 ] satisfies AdvancedSearchConfig[]

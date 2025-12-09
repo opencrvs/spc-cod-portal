@@ -13,36 +13,379 @@ import {
   defineFormPage,
   TranslationConfig,
   ConditionalType,
-  and,
   FieldType,
-  AddressType,
   PageTypes,
-  field,
-  user
+  field
 } from '@opencrvs/toolkit/events'
 import { not, never } from '@opencrvs/toolkit/conditionals'
 
-import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
-import {
-  farajalandNameConfig,
-  invalidNameValidator,
-  nationalIdValidator
-} from '@countryconfig/form/v2/birth/validators'
-import {
-  IdType,
-  idTypeOptions,
-  maritalStatusOptions
-} from '@countryconfig/form/v2/person'
-import {
-  defaultStreetAddressConfiguration,
-  getNestedFieldValidators
-} from '@countryconfig/form/street-address-configuration'
+import { createSelectOptions } from '@countryconfig/form/v2/utils'
 
 const GenderTypes = {
   MALE: 'male',
   FEMALE: 'female',
   UNKNOWN: 'unknown'
 } as const
+
+export const SPCCountryType = {
+  FIJI: 'FIJI',
+  KIRIBATI: 'KIRIBATI',
+  NAURU: 'NAURU',
+  NIUE: 'NIUE',
+  PALAU: 'PALAU',
+  TONGA: 'TONGA',
+  TUVALU: 'TUVALU'
+} as const
+
+const spcCountryMessageDescriptors = {
+  FIJI: {
+    defaultMessage: 'Fiji',
+    description: '',
+    id: 'spcRegionalGroup.fiji'
+  },
+  KIRIBATI: {
+    defaultMessage: 'Kiribati',
+    description: '',
+    id: 'spcRegionalGroup.kiribati'
+  },
+  NAURU: {
+    defaultMessage: 'Nauru',
+    description: '',
+    id: 'spcRegionalGroup.nauru'
+  },
+  PALAU: {
+    defaultMessage: 'Palau',
+    description: '',
+    id: 'spcRegionalGroup.palau'
+  },
+  NIUE: {
+    defaultMessage: 'Niue',
+    description: '',
+    id: 'spcRegionalGroup.niue'
+  },
+  TONGA: {
+    defaultMessage: 'Tonga',
+    description: '',
+    id: 'spcRegionalGroup.tonga'
+  },
+  TUVALU: {
+    defaultMessage: 'Tuvalu',
+    description: '',
+    id: 'spcRegionalGroup.tuvalu'
+  }
+} satisfies Record<keyof typeof SPCCountryType, TranslationConfig>
+
+const spcCountryOptions = createSelectOptions(
+  SPCCountryType,
+  spcCountryMessageDescriptors
+)
+
+export const FijiAdmin1Type = {
+  CENTRAL: 'CENTRAL',
+  EASTERN: 'EASTERN',
+  NORTHERN: 'NORTHERN',
+  WESTERN: 'WESTERN'
+} as const
+
+const fijiAdmin1MessageDescriptors = {
+  CENTRAL: {
+    defaultMessage: 'Central',
+    description: '',
+    id: 'spcRegionalGroup.CENTRAL'
+  },
+  EASTERN: {
+    defaultMessage: 'Eastern',
+    description: '',
+    id: 'spcRegionalGroup.EASTERN'
+  },
+  NORTHERN: {
+    defaultMessage: 'Northern',
+    description: '',
+    id: 'spcRegionalGroup.NORTHERN'
+  },
+  WESTERN: {
+    defaultMessage: 'Western',
+    description: '',
+    id: 'spcRegionalGroup.WESTERN'
+  }
+} satisfies Record<keyof typeof FijiAdmin1Type, TranslationConfig>
+
+export const TongaAdmin1Type = {
+  TONGATAPU: 'TONGATAPU',
+  VAVAU: 'VAVAU',
+  HAAPAI: 'HAAPAI',
+  EUA: 'EUA',
+  NIUAS: 'NIUAS'
+} as const
+
+const tongaAdmin1MessageDescriptors = {
+  TONGATAPU: {
+    defaultMessage: 'Tongatapu',
+    description: '',
+    id: 'spcRegionalGroup.TONGATAPU'
+  },
+  VAVAU: {
+    defaultMessage: "Vava'u",
+    description: '',
+    id: 'spcRegionalGroup.VAVAU'
+  },
+  HAAPAI: {
+    defaultMessage: "Ha'apai",
+    description: '',
+    id: 'spcRegionalGroup.HAAPAI'
+  },
+  EUA: {
+    defaultMessage: "'Eua",
+    description: '',
+    id: 'spcRegionalGroup.EUA'
+  },
+  NIUAS: {
+    defaultMessage: 'Niuas',
+    description: '',
+    id: 'spcRegionalGroup.NIUAS'
+  }
+} satisfies Record<keyof typeof TongaAdmin1Type, TranslationConfig>
+
+export const KiribatiAdmin1Type = {
+  GILBERT: 'GILBERT',
+  PHOENIX: 'PHOENIX',
+  LINE: 'LINE'
+} as const
+
+const kiribatiAdmin1MessageDescriptors = {
+  GILBERT: {
+    defaultMessage: 'Gilbert Islands',
+    description: '',
+    id: 'spcRegionalGroup.GILBERT'
+  },
+  PHOENIX: {
+    defaultMessage: 'Phoenix Islands',
+    description: '',
+    id: 'spcRegionalGroup.PHOENIX'
+  },
+  LINE: {
+    defaultMessage: 'Line Islands',
+    description: '',
+    id: 'spcRegionalGroup.LINE'
+  }
+} satisfies Record<keyof typeof KiribatiAdmin1Type, TranslationConfig>
+
+export const NiueAdmin1Type = {
+  MAKEFU: 'MAKEFU',
+  TUAPA: 'TUAPA',
+  NAMUKULU: 'NAMUKULU',
+  HIKUTAVAKE: 'HIKUTAVAKE',
+  TOI: 'TOI',
+  MUTALAU: 'MUTALAU',
+  LAKEPA: 'LAKEPA',
+  LIKU: 'LIKU',
+  HAKUPU: 'HAKUPU',
+  VAIEA: 'VAIEA',
+  AVATELE: 'AVATELE',
+  TAMAKAUTOGA: 'TAMAKAUTOGA',
+  ALOFI_S: 'ALOFI_S',
+  ALOFI_N: 'ALOFI_N'
+} as const
+
+const niueAdmin1MessageDescriptors = {
+  MAKEFU: {
+    defaultMessage: 'Makefu',
+    description: '',
+    id: 'spcRegionalGroup.MAKEFU'
+  },
+  TUAPA: {
+    defaultMessage: 'Tuapa',
+    description: '',
+    id: 'spcRegionalGroup.TUAPA'
+  },
+  NAMUKULU: {
+    defaultMessage: 'Namukulu',
+    description: '',
+    id: 'spcRegionalGroup.NAMUKULU'
+  },
+  HIKUTAVAKE: {
+    defaultMessage: 'Hikutavake',
+    description: '',
+    id: 'spcRegionalGroup.HIKUTAVAKE'
+  },
+  TOI: {
+    defaultMessage: 'Toi',
+    description: '',
+    id: 'spcRegionalGroup.TOI'
+  },
+  MUTALAU: {
+    defaultMessage: 'Mutalau',
+    description: '',
+    id: 'spcRegionalGroup.MUTALAU'
+  },
+  LAKEPA: {
+    defaultMessage: 'Lakepa',
+    description: '',
+    id: 'spcRegionalGroup.LAKEPA'
+  },
+  LIKU: {
+    defaultMessage: 'Liku',
+    description: '',
+    id: 'spcRegionalGroup.LIKU'
+  },
+  HAKUPU: {
+    defaultMessage: 'Hakupu',
+    description: '',
+    id: 'spcRegionalGroup.HAKUPU'
+  },
+  VAIEA: {
+    defaultMessage: 'Vaiea',
+    description: '',
+    id: 'spcRegionalGroup.VAIEA'
+  },
+  AVATELE: {
+    defaultMessage: 'Avatele',
+    description: '',
+    id: 'spcRegionalGroup.AVATELE'
+  },
+  TAMAKAUTOGA: {
+    defaultMessage: 'Tamakautoga',
+    description: '',
+    id: 'spcRegionalGroup.TAMAKAUTOGA'
+  },
+  ALOFI_S: {
+    defaultMessage: 'Alofi South',
+    description: '',
+    id: 'spcRegionalGroup.ALOFI_S'
+  },
+  ALOFI_N: {
+    defaultMessage: 'Alofi North',
+    description: '',
+    id: 'spcRegionalGroup.ALOFI_N'
+  }
+} satisfies Record<keyof typeof NiueAdmin1Type, TranslationConfig>
+
+export const PalauAdmin1Type = {
+  KAYANGEL: 'KAYANGEL',
+  NGARCHELONG: 'NGARCHELONG',
+  NGARAARD: 'NGARAARD',
+  NGARDMAU: 'NGARDMAU',
+  NGAREMLENGUI: 'NGAREMLENGUI',
+  NGATPANG: 'NGATPANG',
+  NGIWAL: 'NGIWAL',
+  MELEKEOK: 'MELEKEOK',
+  NGCHESAR: 'NGCHESAR',
+  AIMELIIK: 'AIMELIIK',
+  AIRAI: 'AIRAI',
+  KOROR: 'KOROR',
+  PELELIU: 'PELELIU',
+  ANGAUR: 'ANGAUR',
+  SONSOROL: 'SONSOROL',
+  HATOHOBEI: 'HATOHOBEI'
+} as const
+
+const palauAdmin1MessageDescriptors = {
+  KAYANGEL: {
+    defaultMessage: 'Kayangel',
+    description: '',
+    id: 'spcRegionalGroup.KAYANGEL'
+  },
+  NGARCHELONG: {
+    defaultMessage: 'Ngarchelong',
+    description: '',
+    id: 'spcRegionalGroup.NGARCHELONG'
+  },
+  NGARAARD: {
+    defaultMessage: 'Ngaraard',
+    description: '',
+    id: 'spcRegionalGroup.NGARAARD'
+  },
+  NGARDMAU: {
+    defaultMessage: 'Ngardmau',
+    description: '',
+    id: 'spcRegionalGroup.NGARDMAU'
+  },
+  NGAREMLENGUI: {
+    defaultMessage: 'Ngaremlengui',
+    description: '',
+    id: 'spcRegionalGroup.NGAREMLENGUI'
+  },
+  NGATPANG: {
+    defaultMessage: 'Ngatpang',
+    description: '',
+    id: 'spcRegionalGroup.NGATPANG'
+  },
+  NGIWAL: {
+    defaultMessage: 'Ngiwal',
+    description: '',
+    id: 'spcRegionalGroup.NGIWAL'
+  },
+  MELEKEOK: {
+    defaultMessage: 'Melekeok',
+    description: '',
+    id: 'spcRegionalGroup.MELEKEOK'
+  },
+  NGCHESAR: {
+    defaultMessage: 'Ngchesar',
+    description: '',
+    id: 'spcRegionalGroup.NGCHESAR'
+  },
+  AIMELIIK: {
+    defaultMessage: 'Aimeliik',
+    description: '',
+    id: 'spcRegionalGroup.AIMELIIK'
+  },
+  AIRAI: {
+    defaultMessage: 'Airai',
+    description: '',
+    id: 'spcRegionalGroup.AIRAI'
+  },
+  KOROR: {
+    defaultMessage: 'Koror',
+    description: '',
+    id: 'spcRegionalGroup.KOROR'
+  },
+  PELELIU: {
+    defaultMessage: 'Peleliu',
+    description: '',
+    id: 'spcRegionalGroup.PELELIU'
+  },
+  ANGAUR: {
+    defaultMessage: 'Angaur',
+    description: '',
+    id: 'spcRegionalGroup.ANGAUR'
+  },
+  SONSOROL: {
+    defaultMessage: 'Sonsorol',
+    description: '',
+    id: 'spcRegionalGroup.SONSOROL'
+  },
+  HATOHOBEI: {
+    defaultMessage: 'Hatohobei',
+    description: '',
+    id: 'spcRegionalGroup.HATOHOBEI'
+  }
+} satisfies Record<keyof typeof PalauAdmin1Type, TranslationConfig>
+
+const fijiAdmin1Options = createSelectOptions(
+  FijiAdmin1Type,
+  fijiAdmin1MessageDescriptors
+)
+
+const tongaAdmin1Options = createSelectOptions(
+  TongaAdmin1Type,
+  tongaAdmin1MessageDescriptors
+)
+
+const kiribatiAdmin1Options = createSelectOptions(
+  KiribatiAdmin1Type,
+  kiribatiAdmin1MessageDescriptors
+)
+
+const niueAdmin1Options = createSelectOptions(
+  NiueAdmin1Type,
+  niueAdmin1MessageDescriptors
+)
+
+const palauAdmin1Options = createSelectOptions(
+  PalauAdmin1Type,
+  palauAdmin1MessageDescriptors
+)
 
 const genderMessageDescriptors = {
   MALE: {
@@ -74,28 +417,14 @@ export const deceased = defineFormPage({
   },
   fields: [
     {
-      id: 'deceased.name',
-      type: FieldType.NAME,
-      configuration: farajalandNameConfig,
-      required: true,
-      hideLabel: true,
-      label: {
-        defaultMessage: "Deceased's name",
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.name.label'
-      },
-      validation: [invalidNameValidator('deceased.name')]
-    },
-    {
-      id: 'deceased.gender',
-      type: FieldType.SELECT,
+      id: 'deceased.certificateKey',
+      type: FieldType.TEXT,
       required: true,
       label: {
-        defaultMessage: 'Sex',
+        defaultMessage: 'Certificate Key',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.gender.label'
-      },
-      options: genderOptions
+        id: 'spcRegionalGroup.certificateKey'
+      }
     },
     {
       id: 'deceased.dob',
@@ -184,161 +513,113 @@ export const deceased = defineFormPage({
       ]
     },
     {
-      id: `deceased.nationality`,
-      type: FieldType.COUNTRY,
-      required: true,
-      label: {
-        defaultMessage: 'Nationality',
-        description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.person.field.nationality.label`
-      },
-      defaultValue: 'FAR'
-    },
-    {
-      id: `deceased.idType`,
+      id: 'deceased.gender',
       type: FieldType.SELECT,
       required: true,
       label: {
-        defaultMessage: 'Type of ID',
+        defaultMessage: 'Sex',
         description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.person.field.idType.label`
+        id: 'event.death.action.declare.form.section.deceased.field.gender.label'
       },
-      options: idTypeOptions
+      options: genderOptions
     },
     {
-      id: 'deceased.nid',
-      type: FieldType.ID,
+      id: `deceased.country`,
+      type: FieldType.SELECT,
       required: true,
       label: {
-        defaultMessage: 'ID Number',
+        defaultMessage: 'Country',
         description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.person.field.nid.label`
+        id: `field.address.country.label`
       },
+      options: spcCountryOptions
+    },
+    {
+      id: `deceased.fijiAdmin1`,
+      type: FieldType.SELECT,
+      required: false,
+      label: {
+        defaultMessage: 'Island / District / Village',
+        description: 'This is the label for the field',
+        id: `field.address.province.label`
+      },
+      options: fijiAdmin1Options,
       conditionals: [
         {
           type: ConditionalType.SHOW,
-          conditional: field('deceased.idType').isEqualTo(IdType.NATIONAL_ID)
+          conditional: field('deceased.country').isEqualTo(SPCCountryType.FIJI)
         }
-      ],
-      validation: [
-        nationalIdValidator('deceased.nid'),
+      ]
+    },
+    {
+      id: `deceased.tongaAdmin1`,
+      type: FieldType.SELECT,
+      required: false,
+      label: {
+        defaultMessage: 'Island / District / Village',
+        description: 'This is the label for the field',
+        id: `field.address.province.label`
+      },
+      options: tongaAdmin1Options,
+      conditionals: [
         {
-          message: {
-            defaultMessage: 'National id must be unique',
-            description: 'This is the error message for non-unique ID Number',
-            id: 'event.death.action.declare.form.nid.unique'
-          },
-          validator: and(
-            not(field('deceased.nid').isEqualTo(field('informant.nid')))
+          type: ConditionalType.SHOW,
+          conditional: field('deceased.country').isEqualTo(SPCCountryType.TONGA)
+        }
+      ]
+    },
+    {
+      id: `deceased.kiribatiAdmin1`,
+      type: FieldType.SELECT,
+      required: false,
+      label: {
+        defaultMessage: 'Island / District / Village',
+        description: 'This is the label for the field',
+        id: `field.address.province.label`
+      },
+      options: kiribatiAdmin1Options,
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field('deceased.country').isEqualTo(
+            SPCCountryType.KIRIBATI
           )
         }
       ]
     },
     {
-      id: `deceased.passport`,
-      type: FieldType.TEXT,
-      required: true,
-      label: {
-        defaultMessage: 'ID Number',
-        description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.person.field.passport.label`
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`deceased.idType`).isEqualTo(IdType.PASSPORT)
-        }
-      ]
-    },
-    {
-      id: `deceased.brn`,
-      type: FieldType.TEXT,
-      required: true,
-      label: {
-        defaultMessage: 'ID Number',
-        description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.person.field.brn.label`
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field('deceased.idType').isEqualTo(
-            IdType.BIRTH_REGISTRATION_NUMBER
-          )
-        }
-      ]
-    },
-    {
-      id: 'deceased.maritalStatus',
+      id: `deceased.niueAdmin1`,
       type: FieldType.SELECT,
       required: false,
       label: {
-        defaultMessage: 'Marital Status',
+        defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.deceased.field.maritalStatus.label`
+        id: `field.address.province.label`
       },
-      options: maritalStatusOptions
+      options: niueAdmin1Options,
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field('deceased.country').isEqualTo(SPCCountryType.NIUE)
+        }
+      ]
     },
     {
-      id: `deceased.numberOfDependants`,
-      type: FieldType.NUMBER,
+      id: `deceased.palauAdmin1`,
+      type: FieldType.SELECT,
       required: false,
       label: {
-        defaultMessage: 'No. of dependants',
+        defaultMessage: 'Island / District / Village',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.numberOfDependants.label'
+        id: `field.address.province.label`
       },
-      configuration: {
-        min: 0
-      }
-    },
-    {
-      id: `deceased.addressDivider`,
-      type: FieldType.DIVIDER,
-      label: emptyMessage
-    },
-    {
-      id: `deceased.addressHelper`,
-      type: FieldType.PARAGRAPH,
-      label: {
-        defaultMessage: 'Usual place of residence',
-        description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.deceased.field.addressHelper.label`
-      },
-      configuration: { styles: { fontVariant: 'h3' } }
-    },
-    {
-      id: `deceased.address`,
-      type: FieldType.ADDRESS,
-      hideLabel: true,
-      secured: true,
-      label: {
-        defaultMessage: 'Usual place of residence',
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.address.label'
-      },
-      validation: [
+      options: palauAdmin1Options,
+      conditionals: [
         {
-          message: {
-            defaultMessage: 'Invalid input',
-            description: 'Error message when generic field is invalid',
-            id: 'error.invalidInput'
-          },
-          validator: field('deceased.address').isValidAdministrativeLeafLevel()
-        },
-        ...getNestedFieldValidators(
-          'deceased.address',
-          defaultStreetAddressConfiguration
-        )
-      ],
-      defaultValue: {
-        country: 'FAR',
-        addressType: AddressType.DOMESTIC,
-        administrativeArea: user('primaryOfficeId').locationLevel('district')
-      },
-      configuration: {
-        streetAddressForm: defaultStreetAddressConfiguration
-      }
+          type: ConditionalType.SHOW,
+          conditional: field('deceased.country').isEqualTo(SPCCountryType.PALAU)
+        }
+      ]
     }
   ]
 })

@@ -1,7 +1,7 @@
 import { countryLogo } from '@countryconfig/api/application/country-logo'
 
 export const applicationConfig = {
-  APPLICATION_NAME: 'Farajaland CRS',
+  APPLICATION_NAME: 'SPC Regional Coding Group',
   BIRTH: {
     REGISTRATION_TARGET: 30,
     LATE_REGISTRATION_TARGET: 365,
@@ -13,7 +13,7 @@ export const applicationConfig = {
     PRINT_IN_ADVANCE: true
   },
   COUNTRY_LOGO: countryLogo,
-  SYSTEM_IANA_TIMEZONE: 'Asia/Dhaka', // Default timezone for the country. Basis for date and time calculations during searches.
+  SYSTEM_IANA_TIMEZONE: 'Pacific/Fiji', // Default timezone for the country. Basis for date and time calculations during searches.
   CURRENCY: {
     languagesAndCountry: ['en-US'],
     isoCode: 'USD'
@@ -31,16 +31,8 @@ export const applicationConfig = {
       id: 'province',
       label: {
         id: 'field.address.province.label',
-        defaultMessage: 'Province',
+        defaultMessage: 'Island / District / Village',
         description: 'Label for province in address'
-      }
-    },
-    {
-      id: 'district',
-      label: {
-        id: 'field.address.district.label',
-        defaultMessage: 'District',
-        description: 'Label for district in address'
       }
     }
   ],
@@ -68,7 +60,7 @@ export const applicationConfig = {
   },
   USER_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
-  SIGNATURE_REQUIRED_FOR_ROLES: ['LOCAL_REGISTRAR', 'NATIONAL_REGISTRAR'],
+  SIGNATURE_REQUIRED_FOR_ROLES: [],
   SEARCH_DEFAULT_CRITERIA: 'TRACKING_ID'
   /*
    * SEARCH_DEFAULT_CRITERIA's value can be one of the following

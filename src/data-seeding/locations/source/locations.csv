@@ -1,17 +1,45 @@
 admin2Name_en,admin2Name_alias,admin2Pcode,admin1Name_en,admin1Name_alias,admin1Pcode,admin0Name_en,admin0Name_alias,admin0Pcode
-Ibombo,Ibombo,oEBf29y8JP8,Central,Central,AWn3s2RqgAN,Farajaland,Farajaland,FAR
-Ilanga,Ilanga,HPGiE9Jjh2r,Sulaka,Sulaka,KozcEjeTyuD,Farajaland,Farajaland,FAR
-Embe,Embe,BxrIbNW7f3K,Pualula,Pualula,B1u1bVtIA92,Farajaland,Farajaland,FAR
-Ama,Ama,SQT8xjbvWwf,Chuminga,Chuminga,dbTLdTi7s8F,Farajaland,Farajaland,FAR
-Isamba,Isamba,ntoX1PkiWri,Central,Central,AWn3s2RqgAN,Farajaland,Farajaland,FAR
-Irundu,Irundu,SvFNQpplnch,Sulaka,Sulaka,KozcEjeTyuD,Farajaland,Farajaland,FAR
-Ienge,Ienge,NLjvK1QsrN3,Pualula,Pualula,B1u1bVtIA92,Farajaland,Farajaland,FAR
-Nsali,Nsali,hywxVKv48Xp,Chuminga,Chuminga,dbTLdTi7s8F,Farajaland,Farajaland,FAR
-Itambo,Itambo,QTtxiWj8ONP,Central,Central,AWn3s2RqgAN,Farajaland,Farajaland,FAR
-Zobwe,Zobwe,Oapn6R4rt3D,Sulaka,Sulaka,KozcEjeTyuD,Farajaland,Farajaland,FAR
-Funabuli,Funabuli,idR0pJWLqcR,Pualula,Pualula,B1u1bVtIA92,Farajaland,Farajaland,FAR
-Soka,Soka,jCJxK8sFH40,Chuminga,Chuminga,dbTLdTi7s8F,Farajaland,Farajaland,FAR
-Ezhi,Ezhi,ydyJb1RAy4U,Central,Central,AWn3s2RqgAN,Farajaland,Farajaland,FAR
-Afue,Afue,nO68NTtcdw2,Sulaka,Sulaka,KozcEjeTyuD,Farajaland,Farajaland,FAR
-Pili,Pili,FuvOOwvBw0p,Pualula,Pualula,B1u1bVtIA92,Farajaland,Farajaland,FAR
-Chibiya,Chibiya,R22tRIhdm5Y,Chuminga,Chuminga,dbTLdTi7s8F,Farajaland,Farajaland,FAR
+Tuvalu,Tuvalu,edXhJEEXiQ8KpXV6GgTuPL,Tuvalu,Tuvalu,AWn3s2RqgAN,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Tongatapu,Tongatapu,cEBbfkFGyjT2WLTUAhoP6Y,Tonga,Tonga,KozcEjeTyuD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Vavau,Vavau,3j7tkTUxg87ztzjWwJfgBd,Tonga,Tonga,KozcEjeTyuD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Haapai,Haapai,7iJCkD6ENYwFwjJtjpySzh,Tonga,Tonga,KozcEjeTyuD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Eua,Eua,thKcrnynMPfbnreEBnXj5r,Tonga,Tonga,KozcEjeTyuD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Niuas,Niuas,icQbqSzhcQ1xrW9R8cajQS,Tonga,Tonga,KozcEjeTyuD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Gilbert Islands,Gilbert Islands,xspzoXJxqZb9Z5mkN7dafy,Kiribati,Kiribati,B1u1bVtIA92,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Phoenix Islands,Phoenix Islands,aNPE7SEQteefPqb9Ys1fib,Kiribati,Kiribati,B1u1bVtIA92,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Line Islands,Line Islands,fPCFp7C4WKUHPVxxJbAhnx,Kiribati,Kiribati,B1u1bVtIA92,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Central,Central,67sSu3vWKw3obyFK77CqrM,Fiji,Fiji,dbTLdTi7s8F,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Eastern,Eastern,92ZKhC9RNQYETeDoyoVHJP,Fiji,Fiji,dbTLdTi7s8F,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Northern,Northern,aWG4RTzemcc5YW5aZyhsAi,Fiji,Fiji,dbTLdTi7s8F,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Western,Western,pmLk94SVMbzbwSwq7MzS2V,Fiji,Fiji,dbTLdTi7s8F,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Makefu,Makefu,tv3wTVVmJMPQ3T54VJWb5B,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Tuapa,Tuapa,8Q5X7yAobqRHBNFGZuvpJr,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Namukulu,Namukulu,26RNrwu16pFtFFwx7uz1VY,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Hikutavake,Hikutavake,5faPvMBKEoXuPEeeqvKsfh,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Toi,Toi,b9UqjZg7BSkPHaJErzcthH,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Mutalau,Mutalau,jyeNANtyFLHDs42Dvnem84,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Lakepa,Lakepa,rPYMyU9tUs9fF5QF8dofyk,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Liku,Liku,jSesLhaH8ChXz5XsrvSatC,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Hakupu,Hakupu,rUR1HQYaBHHLYKce7RF3Rx,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Vaiea,Vaiea,2T8fYQEP57zjNkwfHRmXSM,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Avatele,Avatele,a9ChWMpaR2UmboXKVY8pnn,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Tamakautoga,Tamakautoga,gYnYcMJyseKsfMU6drGBEP,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Alofi South,Alofi South,6XAFs8AMJeb6ejHavyUtWH,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Alofi North,Alofi North,2S67BzerZzguUUpwkisVrT,Niue,Niue,HF7S25bcvXP,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Kayangel,Kayangel,dnWRLp8q4NB7q7Qxw781ZF,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngarchelong,Ngarchelong,rWtPTHStD3rhNk4TS33FMc,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngaraard,Ngaraard,ck75NmwVys8LX1QMw95RQG,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngardmau,Ngardmau,wB1soytd5Kj215Bwto5bPc,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngaremlengui,Ngaremlengui,h68hdUWc7utEpoYBtVfqny,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngatpang,Ngatpang,mHCLAa4Eqy6AMKBbAEiHkJ,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngiwal,Ngiwal,krc1Y4QckpYMerUfvUWEuc,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Melekeok,Melekeok,3ueGLmCMeV7EbVBLCsEMSH,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Ngchesar,Ngchesar,tTpba8WhXRCHDcPgDAXkK7,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Aimeliik,Aimeliik,ggtnDyMPYAp4zZDrtTLux5,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Airai,Airai,bmanahCfm1XB1D4zwTDRz4,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Koror,Koror,kvmRNc4h9epgwaDMqCoCLE,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Peleliu,Peleliu,832szmyr3zhYojnfbwNrqP,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Angaur,Angaur,xnRLW44FPi9uWzyk86sJMu,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Sonsorol,Sonsorol,jHYCbF32kBQtiyNXCrCpQo,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Hatohobei,Hatohobei,rbMrnFtEGeGirjH7djprjc,Palau,Palau,KdgsRzfnchD,SPC Regional Coding Group,SPC Regional Coding Group,FAR
+Nauru,Nauru,gLSKTowCNDLoXJJufE2TCr,Nauru,Nauru,T7dnvfF301Z,SPC Regional Coding Group,SPC Regional Coding Group,FAR
