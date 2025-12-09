@@ -25,7 +25,7 @@ import { Event } from '@countryconfig/form/types/types'
 import { InformantType as BirthInformantType } from '@countryconfig/form/v2/birth/forms/pages/informant'
 import { InformantTemplateType } from './sms-service'
 import { generateFailureLog, NotificationParams, notify } from './handler'
-import { InformantType as DeathInformantType } from '@countryconfig/form/v2/death/forms/pages/informant'
+// import { InformantType as DeathInformantType } from '@countryconfig/form/v2/death/forms/pages/informant'
 import { birthEvent } from '@countryconfig/form/v2/birth'
 import { deathEvent } from '@countryconfig/form/v2/death'
 
@@ -68,13 +68,14 @@ function getInformant(eventType: string, declaration: Record<string, any>) {
         : declaration['informant.name']
   }
 
-  if (eventType === Event.Death) {
+  /*if (eventType === Event.Death) {
     return declaration['informant.relation'] === DeathInformantType.SPOUSE
       ? declaration['spouse.name']
       : declaration['informant.name']
-  }
+  }*/
+  return declaration['informant.name']
 
-  throw new Error('Invalid event type')
+  // throw new Error('Invalid event type')
 }
 
 function getEventConfig(eventType: string) {

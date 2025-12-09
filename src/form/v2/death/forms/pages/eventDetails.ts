@@ -9,8 +9,7 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 import {
-  AddressType,
-  and,
+  never,
   ConditionalType,
   defineFormPage,
   field,
@@ -18,16 +17,10 @@ import {
   not,
   or,
   PageTypes,
-  TranslationConfig,
-  user
+  TranslationConfig
 } from '@opencrvs/toolkit/events'
 
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
-import { applicationConfig } from '@countryconfig/api/application/application-config'
-import {
-  defaultStreetAddressConfiguration,
-  getNestedFieldValidators
-} from '@countryconfig/form/street-address-configuration'
 
 export const MannerDeathType = {
   MANNER_NATURAL: 'MANNER_NATURAL',
@@ -69,72 +62,6 @@ const mannerDeathMessageDescriptors = {
 const mannerDeathTypeOptions = createSelectOptions(
   MannerDeathType,
   mannerDeathMessageDescriptors
-)
-
-export const SourceCauseDeathType = {
-  PHYSICIAN: 'PHYSICIAN',
-  LAY_REPORTED: 'LAY_REPORTED',
-  VERBAL_AUTOPSY: 'VERBAL_AUTOPSY',
-  MEDICALLY_CERTIFIED: 'MEDICALLY_CERTIFIED'
-} as const
-export type SourceCauseDeathTypeKey = keyof typeof SourceCauseDeathType
-
-const sourceCauseDeathMessageDescriptors = {
-  PHYSICIAN: {
-    defaultMessage: 'Physician',
-    description: 'Label for form field: physician',
-    id: 'form.field.label.physician'
-  },
-  LAY_REPORTED: {
-    defaultMessage: 'Lay reported',
-    description: 'Label for form field: Lay reported',
-    id: 'form.field.label.layReported'
-  },
-  VERBAL_AUTOPSY: {
-    defaultMessage: 'Verbal autopsy',
-    description: 'Option for form field: verbalAutopsy',
-    id: 'form.field.label.verbalAutopsy'
-  },
-  MEDICALLY_CERTIFIED: {
-    defaultMessage: 'Medically Certified Cause of Death',
-    description: 'Option for form field: Method of Cause of Death',
-    id: 'form.field.label.medicallyCertified'
-  }
-} satisfies Record<keyof typeof SourceCauseDeathType, TranslationConfig>
-
-const sourceCauseDeathOptions = createSelectOptions(
-  SourceCauseDeathType,
-  sourceCauseDeathMessageDescriptors
-)
-
-export const PlaceOfDeath = {
-  HEALTH_FACILITY: 'HEALTH_FACILITY',
-  DECEASED_USUAL_RESIDENCE: 'DECEASED_USUAL_RESIDENCE',
-  OTHER: 'OTHER'
-} as const
-
-const placeOfDeathMessageDescriptors = {
-  HEALTH_FACILITY: {
-    defaultMessage: 'Health Institution',
-    description: 'Select item for Health Institution',
-    id: 'form.field.label.healthInstitution'
-  },
-  DECEASED_USUAL_RESIDENCE: {
-    defaultMessage: "Deceased's usual place of residence",
-    description:
-      'Option for place of occurrence of death same as deceased primary address',
-    id: 'form.field.label.placeOfDeathSameAsPrimary'
-  },
-  OTHER: {
-    defaultMessage: 'Other',
-    description: 'Select item for Other location',
-    id: 'form.field.label.otherInstitution'
-  }
-} satisfies Record<keyof typeof PlaceOfDeath, TranslationConfig>
-
-const placeOfDeathOptions = createSelectOptions(
-  PlaceOfDeath,
-  placeOfDeathMessageDescriptors
 )
 
 export const eventDetails = defineFormPage({
@@ -181,187 +108,253 @@ export const eventDetails = defineFormPage({
       }
     },
     {
-      id: 'eventDetails.reasonForLateRegistration',
-      type: FieldType.TEXT,
-      required: true,
-      label: {
-        defaultMessage: 'Reason for late registration',
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.event.field.reason.label'
-      },
+      id: 'eventDetails.mannerOfDeath',
+      type: FieldType.NUMBER,
       conditionals: [
         {
-          type: ConditionalType.SHOW,
-          conditional: and(
-            not(
-              field('eventDetails.date')
-                .isAfter()
-                .days(applicationConfig.DEATH.REGISTRATION_TARGET)
-                .inPast()
-            ),
-            field('eventDetails.date').isBefore().now()
-          )
+          type: ConditionalType.ENABLE,
+          conditional: never()
         }
-      ]
-    },
-    {
-      id: 'eventDetails.mannerOfDeath',
-      type: FieldType.SELECT,
+      ],
+      defaultValue: 0,
       required: false,
       label: {
-        defaultMessage: 'Manner of death',
+        defaultMessage: 'Manner of death default for Iris ICD10',
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.event.field.manner.label'
-      },
-      options: mannerDeathTypeOptions
-    },
-    {
-      id: 'eventDetails.causeOfDeathEstablished',
-      type: FieldType.CHECKBOX,
-      label: {
-        defaultMessage: 'Cause of death has been established',
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.event.field.causeOfDeath.label'
       }
     },
-    {
-      id: 'eventDetails.sourceCauseDeath',
-      type: FieldType.SELECT,
-      required: true,
-      label: {
-        defaultMessage: 'Source of cause of death',
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.event.field.sourceCauseDeath.label'
-      },
-      options: sourceCauseDeathOptions,
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field('eventDetails.causeOfDeathEstablished').isEqualTo(
-            true
-          )
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.description',
-      type: FieldType.TEXTAREA,
-      required: true,
-      label: {
-        defaultMessage: 'Description',
-        description:
-          'Description of cause of death by lay person or verbal autopsy',
-        id: 'event.death.action.declare.form.section.event.field.description.label'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: and(
-            or(
-              field('eventDetails.sourceCauseDeath').isEqualTo(
-                SourceCauseDeathType.LAY_REPORTED
-              ),
-              field('eventDetails.sourceCauseDeath').isEqualTo(
-                SourceCauseDeathType.VERBAL_AUTOPSY
-              )
-            ),
-            field('eventDetails.causeOfDeathEstablished').isEqualTo(true)
-          )
-        }
-      ]
-    },
+    //
     {
       id: 'eventDetails.divider1',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     {
-      id: 'eventDetails.addressHelper',
+      id: 'eventDetails.immediateCauseOfDeath',
       type: FieldType.PARAGRAPH,
       label: {
-        defaultMessage: 'Place of death',
+        defaultMessage: 'Immediate cause of death',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.event.field.addressHelper.label'
+        id: 'eventDetails.immediateCauseOfDeath'
       },
       configuration: { styles: { fontVariant: 'h3' } }
     },
+    {
+      id: 'eventDetails.otherImmediateCauseOfDeath',
+      type: FieldType.TEXT,
+      required: false,
+      label: {
+        defaultMessage: 'Other immediate cause of death',
+        description: 'This is the label for the field',
+        id: 'eventDetails.otherImmediateCauseOfDeath'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: not(
+            field(`eventDetails.immediateCauseOfDeath`).isEqualTo('OTHER')
+          )
+        }
+      ]
+    },
+    {
+      id: 'eventDetails.immediateCauseOfDeathInterval',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Interval',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.immediateCauseOfDeathInterval'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+
+    //
     {
       id: 'eventDetails.divider2',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     {
-      id: 'eventDetails.placeOfDeath',
-      type: FieldType.SELECT,
-      required: true,
-      secured: true,
+      id: 'eventDetails.antecedentCause1',
+      type: FieldType.PARAGRAPH,
       label: {
-        defaultMessage: 'Place of death',
+        defaultMessage: 'Due to (Antecedent cause 1)',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.placeOfDeath.label'
+        id: 'spcCodingGroup.antecedentCause1'
       },
-      options: placeOfDeathOptions
+      configuration: { styles: { fontVariant: 'h3' } }
     },
     {
-      id: 'eventDetails.deathLocation',
-      type: FieldType.FACILITY,
-      required: true,
-      secured: true,
+      id: 'eventDetails.otherAntecedentCause1',
+      type: FieldType.TEXT,
+      required: false,
       label: {
-        defaultMessage: 'Health Institution',
+        defaultMessage: 'Other antecedent cause 1',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.deathLocation.label'
+        id: 'eventDetails.otherAntecedentCause1'
       },
       conditionals: [
         {
           type: ConditionalType.SHOW,
-          conditional: field('eventDetails.placeOfDeath').isEqualTo(
-            PlaceOfDeath.HEALTH_FACILITY
+          conditional: not(
+            field(`eventDetails.antecedentCause1`).isEqualTo('OTHER')
           )
         }
       ]
     },
     {
-      id: 'eventDetails.deathLocationOther',
-      type: FieldType.ADDRESS,
-      hideLabel: true,
-      secured: true,
+      id: 'eventDetails.otherAntecedentCause1Interval',
+      type: FieldType.PARAGRAPH,
       label: {
-        defaultMessage: 'Death location address',
+        defaultMessage: 'Interval',
         description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.deathLocationOther.label'
+        id: 'spcCodingGroup.otherAntecedentCause1Interval'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+
+    //
+    {
+      id: 'eventDetails.divider3',
+      type: FieldType.DIVIDER,
+      label: emptyMessage
+    },
+    {
+      id: 'eventDetails.antecedentCause2',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Due to (Antecedent cause 2)',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.antecedentCause2'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause2',
+      type: FieldType.TEXT,
+      required: false,
+      label: {
+        defaultMessage: 'Other antecedent cause 2',
+        description: 'This is the label for the field',
+        id: 'eventDetails.otherAntecedentCause2'
       },
       conditionals: [
         {
           type: ConditionalType.SHOW,
-          conditional: field('eventDetails.placeOfDeath').isEqualTo(
-            PlaceOfDeath.OTHER
+          conditional: not(
+            field(`eventDetails.antecedentCause2`).isEqualTo('OTHER')
           )
         }
-      ],
-      validation: [
-        {
-          message: {
-            defaultMessage: 'Invalid input',
-            description: 'Error message when generic field is invalid',
-            id: 'error.invalidInput'
-          },
-          validator: field(
-            'eventDetails.deathLocationOther'
-          ).isValidAdministrativeLeafLevel()
-        },
-        ...getNestedFieldValidators(
-          'eventDetails.deathLocationOther',
-          defaultStreetAddressConfiguration
-        )
-      ],
-      defaultValue: {
-        country: 'FAR',
-        addressType: AddressType.DOMESTIC,
-        administrativeArea: user('primaryOfficeId').locationLevel('district')
+      ]
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause2Interval',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Interval',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.otherAntecedentCause2Interval'
       },
-      configuration: {
-        streetAddressForm: defaultStreetAddressConfiguration
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+    {
+      id: 'eventDetails.divider4',
+      type: FieldType.DIVIDER,
+      label: emptyMessage
+    },
+    {
+      id: 'eventDetails.antecedentCause3',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Due to (Antecedent cause 3)',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.antecedentCause3'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause3',
+      type: FieldType.TEXT,
+      required: false,
+      label: {
+        defaultMessage: 'Other antecedent cause 3',
+        description: 'This is the label for the field',
+        id: 'eventDetails.otherAntecedentCause3'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: not(
+            field(`eventDetails.antecedentCause3`).isEqualTo('OTHER')
+          )
+        }
+      ]
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause3Interval',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Interval',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.otherAntecedentCause3Interval'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+    {
+      id: 'eventDetails.divider5',
+      type: FieldType.DIVIDER,
+      label: emptyMessage
+    },
+    {
+      id: 'eventDetails.antecedentCause4',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Due to (Antecedent cause 4)',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.antecedentCause4'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause4',
+      type: FieldType.TEXT,
+      required: false,
+      label: {
+        defaultMessage: 'Other antecedent cause 4',
+        description: 'This is the label for the field',
+        id: 'eventDetails.otherAntecedentCause4'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: not(
+            field(`eventDetails.antecedentCause4`).isEqualTo('OTHER')
+          )
+        }
+      ]
+    },
+    {
+      id: 'eventDetails.otherAntecedentCause4Interval',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Interval',
+        description: 'This is the label for the field',
+        id: 'spcCodingGroup.otherAntecedentCause4Interval'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
+    },
+
+    //
+    {
+      id: 'eventDetails.comments',
+      type: FieldType.TEXTAREA,
+      required: false,
+      label: {
+        defaultMessage: 'Comments',
+        description:
+          'Description of cause of death by lay person or verbal autopsy',
+        id: 'spcCodingGroup.comments'
       }
     }
   ]

@@ -126,33 +126,6 @@ export const Workqueues = defineWorkqueues([
     }
   },
   {
-    slug: 'requires-completion',
-    icon: 'File',
-    name: {
-      id: 'workqueues.notifications.title',
-      defaultMessage: 'Notifications',
-      description: 'Title of notifications workqueue'
-    },
-    query: {
-      flags: {
-        anyOf: [InherentFlags.INCOMPLETE],
-        noneOf: [InherentFlags.REJECTED]
-      },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
-    },
-    actions: [
-      {
-        type: 'DEFAULT',
-        conditionals: []
-      }
-    ],
-    emptyMessage: {
-      id: 'workqueues.notifications.emptyMessage',
-      defaultMessage: 'No notifications',
-      description: 'Empty message for notifications workqueue'
-    }
-  },
-  {
     slug: 'sent-for-review',
     icon: 'FileSearch',
     name: {
@@ -188,7 +161,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileSearch',
     name: {
       id: 'workqueues.inReview.title',
-      defaultMessage: 'Ready for review',
+      defaultMessage: 'Ready for coding',
       description: 'Title of ready for review workqueue'
     },
     query: {
@@ -221,7 +194,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileSearch',
     name: {
       id: 'workqueues.inReviewAll.title',
-      defaultMessage: 'Ready for review',
+      defaultMessage: 'Ready for coding',
       description: 'Title of ready for review (all) workqueue'
     },
     query: {
@@ -333,7 +306,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileText',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Sent for approval',
+      defaultMessage: 'Sent for coding',
       description: 'Title of sent for approval workqueue'
     },
     query: {
@@ -362,63 +335,6 @@ export const Workqueues = defineWorkqueues([
           defaultMessage: 'Sent for approval',
           description: 'This is the label for the workqueue column',
           id: 'workqueue.sent-for-approval.column.sent-for-approval'
-        },
-        value: event.field('updatedAt')
-      }
-    ]
-  },
-  {
-    slug: 'in-external-validation',
-    icon: 'FileText',
-    name: {
-      id: 'workqueues.inExternalValidation.title',
-      defaultMessage: 'In external validation',
-      description: 'Title of in external validation workqueue'
-    },
-    query: {
-      flags: {
-        anyOf: [
-          `${ActionType.REGISTER}:${ActionStatus.Requested}`.toLowerCase()
-        ]
-      },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
-    },
-    actions: [
-      {
-        type: 'DEFAULT',
-        conditionals: []
-      }
-    ]
-  },
-  {
-    slug: 'ready-to-print',
-    icon: 'Printer',
-    name: {
-      id: 'workqueues.readyToPrint.title',
-      defaultMessage: 'Ready to print',
-      description: 'Title of ready to print workqueue'
-    },
-    query: {
-      flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: [InherentFlags.PENDING_CERTIFICATION]
-      },
-      status: { type: 'exact', term: 'REGISTERED' },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
-    },
-    actions: [
-      {
-        type: 'PRINT_CERTIFICATE',
-        conditionals: []
-      }
-    ],
-    columns: [
-      DATE_OF_EVENT_COLUMN,
-      {
-        label: {
-          defaultMessage: 'Registered',
-          description: 'This is the label for the workqueue column',
-          id: 'workqueue.ready-to-print.column.registered'
         },
         value: event.field('updatedAt')
       }

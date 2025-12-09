@@ -19,9 +19,7 @@ import {
   PageTypes
 } from '@opencrvs/toolkit/events'
 import { applicationConfig } from '@countryconfig/api/application/application-config'
-import { printCertificateCollectors } from './collectors'
 import { printCertificateCollectorOther } from './collector-other'
-import { printCertificateCollectorIdentityVerify } from './collector-identity-verify'
 
 import { CollectorType } from './collector-other'
 export const DEATH_CERTIFICATE_COLLECTOR_FORM = defineActionForm({
@@ -39,7 +37,7 @@ export const DEATH_CERTIFICATE_COLLECTOR_FORM = defineActionForm({
         defaultMessage: 'Certify record',
         description: 'This is the title of the section'
       },
-      fields: [...printCertificateCollectors, ...printCertificateCollectorOther]
+      fields: [...printCertificateCollectorOther]
     },
     {
       id: 'collector.identity.verify',
@@ -55,7 +53,7 @@ export const DEATH_CERTIFICATE_COLLECTOR_FORM = defineActionForm({
         ),
         not(field('collector.requesterId').isEqualTo('PRINT_IN_ADVANCE'))
       ),
-      fields: printCertificateCollectorIdentityVerify,
+      fields: [],
       actions: {
         verify: {
           label: {

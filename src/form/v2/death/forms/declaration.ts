@@ -11,17 +11,13 @@
 
 import { defineDeclarationForm, FieldType } from '@opencrvs/toolkit/events'
 import { deceased } from './pages/deceased'
-import { informant } from './pages/informant'
-import { deathIntroduction } from './pages/introduction'
-import { documents } from './pages/documents'
-import { spouse } from './pages/spouse'
+import { irisOutput } from './pages/irisOutput'
 import { eventDetails } from './pages/eventDetails'
 
 export const DEATH_DECLARATION_REVIEW = {
   title: {
     id: 'event.death.action.declare.form.review.title',
-    defaultMessage:
-      '{deceased.name.firstname, select, __EMPTY__ {Death declaration} other {{deceased.name.surname, select, __EMPTY__ {Death declaration for {deceased.name.firstname}} other {Death declaration for {deceased.name.firstname} {deceased.name.surname}}}}}',
+    defaultMessage: 'Death coding for {deceased.certificateKey}',
     description: 'Title of the form to show in review page'
   },
   fields: [
@@ -33,39 +29,17 @@ export const DEATH_DECLARATION_REVIEW = {
         id: 'event.death.action.declare.form.review.comment.label',
         description: 'Label for the comment field in the review section'
       },
-      required: true
-    },
-    {
-      type: FieldType.SIGNATURE,
-      id: 'review.signature',
-      required: true,
-      label: {
-        defaultMessage: 'Signature of informant',
-        id: 'event.death.action.declare.form.review.signature.label',
-        description: 'Label for the signature field in the review section'
-      },
-      signaturePromptLabel: {
-        id: 'signature.upload.modal.title',
-        defaultMessage: 'Draw signature',
-        description: 'Title for the modal to draw signature'
-      }
+      required: false
     }
   ]
 }
 
 export const DEATH_DECLARATION_FORM = defineDeclarationForm({
   label: {
-    defaultMessage: 'Death declaration form',
+    defaultMessage: 'Death coding form',
     id: 'event.death.action.declare.form.label',
     description: 'This is what this form is referred as in the system'
   },
 
-  pages: [
-    deathIntroduction,
-    deceased,
-    eventDetails,
-    informant,
-    spouse,
-    documents
-  ]
+  pages: [deceased, eventDetails, irisOutput]
 })
