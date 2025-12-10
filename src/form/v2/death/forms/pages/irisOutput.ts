@@ -12,8 +12,8 @@
 import {
   defineFormPage,
   FieldType,
-  event,
-  ActionType
+  ConditionalType,
+  never
 } from '@opencrvs/toolkit/events'
 
 export const irisOutput = defineFormPage({
@@ -26,44 +26,57 @@ export const irisOutput = defineFormPage({
   // conditional: event.hasAction(ActionType.REGISTER), I assume this will hide the page unless the event is being registered
   fields: [
     {
-      id: 'irisOutput.data',
-      type: FieldType.DATA,
+      id: 'irisOutput.ucCode',
+      type: FieldType.TEXT,
+      conditionals: [
+        {
+          type: ConditionalType.ENABLE,
+          conditional: never()
+        }
+      ],
+      required: false,
+      defaultValue: 'Default',
       analytics: true,
       label: {
-        defaultMessage: 'Iris Output',
-        description: 'Form section title for iris output',
-        id: 'spcCodingGroup.irisOutput.title'
-      },
-      configuration: {
-        data: [
-          {
-            id: 'ucCode',
-            label: {
-              defaultMessage: 'UC Code',
-              description: 'Form section title for uc code',
-              id: 'spcCodingGroup.ucCode.title'
-            },
-            value: 'Default'
-          },
-          {
-            id: 'selectedCodes',
-            label: {
-              defaultMessage: 'Selected Codes',
-              description: 'Form section title for selectedCodes',
-              id: 'spcCodingGroup.selectedCodes.title'
-            },
-            value: 'Default'
-          },
-          {
-            id: 'multipleCodes',
-            label: {
-              defaultMessage: 'Multiple Codes',
-              description: 'Form section title for multipleCodes',
-              id: 'spcCodingGroup.multipleCodes.title'
-            },
-            value: 'Default'
-          }
-        ]
+        defaultMessage: 'UC Code',
+        description: 'Form section title for uc code',
+        id: 'spcCodingGroup.ucCode.title'
+      }
+    },
+    {
+      id: 'irisOutput.selectedCodes',
+      type: FieldType.TEXT,
+      conditionals: [
+        {
+          type: ConditionalType.ENABLE,
+          conditional: never()
+        }
+      ],
+      required: false,
+      defaultValue: 'Default',
+      analytics: true,
+      label: {
+        defaultMessage: 'Selected Codes',
+        description: 'Form section title for selectedCodes',
+        id: 'spcCodingGroup.selectedCodes.title'
+      }
+    },
+    {
+      id: 'irisOutput.multipleCodes',
+      type: FieldType.TEXT,
+      conditionals: [
+        {
+          type: ConditionalType.ENABLE,
+          conditional: never()
+        }
+      ],
+      required: false,
+      defaultValue: 'Default',
+      analytics: true,
+      label: {
+        defaultMessage: 'Multiple Codes',
+        description: 'Form section title for multipleCodes',
+        id: 'spcCodingGroup.multipleCodes.title'
       }
     },
     {

@@ -23,11 +23,11 @@ export const deathEvent = defineConfig({
   id: Event.Death,
   declaration: DEATH_DECLARATION_FORM,
   label: {
-    defaultMessage: 'Death coding',
+    defaultMessage: 'Medical Certificate of Cause of Death',
     description: 'This is what this event is referred as in the system',
     id: 'event.death.label'
   },
-  dateOfEvent: field('eventDetails.date'),
+  dateOfEvent: field('deceased.eventDate'),
   title: {
     defaultMessage: '{deceased.country}: {deceased.certificateKey}',
     description: 'This is the title of the summary',
@@ -42,12 +42,12 @@ export const deathEvent = defineConfig({
   summary: {
     fields: [
       {
-        fieldId: 'eventDetails.date',
+        fieldId: 'deceased.eventDate',
         emptyValueMessage: {
           defaultMessage: 'No date of death',
           description:
             'This is shown when there is no date of death information',
-          id: 'event.death.summary.eventDetails.date.empty'
+          id: 'event.death.summary.deceased.eventDate.empty'
         }
       },
       {

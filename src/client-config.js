@@ -33,20 +33,20 @@
     SENTRY: '',
     DASHBOARDS: [
       {
-        id: 'registrations',
+        id: 'export',
         title: {
-          id: 'dashboard.registrationsTitle',
-          defaultMessage: 'Registrations Dashboard',
-          description: 'Menu item for registrations dashboard'
+          id: 'dashboard.exportTitle',
+          defaultMessage: 'Export',
+          description: 'Menu item for export dashboard'
         },
-        url: `http://localhost:4444/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300` // Filled in below
+        url: `http://localhost:4444/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
       },
       {
-        id: 'completeness',
+        id: 'statistics',
         title: {
-          id: 'dashboard.completenessTitle',
-          defaultMessage: 'Completeness Dashboard',
-          description: 'Menu item for completeness dashboard'
+          id: 'dashboard.statisticsTitle',
+          defaultMessage: 'Statistics',
+          description: 'Menu item for statistics dashboard'
         },
         url: `http://localhost:4444/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
       }

@@ -15,7 +15,7 @@ const deceasedIdMatchesIfGiven = or(
 )
 
 const deceasedDateOfDeathWithin5Days = field(
-  'eventDetails.date'
+  'deceased.eventDate'
 ).dateRangeMatches({
   days: 5
 })
