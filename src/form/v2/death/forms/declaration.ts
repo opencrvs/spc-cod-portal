@@ -9,7 +9,13 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import { defineDeclarationForm, FieldType } from '@opencrvs/toolkit/events'
+import {
+  defineDeclarationForm,
+  FieldType,
+  ConditionalType,
+  not,
+  field
+} from '@opencrvs/toolkit/events'
 import { deceased } from './pages/deceased'
 import { irisOutput } from './pages/irisOutput'
 import { eventDetails } from './pages/eventDetails'

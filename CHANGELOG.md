@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.2
+
+### New features
+
+- Certificate templates now support multi-page SVGs using <g data-page="X">...</g>, allowing implementors to configure and render multi-page certificates.
+- Birth certificate PDF export now omits header, footer, and QR code; example SVG updated for security-paper templates.
+
 ## 1.9.1
 
 ### Breaking changes
@@ -73,6 +80,7 @@
 ### Bug fixes
 
 - Remove special characters from role ids on generation [#10049](https://github.com/opencrvs/opencrvs-core/issues/10049)
+
 
 ## 1.7.3
 
