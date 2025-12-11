@@ -15,11 +15,11 @@ import {
   ConditionalType,
   FieldType,
   PageTypes,
-  field
+  field,
+  or
 } from '@opencrvs/toolkit/events'
-import { not, never } from '@opencrvs/toolkit/conditionals'
 
-import { createSelectOptions } from '@countryconfig/form/v2/utils'
+import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
 
 const GenderTypes = {
   MALE: 'male',
@@ -430,7 +430,7 @@ export const deceased = defineFormPage({
     {
       id: 'deceased.dob',
       type: FieldType.DATE,
-      required: true,
+      required: false,
       analytics: true,
       validation: [
         {
@@ -450,63 +450,28 @@ export const deceased = defineFormPage({
           },
           validator: field('deceased.dob')
             .isBefore()
-            .date(field('eventDetails.date'))
+            .date(field('deceased.eventDate'))
         }
       ],
       label: {
         defaultMessage: 'Date of birth',
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.deceased.field.dob.label'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: not(field(`deceased.dobUnknown`).isEqualTo(true))
-        }
-      ]
+      }
     },
     {
-      id: `deceased.dobUnknown`,
-      type: FieldType.CHECKBOX,
-      label: {
-        defaultMessage: 'Exact date of birth unknown',
-        description: 'This is the label for the field',
-        id: `v2.event.death.action.declare.form.section.deceased.field.age.checkbox.label`
-      },
-      conditionals: [
-        {
-          type: ConditionalType.DISPLAY_ON_REVIEW,
-          conditional: never()
-        }
-      ]
-    },
-    {
-      id: `deceased.age`,
-      type: FieldType.AGE,
-      required: true,
+      id: `deceased.deceasedAge`,
+      type: FieldType.NUMBER,
+      required: false,
       analytics: true,
       label: {
-        defaultMessage: `Age of deceased`,
+        defaultMessage: `Age`,
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.deceased.field.age.label'
       },
-      configuration: {
-        asOfDate: field('eventDetails.date'),
-        postfix: {
-          defaultMessage: 'years',
-          description: 'This is the postfix for age field',
-          id: `v2.event.death.action.declare.form.section.deceased.field.age.postfix`
-        }
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`deceased.dobUnknown`).isEqualTo(true)
-        }
-      ],
       validation: [
         {
-          validator: field('deceased.age').asAge().isBetween(0, 120),
+          validator: field('deceased.deceasedAge').isBetween(0, 120),
           message: {
             defaultMessage: 'Age must be between 0 and 120',
             description: 'Error message for invalid age',
@@ -514,6 +479,39 @@ export const deceased = defineFormPage({
           }
         }
       ]
+    },
+    {
+      id: 'deceased.eventDate',
+      type: FieldType.DATE,
+      required: true,
+      analytics: true,
+      validation: [
+        {
+          message: {
+            defaultMessage: 'Must be a valid date',
+            description: 'This is the error message for invalid date',
+            id: 'event.death.action.declare.form.section.event.field.date.error'
+          },
+          validator: field('deceased.eventDate').isBefore().now()
+        },
+        {
+          message: {
+            defaultMessage:
+              "Date of death must be after the deceased's birth date",
+            description:
+              'This is the error message for date of death before date of birth',
+            id: 'event.death.action.declare.form.section.event.field.date.error.beforeBirth'
+          },
+          validator: or(
+            field('deceased.eventDate').isAfter().date(field('deceased.dob'))
+          )
+        }
+      ],
+      label: {
+        defaultMessage: 'Date of death',
+        description: 'This is the label for the field',
+        id: 'event.death.action.declare.form.section.event.field.date.label'
+      }
     },
     {
       id: 'deceased.gender',
@@ -526,6 +524,23 @@ export const deceased = defineFormPage({
         id: 'event.death.action.declare.form.section.deceased.field.gender.label'
       },
       options: genderOptions
+    },
+
+    {
+      id: 'deceased.divider1',
+      type: FieldType.DIVIDER,
+      label: emptyMessage
+    },
+
+    {
+      id: 'eventDetails.immediateCauseOfDeath',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Place of death',
+        description: 'This is the label for the field',
+        id: 'event.death.action.declare.form.section.event.field.addressHelper.label'
+      },
+      configuration: { styles: { fontVariant: 'h3' } }
     },
     {
       id: `deceased.country`,

@@ -303,13 +303,13 @@ const RequestDeathDeclarationAction = {
   createdByRole: 'LOCAL_REGISTRAR',
   createdAtLocation: '9e069dda-0d83-4f67-a4f2-9adbf5658e2e' as unknown as UUID,
   declaration: {
-    'spouse.age': { age: 41, asOfDateRef: 'eventDetails.date' },
+    'spouse.age': { age: 41, asOfDateRef: 'deceased.eventDate' },
     'spouse.name': {
       firstname: 'Toki',
       surname: 'Kozuki',
       middlename: ''
     },
-    'deceased.age': { age: 31, asOfDateRef: 'eventDetails.date' },
+    'deceased.age': { age: 31, asOfDateRef: 'deceased.eventDate' },
     'deceased.name': {
       firstname: 'Oden',
       surname: 'Kozuki',
@@ -326,7 +326,7 @@ const RequestDeathDeclarationAction = {
       addressType: 'DOMESTIC',
       administrativeArea: 'afaead2b-7ef5-4adb-b4bf-3d2b8437c284'
     },
-    'eventDetails.date': '2025-08-19',
+    'deceased.eventDate': '2025-08-19',
     'spouse.dobUnknown': true,
     'informant.relation': 'SPOUSE',
     'spouse.nationality': 'FAR',
@@ -357,13 +357,13 @@ const DeathDeclarationAction = {
   createdByRole: 'LOCAL_REGISTRAR',
   createdAtLocation: '9e069dda-0d83-4f67-a4f2-9adbf5658e2e' as unknown as UUID,
   declaration: {
-    'spouse.age': { age: 41, asOfDateRef: 'eventDetails.date' },
+    'spouse.age': { age: 41, asOfDateRef: 'deceased.eventDate' },
     'spouse.name': {
       firstname: 'Toki',
       surname: 'Kozuki',
       middlename: ''
     },
-    'deceased.age': { age: 31, asOfDateRef: 'eventDetails.date' },
+    'deceased.age': { age: 31, asOfDateRef: 'deceased.eventDate' },
     'deceased.name': {
       firstname: 'Oden',
       surname: 'Kozuki',
@@ -380,7 +380,7 @@ const DeathDeclarationAction = {
       addressType: 'DOMESTIC',
       administrativeArea: 'afaead2b-7ef5-4adb-b4bf-3d2b8437c284'
     },
-    'eventDetails.date': '2025-08-19',
+    'deceased.eventDate': '2025-08-19',
     'spouse.dobUnknown': true,
     'informant.relation': 'SPOUSE',
     'spouse.nationality': 'FAR',

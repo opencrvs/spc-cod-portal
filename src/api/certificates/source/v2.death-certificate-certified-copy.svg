@@ -117,7 +117,7 @@
   <g clip-path="url(#clip5_948_2918)">
     <text fill="#222222" xml:space="preserve" style="white-space: pre" font-family="Noto Sans" font-size="8" letter-spacing="0px">
       <tspan x="312" y="274.104">
-        <tspan x="312" y="273.604">{{$lookup $declaration "eventDetails.date"}}</tspan>
+        <tspan x="312" y="273.604">{{$lookup $declaration "deceased.eventDate"}}</tspan>
       </tspan>
     </text>
   </g>
