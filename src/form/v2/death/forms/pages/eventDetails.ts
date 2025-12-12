@@ -131,12 +131,12 @@ export const eventDetails = defineFormPage({
       ]
     },
     {
-      id: 'eventDetails.otherAntecedentCause1Interval',
+      id: 'eventDetails.antecedentCauseInterval1',
       type: FieldType.NUMBER,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
-        id: 'spcCodingGroup.otherAntecedentCause1Interval'
+        id: 'spcCodingGroup.antecedentCauseInterval1'
       },
       required: false,
       analytics: true
@@ -178,12 +178,12 @@ export const eventDetails = defineFormPage({
       ]
     },
     {
-      id: 'eventDetails.otherAntecedentCause2Interval',
+      id: 'eventDetails.antecedentCauseInterval2',
       type: FieldType.NUMBER,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
-        id: 'spcCodingGroup.otherAntecedentCause2Interval'
+        id: 'spcCodingGroup.antecedentCauseInterval2'
       },
       required: false,
       analytics: true
@@ -221,12 +221,12 @@ export const eventDetails = defineFormPage({
       ]
     },
     {
-      id: 'eventDetails.otherAntecedentCause3Interval',
+      id: 'eventDetails.antecedentCauseInterval3',
       type: FieldType.NUMBER,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
-        id: 'spcCodingGroup.otherAntecedentCause3Interval'
+        id: 'spcCodingGroup.antecedentCauseInterval3'
       },
       required: false,
       analytics: true
@@ -266,14 +266,14 @@ export const eventDetails = defineFormPage({
       ]
     },
     {
-      id: 'eventDetails.otherAntecedentCause4Interval',
+      id: 'eventDetails.antecedentCauseInterval4',
       type: FieldType.NUMBER,
       required: false,
       analytics: true,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
-        id: 'spcCodingGroup.otherAntecedentCause4Interval'
+        id: 'spcCodingGroup.antecedentCauseInterval4'
       }
     },
     {
@@ -293,14 +293,14 @@ export const eventDetails = defineFormPage({
       }
     },
     {
-      id: 'eventDetails.otherSignificantConditionInterval',
+      id: 'eventDetails.significantConditionInterval',
       type: FieldType.NUMBER,
       required: false,
       analytics: true,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
-        id: 'spcCodingGroup.otherSignificantConditionInterval'
+        id: 'spcCodingGroup.significantConditionInterval'
       }
     },
     {
