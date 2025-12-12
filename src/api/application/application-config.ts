@@ -1,4 +1,6 @@
 import { countryLogo } from '@countryconfig/api/application/country-logo'
+import * as fs from 'fs'
+import { join } from 'path'
 
 export const applicationConfig = {
   APPLICATION_NAME: 'SPC Regional Coding Group',
@@ -39,7 +41,10 @@ export const applicationConfig = {
   PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',
   NID_NUMBER_PATTERN: '^[0-9]{10}$',
   LOGIN_BACKGROUND: {
-    backgroundColor: '36304E'
+    backgroundImage: `data:image/jpg;base64,${fs
+      .readFileSync(join(__dirname, 'ocean.jpg'))
+      .toString('base64')}`,
+    imageFit: 'FILL'
   },
   MARRIAGE: {
     REGISTRATION_TARGET: 45,
