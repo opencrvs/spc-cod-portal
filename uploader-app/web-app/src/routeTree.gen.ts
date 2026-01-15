@@ -12,10 +12,17 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as TokenExpiredImport } from './routes/tokenExpired'
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute
+} as any)
+
+const TokenExpiredRoute = TokenExpiredImport.update({
+  id: '/tokenExpired',
+  path: '/tokenExpired',
   getParentRoute: () => rootRoute
 } as any)
 
@@ -28,6 +35,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/tokenExpired': {
+      id: '/tokenExpired'
+      path: '/tokenExpired'
+      fullPath: '/tokenExpired'
+      preLoaderRoute: typeof TokenExpiredImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -35,32 +49,37 @@ declare module '@tanstack/react-router' {
 
 interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/tokenExpired': typeof TokenExpiredRoute
 }
 
 interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/tokenExpired': typeof TokenExpiredRoute
 }
 
 interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/tokenExpired': typeof TokenExpiredRoute
 }
 
 interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/tokenExpired'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/tokenExpired'
+  id: '__root__' | '/' | '/tokenExpired'
   fileRoutesById: FileRoutesById
 }
 
 interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TokenExpiredRoute: typeof TokenExpiredRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute
+  IndexRoute: IndexRoute,
+  TokenExpiredRoute: TokenExpiredRoute
 }
 
 export const routeTree = rootRoute
