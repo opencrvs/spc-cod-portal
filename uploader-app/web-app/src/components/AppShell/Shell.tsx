@@ -5,6 +5,9 @@ import {
   Group,
   NavLink,
   Stack,
+  Button,
+  Modal,
+  FileInput,
   Title
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -19,6 +22,7 @@ import { QueryErrorBoundary } from './QueryErrorBoundary'
 export function Shell({ children }: { children: ReactNode }) {
   const [opened, { toggle }] = useDisclosure()
   const { isLoggedIn, role } = useAuth()
+  const [openedModal, { open, close }] = useDisclosure(false)
 
   return (
     <AppShell
@@ -55,18 +59,28 @@ export function Shell({ children }: { children: ReactNode }) {
             />
             {isLoggedIn && (
               <>
-                <NavLink
-                  component={Link}
-                  to="/capture"
-                  label="Capture"
+                <Button
+                  variant="subtle"
+                  onClick={open}
                   style={{ fontWeight: 'bold' }}
-                />
-                <NavLink
-                  component={Link}
-                  to="/view"
-                  label="View Records"
-                  style={{ fontWeight: 'bold' }}
-                />
+                >
+                  Upload
+                </Button>
+                <Modal
+                  opened={openedModal}
+                  onClose={close}
+                  title="Upload Excel File"
+                  centered
+                >
+                  <FileInput
+                    label="Excel file"
+                    placeholder="Choose .xlsx or .xls file"
+                    accept=".xlsx,.xls"
+                    onChange={(file) => {
+                      console.log(file)
+                    }}
+                  />
+                </Modal>
               </>
             )}
           </div>
