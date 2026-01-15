@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as TokenExpiredImport } from './routes/tokenExpired'
 import { Route as LoginImport } from './routes/login'
+import { Route as LogoutImport } from './routes/logout'
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -30,6 +31,12 @@ const TokenExpiredRoute = TokenExpiredImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute
+} as any)
+
+const LogoutRoute = LogoutImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRoute
 } as any)
 
@@ -56,6 +63,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TokenExpiredImport
       parentRoute: typeof rootRoute
     }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -65,12 +79,14 @@ interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
 }
 
 interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
 }
 
 interface FileRoutesById {
@@ -78,25 +94,30 @@ interface FileRoutesById {
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
 }
 
 interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tokenExpired' | '/login'
+  fullPaths: '/' | '/tokenExpired' | '/login' | '/logout'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tokenExpired' | '/login'
-  id: '__root__' | '/' | '/tokenExpired' | '/login'
+  to: '/' | '/tokenExpired' | '/login' | '/logout'
+  id: '__root__' | '/' | '/tokenExpired' | '/login' | '/logout'
   fileRoutesById: FileRoutesById
 }
 
 interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TokenExpiredRoute: typeof TokenExpiredRoute
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TokenExpiredRoute: TokenExpiredRoute
+  TokenExpiredRoute: TokenExpiredRoute,
+  LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute
 }
 
 export const routeTree = rootRoute
