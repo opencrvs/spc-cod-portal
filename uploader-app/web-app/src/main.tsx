@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import ReactDOM from 'react-dom/client'
+import { AuthProvider } from './components/AppShell/AuthProvider'
 
 const queryClient = new QueryClient()
 
@@ -31,8 +32,9 @@ if (!rootElement.innerHTML) {
     <MantineProvider>
       <Notifications />
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <>Uploader app</>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </MantineProvider>
   )

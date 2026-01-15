@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as TokenExpiredImport } from './routes/tokenExpired'
+import { Route as LoginImport } from './routes/login'
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -26,6 +27,12 @@ const TokenExpiredRoute = TokenExpiredImport.update({
   getParentRoute: () => rootRoute
 } as any)
 
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute
+} as any)
+
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
@@ -33,6 +40,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/tokenExpired': {
@@ -50,25 +64,28 @@ declare module '@tanstack/react-router' {
 interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
+  '/login': typeof LoginRoute
 }
 
 interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
+  '/login': typeof LoginRoute
 }
 
 interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/tokenExpired': typeof TokenExpiredRoute
+  '/login': typeof LoginRoute
 }
 
 interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tokenExpired'
+  fullPaths: '/' | '/tokenExpired' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tokenExpired'
-  id: '__root__' | '/' | '/tokenExpired'
+  to: '/' | '/tokenExpired' | '/login'
+  id: '__root__' | '/' | '/tokenExpired' | '/login'
   fileRoutesById: FileRoutesById
 }
 
