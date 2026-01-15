@@ -6,6 +6,10 @@ import { routeTree } from './routeTree.gen'
 import ReactDOM from 'react-dom/client'
 import { AuthProvider } from './components/AppShell/AuthProvider'
 
+import '@mantine/core/styles.css'
+import '@mantine/dates/styles.css'
+import '@mantine/notifications/styles.css'
+
 const queryClient = new QueryClient()
 
 // Set up a Router instance
