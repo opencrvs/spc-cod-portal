@@ -2,6 +2,8 @@ import { Container, Loader, Stack, Title } from '@mantine/core'
 import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAuth } from '../components/AppShell/AuthProvider'
+import { getDecodedToken } from '../services/token'
+import { EXTERNAL_LOGIN_URL_WITH_REDIRECT } from '../util/config'
 
 type LoginSearchProps = {
   token?: string
@@ -22,15 +24,19 @@ function LoginComponent() {
   })
   const navigate = useNavigate()
   const { setToken } = useAuth()
+  const token = search.token
+  const decodedToken = token ? getDecodedToken(token) : null
 
   useEffect(() => {
-    const token = search.token
-    if (token) {
+    if (token && decodedToken?.role === 'CODING_OFFICER') {
       localStorage.setItem('authToken', token)
       setToken(token)
       navigate({ to: '/' })
+    } else {
+      // Only redirect if token is missing or role is wrong
+      window.location.href = EXTERNAL_LOGIN_URL_WITH_REDIRECT
     }
-  }, [search, navigate])
+  }, [navigate, decodedToken, setToken, token])
 
   return (
     <Container>

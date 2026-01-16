@@ -77,6 +77,7 @@ export function Shell({ children }: { children: ReactNode }) {
                     placeholder="Choose .xlsx or .xls file"
                     accept=".xlsx,.xls"
                     onChange={(file) => {
+                      // TODO : Handle file upload
                       console.log(file)
                     }}
                   />

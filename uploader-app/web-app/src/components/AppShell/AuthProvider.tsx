@@ -1,13 +1,6 @@
-import {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect
-} from 'react'
+import { createContext, useContext, ReactNode, useState } from 'react'
 import { Role } from '../../util/types'
-import { DecodedToken, getDecodedToken } from '../../services/token'
-import { EXTERNAL_LOGIN_URL_WITH_REDIRECT } from '../../util/config'
+import { getDecodedToken } from '../../services/token'
 
 interface AuthContextType {
   token: string | null
@@ -38,13 +31,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const role =
     decodedToken?.role === 'CODING_OFFICER' ? 'Regional Coding Officer' : null
-
-  useEffect(() => {
-    if (decodedToken && decodedToken.role !== 'CODING_OFFICER') {
-      performLogout()
-      window.location.href = EXTERNAL_LOGIN_URL_WITH_REDIRECT
-    }
-  }, [decodedToken])
 
   return (
     <AuthContext.Provider
