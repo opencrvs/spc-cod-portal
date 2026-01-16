@@ -9,7 +9,7 @@ type Role = {
 
 export const roles: Role[] = [
   {
-    id: 'MR_OFFICER', // equivalent to LOCAL REGISTRAR
+    id: 'MR_OFFICER', // equivalent to LOCAL_REGISTRAR
     label: {
       defaultMessage: 'Medical Records Officer',
       description: 'Name for user role Medical Records Officer',
@@ -74,7 +74,7 @@ export const roles: Role[] = [
     ]
   },
   {
-    id: 'CODING_OFFICER', // Equivalent to NATIONA_REGISTRAR
+    id: 'CODING_OFFICER', // Equivalent to NATIONAL_REGISTRAR
     label: {
       defaultMessage: 'Regional Coding Officer',
       description: 'Name for user role Regional Coding Officer',
