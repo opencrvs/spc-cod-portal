@@ -8,118 +8,106 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as TokenExpiredRouteImport } from './routes/tokenExpired'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as IndexRouteImport } from './routes/index'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as TokenExpiredImport } from './routes/tokenExpired'
-import { Route as LoginImport } from './routes/login'
-import { Route as LogoutImport } from './routes/logout'
-
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRoute
-} as any)
-
-const TokenExpiredRoute = TokenExpiredImport.update({
+const TokenExpiredRoute = TokenExpiredRouteImport.update({
   id: '/tokenExpired',
   path: '/tokenExpired',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRoute
-} as any)
-
-const LogoutRoute = LogoutImport.update({
+const LogoutRoute = LogoutRouteImport.update({
   id: '/logout',
   path: '/logout',
-  getParentRoute: () => rootRoute
+  getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/tokenExpired': typeof TokenExpiredRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/tokenExpired': typeof TokenExpiredRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/tokenExpired': typeof TokenExpiredRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login' | '/logout' | '/tokenExpired'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/login' | '/logout' | '/tokenExpired'
+  id: '__root__' | '/' | '/login' | '/logout' | '/tokenExpired'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
+  TokenExpiredRoute: typeof TokenExpiredRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
     '/tokenExpired': {
       id: '/tokenExpired'
       path: '/tokenExpired'
       fullPath: '/tokenExpired'
-      preLoaderRoute: typeof TokenExpiredImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof TokenExpiredRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/logout': {
       id: '/logout'
       path: '/logout'
       fullPath: '/logout'
-      preLoaderRoute: typeof LogoutImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-// Create and export the route tree
-
-interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/tokenExpired': typeof TokenExpiredRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-}
-
-interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/tokenExpired': typeof TokenExpiredRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-}
-
-interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/tokenExpired': typeof TokenExpiredRoute
-  '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
-}
-
-interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tokenExpired' | '/login' | '/logout'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tokenExpired' | '/login' | '/logout'
-  id: '__root__' | '/' | '/tokenExpired' | '/login' | '/logout'
-  fileRoutesById: FileRoutesById
-}
-
-interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  TokenExpiredRoute: typeof TokenExpiredRoute
-  LoginRoute: typeof LoginRoute
-  LogoutRoute: typeof LogoutRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TokenExpiredRoute: TokenExpiredRoute,
   LoginRoute: LoginRoute,
-  LogoutRoute: LogoutRoute
+  LogoutRoute: LogoutRoute,
+  TokenExpiredRoute: TokenExpiredRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
