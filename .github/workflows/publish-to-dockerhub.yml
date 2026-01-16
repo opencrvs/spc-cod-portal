@@ -77,6 +77,24 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}:${{ steps.country_config.outputs.version }}
 
+      - name: Build and push uploader app
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: ./uploader-app
+          file: ./uploader-app/web-app/Dockerfile
+          tags: |
+            ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader:${{ steps.country_config.outputs.version }}
+
+      - name: Build and push uploader app api
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: ./uploader-app
+          file: ./uploader-app/api/Dockerfile
+          tags: |
+            ${{ secrets.DOCKERHUB_ACCOUNT}}/uploader-api:${{ steps.country_config.outputs.version }}
+
   merge-manifest:
     needs: [build]
     runs-on: ubuntu-latest
@@ -94,14 +112,14 @@ jobs:
         run: |
           TAG="${{ needs.build.outputs.version_common }}"
           REPO="${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}"
-          
+
           # Create manifest list based on whether ARM build exists
           if [[ "$BUILD_ARM" == "true" ]]; then
             MANIFEST_LIST="$REPO:$TAG-amd64 $REPO:$TAG-arm64"
           else
             MANIFEST_LIST="$REPO:$TAG-amd64"
           fi
-          
+
           echo "[🔁 pushing ] $REPO:$TAG"
           docker manifest create $REPO:$TAG \
              $MANIFEST_LIST
