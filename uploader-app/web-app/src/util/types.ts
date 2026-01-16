@@ -1,1 +1,1 @@
-export type Role = 'Data Entry Clerk' | 'Digitiser'
+export type Role = 'Regional Coding Officer'

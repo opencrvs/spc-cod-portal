@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode'
 
 export interface DecodedToken {
   scope?: string[]
+  role?: string
   exp?: number // Token expiry timestamp
   iat?: number // Token issued-at timestamp
 }

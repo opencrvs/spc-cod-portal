@@ -1,7 +1,13 @@
-import { createContext, useContext, ReactNode, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect
+} from 'react'
 import { Role } from '../../util/types'
 import { DecodedToken, getDecodedToken } from '../../services/token'
-
+import { EXTERNAL_LOGIN_URL_WITH_REDIRECT } from '../../util/config'
 
 interface AuthContextType {
   token: string | null
@@ -12,15 +18,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
-
-const getRoleFromScopes = (token: DecodedToken) => {
-  if (token.scope?.includes('register')) {
-    return 'Digitiser'
-  } else if (token.scope?.includes('validate')) {
-    return 'Data Entry Clerk'
-  }
-  return null
-}
 
 export function clearAuthToken() {
   localStorage.removeItem('authToken')
@@ -37,9 +34,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const isLoggedIn = !!token
-
   const decodedToken = getDecodedToken(token)
-  const role = (decodedToken && getRoleFromScopes(decodedToken)) || null
+
+  const role =
+    decodedToken?.role === 'CODING_OFFICER' ? 'Regional Coding Officer' : null
+
+  useEffect(() => {
+    if (decodedToken && decodedToken.role !== 'CODING_OFFICER') {
+      performLogout()
+      window.location.href = EXTERNAL_LOGIN_URL_WITH_REDIRECT
+    }
+  }, [decodedToken])
 
   return (
     <AuthContext.Provider
