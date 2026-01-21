@@ -1,3 +1,6 @@
+import { createServer } from '../../index'
+import { informantNotificationTestData } from './testData'
+import { ActionType } from '@opencrvs/toolkit/events'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 
 vi.mock('node-fetch', () => {
@@ -41,10 +44,6 @@ vi.mock('nodemailer', () => {
   }
 })
 
-import { createServer } from '../../index'
-
-import { informantNotificationTestData } from './testData'
-
 describe('Informant notification - Email', () => {
   let server: any
 
@@ -68,6 +67,16 @@ describe('Informant notification - Email', () => {
           }
         })
 
+        const emailSkipActions: ActionType[] = [
+          ActionType.DECLARE,
+          ActionType.NOTIFY,
+          ActionType.REJECT
+        ]
+
+        if (emailSkipActions.includes(actionType)) {
+          expect(sendMailMock).toHaveBeenCalledTimes(0)
+          return
+        }
         expect(sendMailMock).toHaveBeenCalledTimes(1)
         expect(sendMailMock.mock.calls[0][0]).toMatchSnapshot()
       })
