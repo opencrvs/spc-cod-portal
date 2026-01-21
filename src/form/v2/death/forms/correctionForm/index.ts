@@ -10,6 +10,7 @@ export const DEATH_CORRECTION_FORM = defineActionForm({
     {
       id: 'details',
       type: PageTypes.enum.FORM,
+      requireCompletionToContinue: true,
       title: {
         id: 'event.death.action.correction.form.section.details.title',
         defaultMessage: 'Correction details',
@@ -68,6 +69,7 @@ export const DEATH_CORRECTION_FORM = defineActionForm({
     {
       id: 'correction-request.additional-details',
       type: PageTypes.enum.FORM,
+      requireCompletionToContinue: true,
       title: {
         id: 'event.tennis-club-membership.action.requestCorrection.form.section.corrector',
         defaultMessage: 'Reason for correction',
