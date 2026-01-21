@@ -54,15 +54,26 @@ vi.mock('nanoid', () => {
   }
 })
 
+const sendMailMock = vi.fn().mockResolvedValue({ messageId: 'mocked-id' })
+vi.mock('nodemailer', () => {
+  return {
+    createTransport: vi.fn(() => ({
+      sendMail: sendMailMock
+    }))
+  }
+})
+
 import fetch from 'node-fetch'
 import { informantNotificationTestData } from './testData'
 import { createServer } from '../../index'
+import { ActionType } from '@opencrvs/toolkit/events'
 
 describe('User notification - sms', () => {
   let server: any
 
   beforeEach(async () => {
     ;(fetch as any).mockClear()
+    sendMailMock.mockClear()
     server = await createServer()
   })
 
@@ -79,6 +90,16 @@ describe('User notification - sms', () => {
             artifacts: { token: 'mock-token' }
           }
         })
+
+        const emailSkipActions: ActionType[] = [
+          ActionType.DECLARE,
+          ActionType.NOTIFY,
+          ActionType.REJECT
+        ]
+        if (emailSkipActions.includes(actionType)) {
+          expect(sendMailMock).toHaveBeenCalledTimes(0)
+          return
+        }
         expect((fetch as any).mock.calls[1][1].body).toMatchSnapshot()
       })
   )
