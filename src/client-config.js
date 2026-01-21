@@ -18,6 +18,7 @@
  *
  */
 ;(function initClientConfig() {
+  // eslint-disable-next-line no-undef
   window.config = {
     API_GATEWAY_URL: 'http://localhost:7070/',
     CONFIG_API_URL: 'http://localhost:2021',
@@ -49,6 +50,18 @@
           description: 'Menu item for statistics dashboard'
         },
         url: `http://localhost:4444/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
+      },
+      {
+        id: 'uploader',
+        title: {
+          id: 'dashboard.uploaderTitle',
+          defaultMessage: 'Uploader',
+          description: 'Menu item for uploader dashboard'
+        },
+        url: `http://localhost:3069/login`,
+        context: {
+          auth: 'query'
+        }
       }
     ],
     FEATURES: {}
