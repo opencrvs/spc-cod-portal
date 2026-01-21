@@ -10,18 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TokenExpiredRouteImport } from './routes/tokenExpired'
-import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TokenExpiredRoute = TokenExpiredRouteImport.update({
   id: '/tokenExpired',
   path: '/tokenExpired',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LogoutRoute = LogoutRouteImport.update({
-  id: '/logout',
-  path: '/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -38,34 +32,30 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
   '/tokenExpired': typeof TokenExpiredRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
   '/tokenExpired': typeof TokenExpiredRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/logout': typeof LogoutRoute
   '/tokenExpired': typeof TokenExpiredRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/logout' | '/tokenExpired'
+  fullPaths: '/' | '/login' | '/tokenExpired'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/logout' | '/tokenExpired'
-  id: '__root__' | '/' | '/login' | '/logout' | '/tokenExpired'
+  to: '/' | '/login' | '/tokenExpired'
+  id: '__root__' | '/' | '/login' | '/tokenExpired'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
-  LogoutRoute: typeof LogoutRoute
   TokenExpiredRoute: typeof TokenExpiredRoute
 }
 
@@ -76,13 +66,6 @@ declare module '@tanstack/react-router' {
       path: '/tokenExpired'
       fullPath: '/tokenExpired'
       preLoaderRoute: typeof TokenExpiredRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/logout': {
-      id: '/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof LogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -105,7 +88,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
-  LogoutRoute: LogoutRoute,
   TokenExpiredRoute: TokenExpiredRoute,
 }
 export const routeTree = rootRouteImport

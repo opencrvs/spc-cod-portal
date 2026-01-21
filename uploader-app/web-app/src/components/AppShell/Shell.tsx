@@ -89,35 +89,7 @@ export function Shell({ children }: { children: ReactNode }) {
             style={{
               borderTop: '2px solid var( --app-shell-border-color)'
             }}
-          >
-            {isLoggedIn ? (
-              <NavLink
-                component={Link}
-                to="/logout"
-                key={'logout'}
-                label={
-                  <Group justify="space-between">
-                    <Stack gap={0}>
-                      <Title order={6} fw="lighter">
-                        {role}
-                      </Title>
-                      <Title order={5}>Logout</Title>
-                    </Stack>
-                    <IconDoor />
-                  </Group>
-                }
-              />
-            ) : (
-              <NavLink
-                href={EXTERNAL_LOGIN_URL_WITH_REDIRECT}
-                key={'login'}
-                label="Login"
-                style={{
-                  fontWeight: 'bold'
-                }}
-              />
-            )}
-          </div>
+          ></div>
         </Stack>
       </AppShell.Navbar>
       <AppShell.Main>
