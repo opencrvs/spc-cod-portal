@@ -8,7 +8,7 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-
+import { defineWindowConfig } from '@opencrvs/toolkit/config'
 /**
  * When running application in slow network condition (reproducible using 3G), the client-config.js might be loaded twice.
  * This results to issues like `Uncaught SyntaxError: "identifier scheme has already been declared at (client-config.js:1:1")`.
@@ -19,7 +19,7 @@
  */
 ;(function initClientConfig() {
   // eslint-disable-next-line no-undef
-  window.config = {
+  window.config = defineWindowConfig({
     API_GATEWAY_URL: 'http://localhost:7070/',
     CONFIG_API_URL: 'http://localhost:2021',
     LOGIN_URL: 'http://localhost:3020',
@@ -60,10 +60,11 @@
         },
         url: `http://localhost:3069/login`,
         context: {
-          auth: 'query'
+          forwardSearchParams: true,
+          params: 'token'
         }
       }
     ],
     FEATURES: {}
-  }
+  })
 })()

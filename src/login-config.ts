@@ -8,9 +8,12 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
+
+import { defineWindowConfig } from '@opencrvs/toolkit/config'
+
 /// <reference path="./window.d.ts" />
 // eslint-disable-next-line no-undef
-window.config = {
+window.config = defineWindowConfig({
   AUTH_API_URL: 'http://localhost:7070/auth/',
   CONFIG_API_URL: 'http://localhost:2021',
   // Country code in uppercase ALPHA-3 format
@@ -19,4 +22,4 @@ window.config = {
   CLIENT_APP_URL: 'http://localhost:3000/',
   COUNTRY_CONFIG_URL: 'http://localhost:3040',
   SENTRY: ''
-}
+})

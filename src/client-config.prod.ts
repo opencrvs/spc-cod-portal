@@ -10,6 +10,8 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
+import { defineWindowConfig } from '@opencrvs/toolkit/config'
+
 /**
  * When running application in slow network condition (reproducible using 3G), the client-config.js might be loaded twice.
  * This results to issues like `Uncaught SyntaxError: "identifier scheme has already been declared at (client-config.js:1:1")`.
@@ -23,7 +25,7 @@
   const hostname = '{{hostname}}' // Replaced dynamically
   const sentry = '{{sentry}}' // Replaced dynamically
 
-  window.config = {
+  window.config = defineWindowConfig({
     API_GATEWAY_URL: `${scheme}//gateway.${hostname}/`,
     CONFIG_API_URL: `${scheme}//config.${hostname}`,
     LOGIN_URL: `${scheme}//login.${hostname}`,
@@ -59,5 +61,5 @@
     // NOTE: This is not valid javascript until replaced during build time.
     // IIFE just reveals it.
     FEATURES: {}
-  }
+  })
 })()

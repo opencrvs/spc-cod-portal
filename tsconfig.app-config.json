@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "target": "ES2019",
     "module": "none",
     "outDir": "build/dist/app-config",
     "skipLibCheck": true,
-    "lib": ["esnext.asynciterable", "es6", "es2017", "es2019", "es2022", "DOM"],
-    "strict": true
+    "lib": ["ES2019", "DOM"],
+    "moduleResolution": "nodenext"
   },
   "include": [
     "src/client-config.ts",
