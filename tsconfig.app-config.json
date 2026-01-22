@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "target": "ES2019",
+    "module": "none",
+    "outDir": "build/dist/app-config",
+    "skipLibCheck": true,
+    "lib": ["esnext.asynciterable", "es6", "es2017", "es2019", "es2022", "DOM"],
+    "strict": true
+  },
+  "include": [
+    "src/client-config.ts",
+    "src/client-config.prod.ts",
+    "src/login-config.ts",
+    "src/login-config.prod.ts",
+    "src/window.d.ts"
+  ]
+}

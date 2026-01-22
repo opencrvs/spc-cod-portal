@@ -312,8 +312,8 @@ export async function createServer() {
     handler: async (request, h) => {
       const file =
         process.env.NODE_ENV === 'production'
-          ? '/client-config.prod.js'
-          : '/client-config.js'
+          ? '../build/dist/app-config/client-config.prod.js'
+          : '../build/dist/app-config/client-config.js'
 
       return h.file(join(__dirname, file))
     },
@@ -330,8 +330,8 @@ export async function createServer() {
     handler: (request, h) => {
       const file =
         process.env.NODE_ENV === 'production'
-          ? '/login-config.prod.js'
-          : '/login-config.js'
+          ? '../build/dist/app-config/login-config.prod.js'
+          : '../build/dist/app-config/login-config.js'
       return h.file(join(__dirname, file))
     },
     options: {

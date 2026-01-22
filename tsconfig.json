@@ -34,6 +34,10 @@
     "scripts",
     "acceptance-tests",
     "src/setupTests.ts",
+    "src/client-config.ts",
+    "src/client-config.prod.ts",
+    "src/login-config.ts",
+    "src/login-config.prod.ts",
     "src/**/*.test.ts"
   ],
   "ts-node": {
