@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,17 +10,16 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import { defineWindowConfig } from '@opencrvs/toolkit/config'
-
-/// <reference path="./window.d.ts" />
-// eslint-disable-next-line no-undef
-window.config = defineWindowConfig({
-  AUTH_API_URL: 'http://localhost:7070/auth/',
-  CONFIG_API_URL: 'http://localhost:2021',
+const scheme = window.location.protocol // "http:" or "https:"
+const hostname = '{{hostname}}' // Replace dynamically if needed
+const sentry = '{{sentry}}' // Replace dynamically if needed
+window.config = {
+  AUTH_API_URL: `${scheme}//gateway.${hostname}/auth/`,
+  CONFIG_API_URL: `${scheme}//config.${hostname}`,
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
   LANGUAGES: 'en,fr',
-  CLIENT_APP_URL: 'http://localhost:3000/',
-  COUNTRY_CONFIG_URL: 'http://localhost:3040',
-  SENTRY: ''
-})
+  CLIENT_APP_URL: `${scheme}//register.${hostname}/`,
+  COUNTRY_CONFIG_URL: `${scheme}//countryconfig.${hostname}`,
+  SENTRY: sentry
+}

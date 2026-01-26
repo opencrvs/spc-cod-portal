@@ -23,9 +23,12 @@
   },
   "include": [
     "src/**/*.ts",
-    "uploader-app/**/*.ts",
     "infrastructure/environments/**/*.ts",
-    "typings"
+    "typings",
+    "src/login-config.prod.js",
+    "src/login-config.js",
+    "src/client-config.prod.js",
+    "src/client-config.js"
   ],
   "exclude": [
     "node_modules",
@@ -34,10 +37,6 @@
     "scripts",
     "acceptance-tests",
     "src/setupTests.ts",
-    "src/client-config.ts",
-    "src/client-config.prod.ts",
-    "src/login-config.ts",
-    "src/login-config.prod.ts",
     "src/**/*.test.ts"
   ],
   "ts-node": {

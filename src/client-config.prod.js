@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,7 +9,7 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { defineWindowConfig } from '@opencrvs/toolkit/config'
+
 /**
  * When running application in slow network condition (reproducible using 3G), the client-config.js might be loaded twice.
  * This results to issues like `Uncaught SyntaxError: "identifier scheme has already been declared at (client-config.js:1:1")`.
@@ -18,20 +19,23 @@ import { defineWindowConfig } from '@opencrvs/toolkit/config'
  *
  */
 ;(function initClientConfig() {
-  // eslint-disable-next-line no-undef
-  window.config = defineWindowConfig({
-    API_GATEWAY_URL: 'http://localhost:7070/',
-    CONFIG_API_URL: 'http://localhost:2021',
-    LOGIN_URL: 'http://localhost:3020',
-    AUTH_URL: 'http://localhost:7070/auth/',
+  const scheme = window.location.protocol // "http:" or "https:"
+  const hostname = '{{hostname}}' // Replaced dynamically
+  const sentry = '{{sentry}}' // Replaced dynamically
+
+  window.config = {
+    API_GATEWAY_URL: `${scheme}//gateway.${hostname}/`,
+    CONFIG_API_URL: `${scheme}//config.${hostname}`,
+    LOGIN_URL: `${scheme}//login.${hostname}`,
+    AUTH_URL: `${scheme}//gateway.${hostname}/auth/`,
+    MINIO_URL: `${scheme}//minio.${hostname}/ocrvs/`,
+    MINIO_BASE_URL: `${scheme}//minio.${hostname}`, // URL without path/bucket information, used for file uploads, v2
     MINIO_BUCKET: 'ocrvs',
-    MINIO_URL: 'http://localhost:3535/ocrvs/',
-    MINIO_BASE_URL: 'http://localhost:3535', // URL without path/bucket information, used for file uploads, v2
-    COUNTRY_CONFIG_URL: 'http://localhost:3040',
+    COUNTRY_CONFIG_URL: `${scheme}//countryconfig.${hostname}`,
     // Country code in uppercase ALPHA-3 format
     COUNTRY: 'FAR',
     LANGUAGES: 'en,fr',
-    SENTRY: '',
+    SENTRY: sentry,
     DASHBOARDS: [
       {
         id: 'export',
@@ -40,7 +44,7 @@ import { defineWindowConfig } from '@opencrvs/toolkit/config'
           defaultMessage: 'Export',
           description: 'Menu item for export dashboard'
         },
-        url: `http://localhost:4444/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
+        url: `${scheme}//metabase.${hostname}/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
       },
       {
         id: 'statistics',
@@ -49,22 +53,11 @@ import { defineWindowConfig } from '@opencrvs/toolkit/config'
           defaultMessage: 'Statistics',
           description: 'Menu item for statistics dashboard'
         },
-        url: `http://localhost:4444/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
-      },
-      {
-        id: 'uploader',
-        title: {
-          id: 'dashboard.uploaderTitle',
-          defaultMessage: 'Uploader',
-          description: 'Menu item for uploader dashboard'
-        },
-        url: `http://localhost:3069/login`,
-        context: {
-          forwardSearchParams: true,
-          params: 'token'
-        }
+        url: `${scheme}//metabase.${hostname}/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
       }
     ],
+    // NOTE: This is not valid javascript until replaced during build time.
+    // IIFE just reveals it.
     FEATURES: {}
-  })
+  }
 })()
