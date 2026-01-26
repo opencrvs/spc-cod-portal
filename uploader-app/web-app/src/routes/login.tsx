@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAuth } from '../components/AppShell/AuthProvider'
 import { getDecodedToken } from '../services/token'
-import { EXTERNAL_LOGIN_URL_WITH_REDIRECT } from '../util/config'
+import { EXTERNAL_LOGIN_URL } from '../util/config'
 
 type LoginSearchProps = {
   token?: string
@@ -34,7 +34,7 @@ function LoginComponent() {
       navigate({ to: '/' })
     } else {
       // Only redirect if token is missing or role is wrong
-      window.location.href = EXTERNAL_LOGIN_URL_WITH_REDIRECT
+      window.location.href = EXTERNAL_LOGIN_URL
     }
   }, [navigate, decodedToken, setToken, token])
 
