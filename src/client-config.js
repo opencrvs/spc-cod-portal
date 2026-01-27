@@ -52,15 +52,15 @@
       },
       {
         id: 'uploader',
+        origin: `http://localhost:3069`,
         title: {
           id: 'dashboard.uploaderTitle',
           defaultMessage: 'Uploader',
-          description: 'Menu item for uploader dashboard'
+          description: 'Menu item for uploader companion app'
         },
         url: `http://localhost:3069/login`,
         context: {
-          forwardSearchParams: true,
-          params: 'token'
+          auth: 'postMessage'
         }
       }
     ],

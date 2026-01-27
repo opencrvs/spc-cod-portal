@@ -1,42 +1,48 @@
 import { Container, Loader, Stack, Title } from '@mantine/core'
-import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAuth } from '../components/AppShell/AuthProvider'
 import { getDecodedToken } from '../services/token'
-import { EXTERNAL_LOGIN_URL } from '../util/config'
-
-type LoginSearchProps = {
-  token?: string
-}
+import { EXTERNAL_CLIENT_URL } from '../util/config'
 
 export const Route = createFileRoute('/login')({
-  component: LoginComponent,
-  validateSearch: (search: Record<string, unknown>): LoginSearchProps => {
-    return {
-      token: search.token as string
-    }
-  }
+  component: LoginComponent
 })
 
 function LoginComponent() {
-  const search = useSearch({
-    from: '/login'
-  })
   const navigate = useNavigate()
   const { setToken } = useAuth()
-  const token = search.token
-  const decodedToken = token ? getDecodedToken(token) : null
 
   useEffect(() => {
-    if (token && decodedToken?.role === 'CODING_OFFICER') {
+    window.parent.postMessage({ type: 'READY' }, EXTERNAL_CLIENT_URL)
+    console.log('READY sent to parent')
+  }, [])
+
+  // Listen for AUTH_TOKEN
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      console.log('event in companion', { event })
+      if (event.data.type !== 'AUTH_TOKEN') {
+        return
+      }
+
+      const token = event.data.token
+      const decoded = getDecodedToken(token)
+
+      if (decoded?.role !== 'CODING_OFFICER') {
+        window.parent.postMessage({ type: 'FORBIDDEN' }, EXTERNAL_CLIENT_URL)
+        return
+      }
+
       localStorage.setItem('authToken', token)
       setToken(token)
       navigate({ to: '/' })
-    } else {
-      // Only redirect if token is missing or role is wrong
-      window.location.href = EXTERNAL_LOGIN_URL
+      console.log('AUTH_TOKEN received and set')
     }
-  }, [navigate, decodedToken, setToken, token])
+
+    window.addEventListener('message', handler)
+    return () => window.removeEventListener('message', handler)
+  }, [navigate, setToken])
 
   return (
     <Container>
