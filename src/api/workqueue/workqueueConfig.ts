@@ -156,31 +156,34 @@ export const Workqueues = defineWorkqueues([
       }
     ]
   },
-
   {
-    slug: 'ready-for-coding', // actually a re-purposed workqueue for ready to print
+    slug: 'in-review',
     icon: 'FileSearch',
     name: {
-      id: 'workqueues.inReview.title',
-      defaultMessage: 'Ready for coding',
-      description: 'Title of ready for review workqueue'
+      id: 'workqueues.sentForApproval.title',
+      defaultMessage: 'Sent for encoding',
+      description: 'Title of sent for approval workqueue'
     },
     query: {
+      status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: [InherentFlags.PENDING_CERTIFICATION]
+        noneOf: [InherentFlags.REJECTED]
       },
-      status: { type: 'exact', term: 'REGISTERED' },
       updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
     },
-    actions: [],
+    actions: [
+      {
+        type: 'DEFAULT',
+        conditionals: []
+      }
+    ],
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
         label: {
-          defaultMessage: 'Registered',
+          defaultMessage: 'Sent for review',
           description: 'This is the label for the workqueue column',
-          id: 'workqueue.ready-to-print.column.registered'
+          id: 'workqueue.in-review.column.sent-for-update'
         },
         value: event.field('updatedAt')
       }
@@ -190,9 +193,9 @@ export const Workqueues = defineWorkqueues([
     slug: 'in-review-all',
     icon: 'FileSearch',
     name: {
-      id: 'workqueues.inReviewAll.title',
-      defaultMessage: 'Ready for coding',
-      description: 'Title of ready for review (all) workqueue'
+      id: 'workqueues.sentForApproval.title',
+      defaultMessage: 'Ready for encoding',
+      description: 'Title of sent for approval workqueue'
     },
     query: {
       type: 'or',
@@ -204,14 +207,12 @@ export const Workqueues = defineWorkqueues([
           },
           flags: {
             noneOf: [InherentFlags.REJECTED]
-          },
-          updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+          }
         },
         {
           flags: {
             anyOf: [InherentFlags.CORRECTION_REQUESTED]
-          },
-          updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+          }
         }
       ]
     },
@@ -303,7 +304,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileText',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Sent for coding',
+      defaultMessage: 'Sent for encoding',
       description: 'Title of sent for approval workqueue'
     },
     query: {
@@ -329,9 +330,43 @@ export const Workqueues = defineWorkqueues([
       DATE_OF_EVENT_COLUMN,
       {
         label: {
-          defaultMessage: 'Sent for approval',
+          defaultMessage: 'Sent for encoding',
           description: 'This is the label for the workqueue column',
           id: 'workqueue.sent-for-approval.column.sent-for-approval'
+        },
+        value: event.field('updatedAt')
+      }
+    ]
+  },
+  {
+    slug: 'encoded',
+    icon: 'FileText',
+    name: {
+      id: 'workqueues.sentForApproval.title',
+      defaultMessage: 'Encoded',
+      description: 'Title of sent for approval workqueue'
+    },
+    query: {
+      flags: {
+        noneOf: [InherentFlags.CORRECTION_REQUESTED],
+        anyOf: [InherentFlags.PENDING_CERTIFICATION]
+      },
+      status: { type: 'exact', term: 'REGISTERED' },
+      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+    },
+    actions: [
+      {
+        type: 'PRINT_CERTIFICATE',
+        conditionals: []
+      }
+    ],
+    columns: [
+      DATE_OF_EVENT_COLUMN,
+      {
+        label: {
+          defaultMessage: 'Registered',
+          description: 'This is the label for the workqueue column',
+          id: 'workqueue.ready-to-print.column.registered'
         },
         value: event.field('updatedAt')
       }
