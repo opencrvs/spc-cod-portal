@@ -317,27 +317,6 @@ export const eventDetails = defineFormPage({
           'Description of cause of death by lay person or verbal autopsy',
         id: 'spcCodingGroup.comments'
       }
-    },
-    {
-      id: 'eventDetails.deathLocationId',
-      type: FieldType.ALPHA_HIDDEN,
-      required: false,
-      label: {
-        defaultMessage: 'Health Institution',
-        description: 'This is the label for the field',
-        id: 'event.birth.action.declare.form.section.child.field.birthLocation.label'
-      },
-      parent: [
-        field('eventDetails.placeOfDeath'),
-        field('eventDetails.deathLocation'),
-        field('eventDetails.deathLocationOther'),
-        field('deceased.address')
-      ],
-      value: [
-        field('eventDetails.deathLocation'),
-        field('eventDetails.deathLocationOther').get('administrativeArea'),
-        field('deceased.address').get('administrativeArea')
-      ]
     }
   ]
 })
