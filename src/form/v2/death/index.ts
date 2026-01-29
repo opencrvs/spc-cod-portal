@@ -186,10 +186,10 @@ export const deathEvent = defineConfig({
       customActionType: 'VALIDATE_DECLARATION',
       icon: 'Stamp',
       label: {
-        defaultMessage: 'Validate declaration',
+        defaultMessage: 'Validate',
         description:
           'This is shown as the action name anywhere the user can trigger the action from',
-        id: 'event.death.custom.action.validate-declaration.label'
+        id: 'event.death.action.validate.label'
       },
       supportingCopy: {
         defaultMessage:
