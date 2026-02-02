@@ -14,14 +14,16 @@ function LoginComponent() {
   const { setToken } = useAuth()
 
   useEffect(() => {
-    window.parent.postMessage({ type: 'READY' }, EXTERNAL_CLIENT_URL)
-    console.log('READY sent to parent')
+    window.parent.postMessage(
+      { type: 'REQUEST_AUTH_TOKEN' },
+      EXTERNAL_CLIENT_URL
+    )
+    console.log('auth token request sent to parent')
   }, [])
 
   // Listen for AUTH_TOKEN
   useEffect(() => {
     const handler = (event: MessageEvent) => {
-      console.log('event in companion', { event })
       if (event.data.type !== 'AUTH_TOKEN') {
         return
       }
@@ -30,14 +32,17 @@ function LoginComponent() {
       const decoded = getDecodedToken(token)
 
       if (decoded?.role !== 'CODING_OFFICER') {
-        window.parent.postMessage({ type: 'FORBIDDEN' }, EXTERNAL_CLIENT_URL)
+        window.parent.postMessage(
+          { type: 'REQUEST_AUTH_TOKEN' },
+          EXTERNAL_CLIENT_URL
+        )
         return
       }
 
       localStorage.setItem('authToken', token)
       setToken(token)
       navigate({ to: '/' })
-      console.log('AUTH_TOKEN received and set')
+      console.log('token received and set')
     }
 
     window.addEventListener('message', handler)
