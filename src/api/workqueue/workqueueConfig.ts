@@ -1,6 +1,4 @@
 import {
-  ActionStatus,
-  ActionType,
   EventStatus,
   InherentFlags,
   defineWorkqueues,
@@ -29,8 +27,7 @@ export const Workqueues = defineWorkqueues([
     query: {},
     actions: [
       {
-        type: 'VALIDATE',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ]
   },
@@ -45,8 +42,7 @@ export const Workqueues = defineWorkqueues([
     query: {},
     actions: [
       {
-        type: 'READ',
-        conditionals: []
+        type: 'READ'
       }
     ]
   },
@@ -93,8 +89,7 @@ export const Workqueues = defineWorkqueues([
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ]
   },
@@ -115,8 +110,7 @@ export const Workqueues = defineWorkqueues([
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ],
     emptyMessage: {
@@ -167,14 +161,13 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [InherentFlags.REJECTED]
+        noneOf: [InherentFlags.CORRECTION_REQUESTED]
       },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ],
     columns: [
@@ -203,9 +196,10 @@ export const Workqueues = defineWorkqueues([
         {
           status: {
             type: 'anyOf',
-            terms: ['DECLARED', 'VALIDATED']
+            terms: ['DECLARED']
           },
           flags: {
+            anyOf: ['validated'],
             noneOf: [InherentFlags.REJECTED]
           }
         },
@@ -218,8 +212,7 @@ export const Workqueues = defineWorkqueues([
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ],
     columns: [
@@ -251,8 +244,7 @@ export const Workqueues = defineWorkqueues([
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ],
     columns: [
@@ -279,12 +271,11 @@ export const Workqueues = defineWorkqueues([
       flags: {
         anyOf: [InherentFlags.REJECTED]
       },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
     actions: [
       {
-        type: 'DEFAULT',
-        conditionals: []
+        type: 'DEFAULT'
       }
     ],
     columns: [
@@ -312,9 +303,9 @@ export const Workqueues = defineWorkqueues([
       clauses: [
         {
           updatedBy: { type: 'exact', term: user('id') },
-          status: { type: 'exact', term: 'VALIDATED' },
           flags: {
-            noneOf: [InherentFlags.REJECTED]
+            noneOf: [InherentFlags.REJECTED],
+            anyOf: ['validated']
           }
         },
         {
@@ -349,15 +340,14 @@ export const Workqueues = defineWorkqueues([
     query: {
       flags: {
         noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: [InherentFlags.PENDING_CERTIFICATION]
+        anyOf: ['pending-first-certificate-issuance']
       },
       status: { type: 'exact', term: 'REGISTERED' },
-      updatedAtLocation: { type: 'exact', term: user('primaryOfficeId') }
+      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
     actions: [
       {
-        type: 'PRINT_CERTIFICATE',
-        conditionals: []
+        type: 'PRINT_CERTIFICATE'
       }
     ],
     columns: [
