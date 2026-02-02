@@ -24,7 +24,8 @@ import {
   or,
   not,
   defineConditional,
-  never
+  never,
+  now
 } from '@opencrvs/toolkit/events'
 import { Event } from './types/types'
 import { MAX_NAME_LENGTH } from './v2/birth/validators'
@@ -185,16 +186,26 @@ const TENNIS_CLUB_DECLARATION_FORM = defineDeclarationForm({
           validation: [
             {
               message: {
-                defaultMessage: 'Number and unit required for registration',
+                defaultMessage: 'Number and unit required',
                 description: 'This is the error message for invalid duration',
                 id: 'event.birth.action.declare.form.section.child.field.birthDuration.error'
               },
-              validator: and(
-                field('applicant.registrationDuration')
-                  .get('numericValue')
-                  .isGreaterThan(0),
-                not(
+              validator: or(
+                and(
+                  field('applicant.registrationDuration')
+                    .get('numericValue')
+                    .isFalsy(),
                   field('applicant.registrationDuration').get('unit').isFalsy()
+                ),
+                not(
+                  or(
+                    field('applicant.registrationDuration')
+                      .get('numericValue')
+                      .isFalsy(),
+                    field('applicant.registrationDuration')
+                      .get('unit')
+                      .isFalsy()
+                  )
                 )
               )
             }
@@ -205,6 +216,7 @@ const TENNIS_CLUB_DECLARATION_FORM = defineDeclarationForm({
           type: FieldType.DATE,
           required: true,
           analytics: true,
+          defaultValue: now(),
           validation: [
             {
               message: {
@@ -225,6 +237,7 @@ const TENNIS_CLUB_DECLARATION_FORM = defineDeclarationForm({
           id: 'applicant.tob',
           type: FieldType.TIME,
           required: false,
+          defaultValue: now(),
           configuration: {
             use12HourFormat: true
           },
@@ -1028,33 +1041,13 @@ export const tennisClubMembershipEvent = defineConfig({
       review: TENNIS_CLUB_DECLARATION_REVIEW
     },
     {
-      type: ActionType.DELETE,
-      label: {
-        defaultMessage: 'Delete draft',
-        description:
-          'This is shown as the action name anywhere the user can trigger the action from',
-        id: 'event.tennis-club-membership.action.delete.label'
-      }
-    },
-    {
-      type: ActionType.VALIDATE,
-      label: {
-        defaultMessage: 'Validate',
-        description:
-          'This is shown as the action name anywhere the user can trigger the action from',
-        id: 'event.tennis-club-membership.action.validate.label'
-      },
-      review: TENNIS_CLUB_DECLARATION_REVIEW
-    },
-    {
       type: ActionType.REGISTER,
       label: {
         defaultMessage: 'Register',
         description:
           'This is shown as the action name anywhere the user can trigger the action from',
         id: 'event.tennis-club-membership.action.register.label'
-      },
-      review: TENNIS_CLUB_DECLARATION_REVIEW
+      }
     },
     {
       type: ActionType.PRINT_CERTIFICATE,

@@ -9,7 +9,7 @@ type Role = {
 
 export const roles: Role[] = [
   {
-    id: 'MR_OFFICER', // equivalent to LOCAL_REGISTRAR
+    id: 'MR_OFFICER', // equivalent to REGISTRATION_AGENT
     label: {
       defaultMessage: 'Medical Records Officer',
       description: 'Name for user role Medical Records Officer',
@@ -17,37 +17,24 @@ export const roles: Role[] = [
     },
     scopes: [
       SCOPES.RECORD_READ,
-      SCOPES.RECORD_DECLARE_BIRTH,
       SCOPES.RECORD_DECLARE_DEATH,
-      SCOPES.RECORD_DECLARE_MARRIAGE,
       SCOPES.RECORD_DECLARATION_EDIT,
       SCOPES.RECORD_SUBMIT_FOR_UPDATES,
-      SCOPES.RECORD_REVIEW_DUPLICATES,
       SCOPES.RECORD_DECLARATION_ARCHIVE,
       SCOPES.RECORD_DECLARATION_REINSTATE,
-      SCOPES.RECORD_REGISTER,
-      SCOPES.RECORD_REGISTRATION_CORRECT,
-      SCOPES.RECORD_UNASSIGN_OTHERS,
       SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES,
-      SCOPES.RECORD_CONFIRM_REGISTRATION,
-      SCOPES.RECORD_REJECT_REGISTRATION,
       SCOPES.PERFORMANCE_READ,
       SCOPES.PERFORMANCE_READ_DASHBOARDS,
-      SCOPES.PROFILE_ELECTRONIC_SIGNATURE,
-      SCOPES.USER_READ_ONLY_MY_AUDIT,
       SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
-      SCOPES.SEARCH_BIRTH,
       SCOPES.SEARCH_DEATH,
-      SCOPES.SEARCH_MARRIAGE,
       'search[event=death,access=my-jurisdiction]',
-      'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|ready-for-coding]',
+      'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|in-review|encoded]',
       'record.create[event=death]',
       'record.read[event=death]',
       'record.declare[event=death]',
       'record.declared.reject[event=death]',
       'record.declared.archive[event=death]',
       'record.declared.review-duplicates[event=death]',
-      'record.register[event=death]',
       'record.registered.correct[event=death]',
       'record.unassign-others[event=death]'
     ]
@@ -105,7 +92,7 @@ export const roles: Role[] = [
       SCOPES.SEARCH_DEATH,
       SCOPES.SEARCH_MARRIAGE,
       'search[event=death,access=all]',
-      'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|in-review-all]',
+      'workqueue[id=assigned-to-you|recent|requires-updates-office|in-review-all|encoded]',
       'record.create[event=death]',
       'record.read[event=death]',
       'record.declare[event=death]',

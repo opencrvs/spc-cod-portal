@@ -78,6 +78,17 @@ export const deathEvent = defineConfig({
       }
     ]
   },
+  flags: [
+    {
+      id: 'pending-first-certificate-issuance',
+      label: {
+        id: 'event.birth.flag.pending-first-certificate-issuance',
+        defaultMessage: 'Pending first certificate issuance',
+        description: 'Flag label for first certificate issuance'
+      },
+      requiresAction: true
+    }
+  ],
   actions: [
     {
       type: ActionType.READ,
@@ -110,23 +121,18 @@ export const deathEvent = defineConfig({
       }
     },
     {
-      type: ActionType.VALIDATE,
+      type: ActionType.REJECT,
       label: {
-        defaultMessage: 'Validate',
+        defaultMessage: 'Reject',
         description:
           'This is shown as the action name anywhere the user can trigger the action from',
-        id: 'event.death.action.validate.label'
+        id: 'event.death.action.reject.label'
       },
-      review: DEATH_DECLARATION_REVIEW,
-      deduplication: {
-        id: 'death-deduplication',
-        label: {
-          defaultMessage: 'Detect duplicate',
-          description:
-            'This is shown as the action name anywhere the user can trigger the action from',
-          id: 'event.death.action.detect-duplicate.label'
-        },
-        query: dedupConfig
+      supportingCopy: {
+        id: 'rejectModal.description',
+        defaultMessage:
+          'Rejecting this declaration will return it to the submitter for updates. Please ensure a valid reason for rejection has been recorded.',
+        description: 'The description for reject modal'
       }
     },
     {
@@ -137,7 +143,14 @@ export const deathEvent = defineConfig({
           'This is shown as the action name anywhere the user can trigger the action from',
         id: 'event.death.action.register.label'
       },
-      review: DEATH_DECLARATION_REVIEW,
+      supportingCopy: {
+        id: 'event.death.action.register.supportingCopy',
+        description: 'Confirmation text for the register action',
+        defaultMessage:
+          'Registering this death event will create an official civil registration record. Please ensure all details are correct before proceeding.'
+      },
+      flags: [{ id: 'pending-first-certificate-issuance', operation: 'add' }],
+      conditionals: [],
       deduplication: {
         id: 'death-deduplication',
         label: {
@@ -157,6 +170,9 @@ export const deathEvent = defineConfig({
           'This is shown as the action name anywhere the user can trigger the action from',
         id: 'event.death.action.collect-certificate.label'
       },
+      flags: [
+        { id: 'pending-first-certificate-issuance', operation: 'remove' }
+      ],
       printForm: DEATH_CERTIFICATE_COLLECTOR_FORM
     },
     {
@@ -168,6 +184,21 @@ export const deathEvent = defineConfig({
         id: 'event.death.action.request-correction.label'
       },
       correctionForm: DEATH_CORRECTION_FORM
+    },
+    {
+      type: ActionType.ARCHIVE,
+      label: {
+        defaultMessage: 'Archive',
+        description:
+          'This is shown as the action name anywhere the user can trigger the action from',
+        id: 'event.death.action.archive.label'
+      },
+      supportingCopy: {
+        id: 'recordAudit.archive.confirmation.body',
+        defaultMessage:
+          'This will remove the declaration from the workqueue and change the status to Archive. To revert this change you will need to search for the declaration.',
+        description: 'Confirmation body for archiving a declaration'
+      }
     }
   ],
   advancedSearch: advancedSearchDeath

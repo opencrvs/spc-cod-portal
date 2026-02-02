@@ -19,6 +19,13 @@ export function getCustomEventsHandler(
   return h.response([deathEvent]).code(200)
 }
 
+export async function onCustomActionHandler(
+  request: ActionConfirmationRequest,
+  h: Hapi.ResponseToolkit
+) {
+  return h.response().code(200)
+}
+
 export async function onAnyActionHandler(
   request: ActionConfirmationRequest,
   h: Hapi.ResponseToolkit
