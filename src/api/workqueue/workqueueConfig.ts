@@ -161,8 +161,7 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: ['pending-first-certificate-issuance']
+        noneOf: [InherentFlags.CORRECTION_REQUESTED]
       },
       updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
@@ -202,19 +201,11 @@ export const Workqueues = defineWorkqueues([
           flags: {
             anyOf: ['validated'],
             noneOf: [InherentFlags.REJECTED]
-          },
-          updatedAtLocation: {
-            type: 'within',
-            location: user('primaryOfficeId')
           }
         },
         {
           flags: {
             anyOf: [InherentFlags.CORRECTION_REQUESTED]
-          },
-          updatedAtLocation: {
-            type: 'within',
-            location: user('primaryOfficeId')
           }
         }
       ]
