@@ -52,7 +52,6 @@
       },
       {
         id: 'uploader',
-        origin: `http://localhost:3069`,
         title: {
           id: 'dashboard.uploaderTitle',
           defaultMessage: 'Uploader',
@@ -60,7 +59,7 @@
         },
         url: `http://localhost:3069/login`,
         context: {
-          auth: 'postMessage'
+          auth: 'REQUEST_AUTH_TOKEN'
         }
       }
     ],
