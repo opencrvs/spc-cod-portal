@@ -102,7 +102,7 @@ jobs:
           context: ./uploader-app
           file: ./uploader-app/api/Dockerfile
           tags: |
-            ${{ secrets.DOCKERHUB_ACCOUNT}}/uploader-api:${{ steps.country_config.outputs.version }}
+            ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader-api:${{ steps.country_config.outputs.version }}
 
   merge-manifest:
     needs: [build]
