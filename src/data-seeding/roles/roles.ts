@@ -36,7 +36,8 @@ export const roles: Role[] = [
       'record.declared.archive[event=death]',
       'record.declared.review-duplicates[event=death]',
       'record.registered.correct[event=death]',
-      'record.unassign-others[event=death]'
+      'record.unassign-others[event=death]',
+      'dashboard.view[id=export|statistics]'
     ]
   },
   {
@@ -101,6 +102,7 @@ export const roles: Role[] = [
       'record.declared.review-duplicates[event=death]',
       'record.register[event=death]',
       'record.registered.correct[event=death]',
+      'dashboard.view[id=uploader|export|statistics]',
       'record.unassign-others[event=death]'
     ]
   }
