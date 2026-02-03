@@ -54,6 +54,18 @@
           description: 'Menu item for statistics dashboard'
         },
         url: `${scheme}//metabase.${hostname}/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
+      },
+      {
+        id: 'uploader',
+        title: {
+          id: 'dashboard.uploaderTitle',
+          defaultMessage: 'Uploader',
+          description: 'Menu item for uploader companion app'
+        },
+        url: `${scheme}//uploader.${hostname}/login`,
+        context: {
+          auth: 'REQUEST_AUTH_TOKEN'
+        }
       }
     ],
     // NOTE: This is not valid javascript until replaced during build time.
