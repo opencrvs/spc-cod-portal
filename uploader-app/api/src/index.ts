@@ -4,9 +4,7 @@ import { serve } from '@hono/node-server'
 const app = new Hono()
 const PORT = 3068
 
-app.get('/ping', (c) => {
-  return c.text('Server ok!')
-})
+app.get('/ping', (c) => c.json({ status: 'ok' }))
 
 serve(
   {
