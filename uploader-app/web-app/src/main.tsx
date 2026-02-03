@@ -9,6 +9,7 @@ import { AuthProvider } from './components/AppShell/AuthProvider'
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
 import '@mantine/notifications/styles.css'
+import './styles/index.css'
 
 const queryClient = new QueryClient()
 

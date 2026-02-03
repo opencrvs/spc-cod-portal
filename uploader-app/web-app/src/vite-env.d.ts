@@ -18,7 +18,6 @@ type ImportMetaEnv = {
    */
   SSR: boolean
   // @user-defined-end
-  EXTERNAL_CLIENT_URL: string
 }
 
 interface ImportMeta {
