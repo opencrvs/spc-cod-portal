@@ -11,10 +11,9 @@ import {
   Title
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconDoor, IconUser } from '@tabler/icons-react'
+import { IconUser } from '@tabler/icons-react'
 import { Link } from '@tanstack/react-router'
 import { ReactNode } from 'react'
-import { EXTERNAL_LOGIN_URL_WITH_REDIRECT } from '../../util/config'
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle'
 import { useAuth } from './AuthProvider'
 import { QueryErrorBoundary } from './QueryErrorBoundary'
