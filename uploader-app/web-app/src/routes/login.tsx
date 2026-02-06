@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useAuth } from '../components/AppShell/AuthProvider'
 import { getDecodedToken } from '../services/token'
-import { EXTERNAL_CLIENT_URL } from '../util/config'
+import { VITE_EXTERNAL_CLIENT_URL } from '../util/config'
 
 export const Route = createFileRoute('/login')({
   component: LoginComponent
@@ -16,7 +16,7 @@ function LoginComponent() {
   useEffect(() => {
     window.parent.postMessage(
       { type: 'REQUEST_AUTH_TOKEN' },
-      EXTERNAL_CLIENT_URL
+      VITE_EXTERNAL_CLIENT_URL
     )
     console.log('auth token request sent to parent')
   }, [])
@@ -34,7 +34,7 @@ function LoginComponent() {
       if (decoded?.role !== 'CODING_OFFICER') {
         window.parent.postMessage(
           { type: 'REQUEST_AUTH_TOKEN' },
-          EXTERNAL_CLIENT_URL
+          VITE_EXTERNAL_CLIENT_URL
         )
         return
       }

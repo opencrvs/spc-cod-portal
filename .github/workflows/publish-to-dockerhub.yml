@@ -92,6 +92,8 @@ jobs:
           push: true
           context: ./uploader-app
           file: ./uploader-app/web-app/Dockerfile
+          build-args: |
+            VITE_EXTERNAL_CLIENT_URL=https://register.spc-cod-qa.opencrvs.org
           tags: |
             ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader:${{ steps.country_config.outputs.version }}
 
