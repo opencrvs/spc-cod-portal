@@ -10,6 +10,7 @@ type ImportMetaEnv = {
   SERVER_URL: string
   EXTERNAL_LOGIN_URL: string
   LOGIN_REDIRECT_URL: string
+  VITE_SCHEME: string
   // @user-defined-start
   /*
    *  You can use this section to explicitly extend the type definition of `import.meta.env`

@@ -5,6 +5,7 @@ export interface DecodedToken {
   role?: string
   exp?: number // Token expiry timestamp
   iat?: number // Token issued-at timestamp
+  sub?: string // Subject (user ID)
 }
 
 export const getDecodedToken = (token: string | null): DecodedToken | null => {

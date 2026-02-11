@@ -1,13 +1,10 @@
 import * as Papa from 'papaparse'
-import { findRecordById, updateCauseOfDeath } from './mockOpenCRVS'
 import { CSVRow, ProcessingResult, ProcessingSummary } from './types'
-
-const REQUIRED_HEADERS = [
-  'UCCode',
-  'SelectedCodes',
-  'MultipleCodes',
-  'CertificateKey'
-]
+import {
+  findRecordByCertificateKey,
+  updateRecordWithCauseOfDeath
+} from '../services/recordService'
+import { REQUIRED_HEADERS } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -60,36 +57,10 @@ export const parseCSV = (file: File): Promise<CSVRow[]> => {
   })
 }
 
-const extractCausesOfDeath = (row: CSVRow): string[] => {
-  const causes: string[] = []
-
-  // Extract from UCCode
-  if (row.UCCode?.trim()) {
-    causes.push(row.UCCode.trim())
-  }
-
-  // Extract from SelectedCodes (may contain multiple codes separated by comma/semicolon)
-  if (row.SelectedCodes?.trim()) {
-    const codes = row.SelectedCodes.split(/[,;]/)
-      .map((c) => c.trim())
-      .filter((c) => c)
-    causes.push(...codes)
-  }
-
-  // Extract from MultipleCodes (may contain multiple codes separated by comma/semicolon)
-  if (row.MultipleCodes?.trim()) {
-    const codes = row.MultipleCodes.split(/[,;]/)
-      .map((c) => c.trim())
-      .filter((c) => c)
-    causes.push(...codes)
-  }
-
-  return causes
-}
-
 export const processCSVRow = async (
   row: CSVRow,
-  rowIndex: number
+  rowIndex: number,
+  token: string
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
 
@@ -103,8 +74,7 @@ export const processCSVRow = async (
   }
 
   try {
-    // Find the record in the database
-    const record = await findRecordById(id)
+    const record = await findRecordByCertificateKey(token, id)
 
     if (!record) {
       return {
@@ -115,20 +85,30 @@ export const processCSVRow = async (
       }
     }
 
-    // Extract cause of death codes from the row
-    const causesOfDeath = extractCausesOfDeath(row)
+    // Check if there are any IRIS output fields to update
+    const hasIrisData =
+      row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments
 
-    if (causesOfDeath.length === 0) {
+    if (!hasIrisData) {
       return {
         rowIndex,
         id,
         status: 'skipped',
-        message: 'No cause of death codes found in row'
+        message:
+          'No IRIS output data (UCCode, SelectedCodes, MultipleCodes, Comments) found in row'
       }
     }
 
-    // Update the record with the cause of death codes
-    const updated = await updateCauseOfDeath(id, causesOfDeath)
+    const updated = await updateRecordWithCauseOfDeath(
+      token,
+      record.id,
+      row,
+      record.declaration
+    )
+    console.log(
+      '[DEBUG] processCSVRow - updateRecordWithCauseOfDeath returned:',
+      updated
+    )
 
     if (!updated) {
       return {
@@ -143,10 +123,10 @@ export const processCSVRow = async (
       rowIndex,
       id,
       status: 'success',
-      message: `Successfully updated with ${causesOfDeath.length} cause(s) of death`,
-      causesOfDeath
+      message: 'Successfully updated with IRIS output data'
     }
   } catch (error) {
+    console.log('[DEBUG] processCSVRow - Error:', error)
     return {
       rowIndex,
       id,
@@ -158,12 +138,13 @@ export const processCSVRow = async (
 
 export const processCSV = async (
   rows: CSVRow[],
+  token: string,
   onProgress?: (current: number, total: number) => void
 ): Promise<ProcessingSummary> => {
   const results: ProcessingResult[] = []
 
   for (let i = 0; i < rows.length; i++) {
-    const result = await processCSVRow(rows[i], i + 1)
+    const result = await processCSVRow(rows[i], i + 1, token)
     results.push(result)
 
     if (onProgress) {
@@ -178,6 +159,8 @@ export const processCSV = async (
     errors: results.filter((r) => r.status === 'error').length,
     results
   }
+
+  console.log('processCSV >>>>>>> results :>> ', results)
 
   return summary
 }

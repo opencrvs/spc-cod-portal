@@ -30,6 +30,12 @@ function HomeComponent() {
       setState('processing')
       setErrorMessage('')
 
+      // Get the authentication token
+      const token = localStorage.getItem('authToken')
+      if (!token) {
+        throw new Error('Authentication token not found. Please log in.')
+      }
+
       // Parse the CSV file
       const rows = await parseCSV(file)
 
@@ -39,8 +45,8 @@ function HomeComponent() {
 
       setProgress({ current: 0, total: rows.length })
 
-      // Process the CSV rows
-      const result = await processCSV(rows, (current, total) => {
+      // Process the CSV rows with the backend
+      const result = await processCSV(rows, token, (current, total) => {
         setProgress({ current, total })
       })
 
