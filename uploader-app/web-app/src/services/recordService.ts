@@ -44,7 +44,7 @@ export async function findRecordByCertificateKey(
       query: {
         type: 'and',
         clauses: [
-          { status: { type: 'exact', term: 'REGISTERED' }, eventType: 'death' },
+          { status: { type: 'exact', term: 'DECLARED' }, eventType: 'death' },
           {
             data: {
               'deceased.certificateKey': {
@@ -65,7 +65,9 @@ export async function findRecordByCertificateKey(
     const results = (response as any)?.results || []
 
     if (results.length === 0) {
-      console.log('[DEBUG] findRecordByCertificateKey - No record found')
+      console.log(
+        '[DEBUG] findRecordByCertificateKey - Not processed as UCCode was absent'
+      ) // TODO: make sure this message is returned to the user in the UI
       return null
     }
 
@@ -94,20 +96,20 @@ export async function updateRecordWithCauseOfDeath(
 
   const decodedToken = getDecodedToken(token)
 
+  console.log(
+    '[DEBUG] updateRecordWithCauseOfDeath - decodedToken :>> ',
+    decodedToken
+  )
+
   try {
     // Step 1: Use the assignment action to update the record with IRIS output fields
     const assignmentResult =
       await client.event.actions.assignment.assign.mutate({
-        transactionId: uuidv4(),
-        eventId,
         type: 'ASSIGN',
+        eventId,
+        transactionId: uuidv4(),
         assignedTo: decodedToken?.sub || 'unknown-user',
-        declaration: {
-          'irisOutput.ucCode': row.UCCode || '',
-          'irisOutput.selectedCodes': row.SelectedCodes || '',
-          'irisOutput.multipleCodes': row.MultipleCodes || '',
-          'irisOutput.comment': row.Comments || ''
-        }
+        annotation: {}
       })
 
     console.log('comparing eventId :>> ', eventId)
@@ -133,7 +135,9 @@ export async function updateRecordWithCauseOfDeath(
         row.Comments || eventDeclaration?.['irisOutput.comment'] || ''
     }
 
-    // Step 2: Register the event to persist the changes to the database
+    // Step 2: Validate the updated declaration (Skipped as per tech design due to the fact that validate is now a custom action)
+
+    // Step 3: Register the event
     const registerResult = await client.event.actions.register.request.mutate({
       declaration: updatedDeclaration,
       annotation: {},

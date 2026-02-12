@@ -99,6 +99,8 @@ export const processCSVRow = async (
       }
     }
 
+    console.log('[DEBUG] processCSVRow - hasIrisData :>> ', hasIrisData)
+
     const updated = await updateRecordWithCauseOfDeath(
       token,
       record.id,
