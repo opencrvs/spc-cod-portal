@@ -1,8 +1,11 @@
 import * as Papa from 'papaparse'
-import { CSVRow, ProcessingResult, ProcessingSummary } from './types'
+import { CSVRow, ProcessingResult, ProcessingSummary, UserInfo } from './types'
 import {
   findRecordByCertificateKey,
-  updateRecordWithCauseOfDeath
+  updateRecordWithCauseOfDeath,
+  getCreatedByFromLegalStatuses,
+  getUserById,
+  sendProcessingNotificationEmail
 } from '../services/recordService'
 import { REQUIRED_HEADERS } from './constants'
 
@@ -121,11 +124,17 @@ export const processCSVRow = async (
       }
     }
 
+    // Extract createdBy from legalStatuses.DECLARED.createdBy
+    const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
+    const trackingId = record.trackingId || id
+
     return {
       rowIndex,
       id,
       status: 'success',
-      message: 'Successfully updated with IRIS output data'
+      message: 'Successfully updated with IRIS output data',
+      createdBy: createdBy || undefined,
+      trackingId
     }
   } catch (error) {
     console.log('[DEBUG] processCSVRow - Error:', error)
@@ -162,7 +171,79 @@ export const processCSV = async (
     results
   }
 
+  console.log('processCSV >>>>>>> summary :>> ', summary)
   console.log('processCSV >>>>>>> results :>> ', results)
 
+  // Send email notifications - one email per user with all their processed records
+  await sendEmailNotifications(token, results)
+
   return summary
+}
+
+/**
+ * Send email notifications to users about their processed records.
+ * Groups all successful records by createdBy user and sends ONE email per user
+ * containing all their processed record IDs.
+ */
+async function sendEmailNotifications(
+  token: string,
+  results: ProcessingResult[]
+): Promise<void> {
+  // Filter successful results that have a createdBy user
+  const successfulResults = results.filter(
+    (r) => r.status === 'success' && r.createdBy
+  )
+
+  if (successfulResults.length === 0) {
+    console.log(
+      '[DEBUG] sendEmailNotifications - No successful records with createdBy to notify'
+    )
+    return
+  }
+
+  // Group ALL records by createdBy user - one entry per user with all their records
+  const recordsByUser = new Map<string, string[]>()
+  for (const result of successfulResults) {
+    if (result.createdBy) {
+      const existing = recordsByUser.get(result.createdBy) || []
+      existing.push(result.trackingId || result.id)
+      recordsByUser.set(result.createdBy, existing)
+    }
+  }
+
+  console.log(
+    `[DEBUG] sendEmailNotifications - Sending emails to ${recordsByUser.size} unique users`
+  )
+
+  // Send ONE email per user with ALL their records
+  for (const [userId, recordIds] of recordsByUser) {
+    try {
+      const userInfo = await getUserById(token, userId)
+      if (!userInfo) {
+        console.warn(
+          `[DEBUG] sendEmailNotifications - Could not find user ${userId}, skipping email`
+        )
+        continue
+      }
+
+      if (!userInfo.email) {
+        console.warn(
+          `[DEBUG] sendEmailNotifications - User ${userId} has no email, skipping`
+        )
+        continue
+      }
+
+      console.log(
+        `[DEBUG] sendEmailNotifications - Sending ONE email to ${userInfo.email} with ${recordIds.length} record IDs`
+      )
+
+      // Send single email with all record IDs for this user
+      await sendProcessingNotificationEmail(token, userInfo, recordIds)
+    } catch (error) {
+      console.error(
+        `[DEBUG] sendEmailNotifications - Error sending email to user ${userId}:`,
+        error
+      )
+    }
+  }
 }

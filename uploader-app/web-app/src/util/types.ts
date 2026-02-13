@@ -11,6 +11,10 @@ export interface ProcessingResult {
   status: 'success' | 'skipped' | 'error'
   message: string
   causesOfDeath?: string[]
+  /** The user ID who created the record (from legalStatuses.DECLARED.createdBy) */
+  createdBy?: string
+  /** The tracking ID of the record for display in emails */
+  trackingId?: string
 }
 
 export interface ProcessingSummary {
@@ -19,4 +23,22 @@ export interface ProcessingSummary {
   skipped: number
   errors: number
   results: ProcessingResult[]
+}
+
+/**
+ * User information for email notifications
+ */
+export interface UserInfo {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+}
+
+/**
+ * Grouped records by user for email notifications
+ */
+export interface UserRecords {
+  user: UserInfo
+  recordIds: string[]
 }

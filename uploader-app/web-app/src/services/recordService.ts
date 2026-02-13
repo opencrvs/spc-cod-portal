@@ -2,12 +2,14 @@ import { GATEWAY_HOST } from '../util/constants'
 import { createClient } from '@opencrvs/toolkit/api'
 import { v4 as uuidv4 } from 'uuid'
 import { getDecodedToken } from './token'
+import { UserInfo } from '../util/types'
+// import fetch from 'node-fetch'
 
 export interface DeathRecord {
   id: string
   type: string
   status: string
-  legalStatuses?: Record<string, any>
+  legalStatuses?: Record<string, LegalStatus>
   createdAt?: string
   dateOfEvent?: string
   placeOfEvent?: string
@@ -22,6 +24,16 @@ export interface DeathRecord {
   potentialDuplicates?: string[]
   flags?: string[]
   declaration: Record<string, string>
+}
+
+export interface LegalStatus {
+  createdAt: string
+  createdBy: string
+  createdAtLocation: string
+  createdByUserType: string
+  acceptedAt: string
+  createdByRole: string
+  registrationNumber?: string
 }
 
 export interface SearchResult {
@@ -155,5 +167,117 @@ export async function updateRecordWithCauseOfDeath(
   } catch (error) {
     console.error('[DEBUG] updateRecordWithCauseOfDeath - Error:', error)
     throw error
+  }
+}
+
+/**
+ * Fetch user details by user ID from OpenCRVS
+ */
+export async function getUserById(
+  token: string,
+  userId: string
+): Promise<UserInfo | null> {
+  const url = new URL('users', GATEWAY_HOST).toString()
+
+  try {
+    const response = await fetch(`${url}/${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      console.error(
+        `[DEBUG] getUserById - Failed to fetch user ${userId}: ${response.status}`
+      )
+      return null
+    }
+
+    const user = await response.json()
+    console.log('[DEBUG] getUserById - Found user:', user)
+
+    return {
+      id: user.id || userId,
+      email: user.email || '',
+      firstName: user.name?.[0]?.given?.[0] || '',
+      lastName: user.name?.[0]?.family || ''
+    }
+  } catch (error) {
+    console.error('[DEBUG] getUserById - Error:', error)
+    return null
+  }
+}
+
+/**
+ * Extract the createdBy user ID from the DECLARED legal status
+ */
+export function getCreatedByFromLegalStatuses(
+  legalStatuses?: Record<string, LegalStatus>
+): string | null {
+  if (!legalStatuses) {
+    return null
+  }
+
+  const declaredStatus = legalStatuses['DECLARED']
+  if (declaredStatus?.createdBy) {
+    return declaredStatus.createdBy
+  }
+
+  return null
+}
+
+/**
+ * Send email notification to a user about processed records
+ */
+export async function sendProcessingNotificationEmail(
+  token: string,
+  userInfo: UserInfo,
+  recordIds: string[]
+): Promise<boolean> {
+  const url = new URL('email', GATEWAY_HOST).toString()
+
+  const loginUrl = 'https://login.spc-cod.opencrvs.org'
+
+  const emailContent = `
+    <p>Dear ${userInfo.firstName} ${userInfo.lastName},</p>
+    <p>The following records have been encoded with cause of death codes and are ready to view:</p>
+    <ul>
+      ${recordIds.map((id) => `<li>${id}</li>`).join('')}
+    </ul>
+    <p>Login to <a href="${loginUrl}">${loginUrl}</a> in order to access.</p>
+    <p>SPC Regional Coding Group</p>
+  `
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        subject: 'Death Records Processed - Cause of Death Codes Updated',
+        html: emailContent,
+        from: 'noreply@opencrvs.org',
+        to: userInfo.email
+      })
+    })
+
+    if (!response.ok) {
+      console.error(
+        `[DEBUG] sendProcessingNotificationEmail - Failed to send email: ${response.status}`
+      )
+      return false
+    }
+
+    console.log(
+      `[DEBUG] sendProcessingNotificationEmail - Email sent to ${userInfo.email}`
+    )
+    return true
+  } catch (error) {
+    console.error('[DEBUG] sendProcessingNotificationEmail - Error:', error)
+    return false
   }
 }
