@@ -82,6 +82,7 @@ import {
 import { getClient } from './analytics/postgres'
 import { env } from './environment'
 import { createClient } from '@opencrvs/toolkit/api'
+import { onSearchHandler } from './data-seeding/reference-data/handler'
 import { syncReferenceData } from './data-seeding/reference-data/reference-data'
 
 export interface ITokenPayload {
@@ -644,6 +645,17 @@ export async function createServer() {
       auth: false,
       tags: ['api', 'events'],
       description: 'Serves custom events'
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/causes-of-death',
+    handler: onSearchHandler,
+    options: {
+      auth: false,
+      tags: ['api', 'search'],
+      description: 'Fuzzy search codes with source-based priority'
     }
   })
 
