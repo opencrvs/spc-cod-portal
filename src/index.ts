@@ -82,6 +82,7 @@ import {
 import { getClient } from './analytics/postgres'
 import { env } from './environment'
 import { createClient } from '@opencrvs/toolkit/api'
+import { syncReferenceData } from './data-seeding/reference-data/reference-data'
 
 export interface ITokenPayload {
   sub: string
@@ -762,6 +763,7 @@ export async function createServer() {
     await server.start()
     await syncLocationLevels()
     await syncLocationStatistics()
+    await syncReferenceData()
 
     logger.info(
       `Server successfully started on ${COUNTRY_CONFIG_HOST}:${COUNTRY_CONFIG_PORT}`
