@@ -26,7 +26,7 @@ export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
   const hasErrors = summary.errors > 0
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-8">
+    <div className="flex flex-col items-center h-screen overflow-y-auto p-8 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="w-full max-w-4xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl mb-4">Processing Complete</h1>
