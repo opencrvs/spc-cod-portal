@@ -102,17 +102,11 @@ export const processCSVRow = async (
       }
     }
 
-    console.log('[DEBUG] processCSVRow - hasIrisData :>> ', hasIrisData)
-
     const updated = await updateRecordWithCauseOfDeath(
       token,
       record.id,
       row,
       record.declaration
-    )
-    console.log(
-      '[DEBUG] processCSVRow - updateRecordWithCauseOfDeath returned:',
-      updated
     )
 
     if (!updated) {
@@ -137,7 +131,6 @@ export const processCSVRow = async (
       trackingId
     }
   } catch (error) {
-    console.log('[DEBUG] processCSVRow - Error:', error)
     return {
       rowIndex,
       id,
@@ -171,9 +164,6 @@ export const processCSV = async (
     results
   }
 
-  console.log('processCSV >>>>>>> summary :>> ', summary)
-  console.log('processCSV >>>>>>> results :>> ', results)
-
   // Send email notifications - one email per user with all their processed records
   await sendEmailNotifications(token, results)
 
@@ -195,9 +185,6 @@ async function sendEmailNotifications(
   )
 
   if (successfulResults.length === 0) {
-    console.log(
-      '[DEBUG] sendEmailNotifications - No successful records with createdBy to notify'
-    )
     return
   }
 
@@ -211,33 +198,19 @@ async function sendEmailNotifications(
     }
   }
 
-  console.log(
-    `[DEBUG] sendEmailNotifications - Sending emails to ${recordsByUser.size} unique users`
-  )
-
   // Send ONE email per user with ALL their records
   for (const [userId, recordIds] of recordsByUser) {
     try {
       const userInfo = await getUserById(token, userId)
       if (!userInfo) {
-        console.warn(
-          `[DEBUG] sendEmailNotifications - Could not find user ${userId}, skipping email`
-        )
         continue
       }
 
       if (!userInfo.email) {
-        console.warn(
-          `[DEBUG] sendEmailNotifications - User ${userId} has no email, skipping`
-        )
         continue
       }
 
-      console.log(
-        `[DEBUG] sendEmailNotifications - Sending ONE email to ${userInfo.email} with ${recordIds.length} record IDs`
-      )
-
-      // Send single email with all record IDs for this user
+      // Send single email with all record IDs for this user // is it possible to call the notification handler
       await sendProcessingNotificationEmail(token, userInfo, recordIds)
     } catch (error) {
       console.error(

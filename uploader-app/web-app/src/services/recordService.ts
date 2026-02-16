@@ -71,8 +71,6 @@ export async function findRecordByCertificateKey(
       offset: 0
     })
 
-    console.log('[DEBUG] findRecordByCertificateKey - Response:', response)
-
     // Handle different response formats
     const results = (response as any)?.results || []
 
@@ -84,11 +82,9 @@ export async function findRecordByCertificateKey(
     }
 
     const record = results[0]
-    console.log('[DEBUG] findRecordByCertificateKey - Found record:', record)
 
     return record
   } catch (error) {
-    console.error('[DEBUG] findRecordByCertificateKey - Error:', error)
     throw error
   }
 }
@@ -108,11 +104,6 @@ export async function updateRecordWithCauseOfDeath(
 
   const decodedToken = getDecodedToken(token)
 
-  console.log(
-    '[DEBUG] updateRecordWithCauseOfDeath - decodedToken :>> ',
-    decodedToken
-  )
-
   try {
     // Step 1: Use the assignment action to update the record with IRIS output fields
     const assignmentResult =
@@ -124,7 +115,6 @@ export async function updateRecordWithCauseOfDeath(
         annotation: {}
       })
 
-    console.log('comparing eventId :>> ', eventId)
     console.log(
       '[DEBUG] updateRecordWithCauseOfDeath - Assignment result:',
       assignmentResult
@@ -157,15 +147,8 @@ export async function updateRecordWithCauseOfDeath(
       transactionId: uuidv4()
     })
 
-    console.log(
-      '[DEBUG] updateRecordWithCauseOfDeath - Register result:',
-      registerResult
-    )
-
-    console.log('eventDeclaration :>>>>>>> ', eventDeclaration)
     return true
   } catch (error) {
-    console.error('[DEBUG] updateRecordWithCauseOfDeath - Error:', error)
     throw error
   }
 }
@@ -177,35 +160,28 @@ export async function getUserById(
   token: string,
   userId: string
 ): Promise<UserInfo | null> {
-  const url = new URL('users', GATEWAY_HOST).toString()
+  const url = new URL('events', GATEWAY_HOST).toString()
+  const client = createClient(url, `Bearer ${token}`)
 
   try {
-    const response = await fetch(`${url}/${userId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
+    const response = await client.user.get.query(userId)
 
-    if (!response.ok) {
-      console.error(
-        `[DEBUG] getUserById - Failed to fetch user ${userId}: ${response.status}`
-      )
+    if (!response) {
       return null
     }
 
-    const user = await response.json()
-    console.log('[DEBUG] getUserById - Found user:', user)
+    const user = await response
 
     return {
       id: user.id || userId,
-      email: user.email || '',
-      firstName: user.name?.[0]?.given?.[0] || '',
-      lastName: user.name?.[0]?.family || ''
+      email: 'test@test.com',
+      firstName: 'Test',
+      lastName: 'User'
+      // email: user.email || '',
+      // firstName: user.name?.[0]?.given?.[0] || '',
+      // lastName: user.name?.[0]?.family || ''
     }
   } catch (error) {
-    console.error('[DEBUG] getUserById - Error:', error)
     return null
   }
 }
@@ -266,18 +242,11 @@ export async function sendProcessingNotificationEmail(
     })
 
     if (!response.ok) {
-      console.error(
-        `[DEBUG] sendProcessingNotificationEmail - Failed to send email: ${response.status}`
-      )
       return false
     }
 
-    console.log(
-      `[DEBUG] sendProcessingNotificationEmail - Email sent to ${userInfo.email}`
-    )
     return true
   } catch (error) {
-    console.error('[DEBUG] sendProcessingNotificationEmail - Error:', error)
     return false
   }
 }
