@@ -197,15 +197,12 @@ export const Workqueues = defineWorkqueues([
           status: {
             type: 'anyOf',
             terms: ['DECLARED']
-          },
-          flags: {
-            anyOf: ['validated'],
-            noneOf: [InherentFlags.REJECTED]
           }
         },
         {
           flags: {
-            anyOf: [InherentFlags.CORRECTION_REQUESTED]
+            anyOf: [InherentFlags.CORRECTION_REQUESTED, 'validated'],
+            noneOf: [InherentFlags.REJECTED]
           }
         }
       ]
