@@ -8,9 +8,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <Shell>
-        <Outlet />
-      </Shell>
+      <Outlet />
     </>
   )
 }
