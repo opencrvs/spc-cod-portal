@@ -1,0 +1,446 @@
+{
+  "TestCases": [
+    {
+      "CertificateKey": "1",
+      "Issuer": "",
+      "ICDVersion": "",
+      "ICDMinorVersion": "",
+      "UCStated": null,
+      "UCComputed": {
+        "RuleEngine": "",
+        "Reject": null,
+        "Validate": null,
+        "Timestamp": "",
+        "UC": null,
+        "UCComplete": null,
+        "Report": "",
+        "Errors": "",
+        "Warnings": ""
+      },
+      "AdministrativeData": {
+        "DateBirth": null,
+        "DateDeath": null,
+        "Sex": 1,
+        "EstimatedAge": "P0Y"
+      },
+      "Part1": [
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "MG40.0",
+              "LinearizationURI": "http://id.who.int/icd/entity/1974956233",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "LA8Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/2004408087/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "LB30.9",
+              "LinearizationURI": "http://id.who.int/icd/entity/1178642763",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": []
+        },
+        {
+          "Conditions": []
+        }
+      ],
+      "Part2": {
+        "Conditions": [
+          {
+            "Text": "",
+            "Code": "KA21.4Z",
+            "LinearizationURI": "http://id.who.int/icd/entity/1726201225/mms/unspecified",
+            "FoundationURI": "",
+            "Interval": "",
+            "Status": ""
+          }
+        ]
+      },
+      "Surgery": {
+        "WasPerformed": null,
+        "Reason": "",
+        "Date": ""
+      },
+      "Autopsy": {
+        "WasRequested": null,
+        "Findings": null
+      },
+      "MannerOfDeath": {
+        "MannerOfDeath": null,
+        "DateOfExternalCauseOrPoisoning": "",
+        "DescriptionExternalCause": "",
+        "PlaceOfOccuranceExternalCause": null
+      },
+      "FetalOrInfantDeath": {
+        "MultiplePregnancy": null,
+        "Stillborn": null,
+        "DeathWithin24h": null,
+        "BirthHeight": null,
+        "PregnancyWeeks": null,
+        "AgeMother": null,
+        "PerinatalDescription": ""
+      },
+      "MaternalDeath": {
+        "WasPregnant": null,
+        "TimeFromPregnancy": null,
+        "PregnancyContribute": null
+      },
+      "StructuredReport": [],
+      "ReportTabular": "",
+      "ReportRuleFlow": "",
+      "ReportRuleProgression": ""
+    },
+    {
+      "CertificateKey": "1",
+      "Issuer": "",
+      "ICDVersion": "",
+      "ICDMinorVersion": "",
+      "UCStated": null,
+      "UCComputed": {
+        "RuleEngine": "",
+        "Reject": null,
+        "Validate": null,
+        "Timestamp": "",
+        "UC": null,
+        "UCComplete": null,
+        "Report": "",
+        "Errors": "",
+        "Warnings": ""
+      },
+      "AdministrativeData": {
+        "DateBirth": null,
+        "DateDeath": null,
+        "Sex": 1,
+        "EstimatedAge": "P52Y"
+      },
+      "Part1": [
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "ME24.A5",
+              "LinearizationURI": "http://id.who.int/icd/entity/1794059753",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "2C82.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/1552457716/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": []
+        },
+        {
+          "Conditions": []
+        },
+        {
+          "Conditions": []
+        }
+      ],
+      "Part2": {
+        "Conditions": []
+      },
+      "Surgery": {
+        "WasPerformed": null,
+        "Reason": "",
+        "Date": ""
+      },
+      "Autopsy": {
+        "WasRequested": null,
+        "Findings": null
+      },
+      "MannerOfDeath": {
+        "MannerOfDeath": null,
+        "DateOfExternalCauseOrPoisoning": "",
+        "DescriptionExternalCause": "",
+        "PlaceOfOccuranceExternalCause": null
+      },
+      "FetalOrInfantDeath": {
+        "MultiplePregnancy": null,
+        "Stillborn": null,
+        "DeathWithin24h": null,
+        "BirthHeight": null,
+        "PregnancyWeeks": null,
+        "AgeMother": null,
+        "PerinatalDescription": ""
+      },
+      "MaternalDeath": {
+        "WasPregnant": null,
+        "TimeFromPregnancy": null,
+        "PregnancyContribute": null
+      },
+      "StructuredReport": [],
+      "ReportTabular": "",
+      "ReportRuleFlow": "",
+      "ReportRuleProgression": ""
+    },
+    {
+      "CertificateKey": "1",
+      "Issuer": "",
+      "ICDVersion": "",
+      "ICDMinorVersion": "",
+      "UCStated": null,
+      "UCComputed": {
+        "RuleEngine": "",
+        "Reject": null,
+        "Validate": null,
+        "Timestamp": "",
+        "UC": null,
+        "UCComplete": null,
+        "Report": "",
+        "Errors": "",
+        "Warnings": ""
+      },
+      "AdministrativeData": {
+        "DateBirth": null,
+        "DateDeath": null,
+        "Sex": 2,
+        "EstimatedAge": "P52Y"
+      },
+      "Part1": [
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "2C10.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/542147910/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "2C10.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/542147910/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "3A9Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/224336967/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": []
+        },
+        {
+          "Conditions": []
+        }
+      ],
+      "Part2": {
+        "Conditions": []
+      },
+      "Surgery": {
+        "WasPerformed": null,
+        "Reason": "",
+        "Date": ""
+      },
+      "Autopsy": {
+        "WasRequested": null,
+        "Findings": null
+      },
+      "MannerOfDeath": {
+        "MannerOfDeath": null,
+        "DateOfExternalCauseOrPoisoning": "",
+        "DescriptionExternalCause": "",
+        "PlaceOfOccuranceExternalCause": null
+      },
+      "FetalOrInfantDeath": {
+        "MultiplePregnancy": null,
+        "Stillborn": null,
+        "DeathWithin24h": null,
+        "BirthHeight": null,
+        "PregnancyWeeks": null,
+        "AgeMother": null,
+        "PerinatalDescription": ""
+      },
+      "MaternalDeath": {
+        "WasPregnant": null,
+        "TimeFromPregnancy": null,
+        "PregnancyContribute": null
+      },
+      "StructuredReport": [],
+      "ReportTabular": "",
+      "ReportRuleFlow": "",
+      "ReportRuleProgression": ""
+    },
+    {
+      "CertificateKey": "1",
+      "Issuer": "",
+      "ICDVersion": "",
+      "ICDMinorVersion": "",
+      "UCStated": null,
+      "UCComputed": {
+        "RuleEngine": "",
+        "Reject": null,
+        "Validate": null,
+        "Timestamp": "",
+        "UC": null,
+        "UCComplete": null,
+        "Report": "",
+        "Errors": "",
+        "Warnings": ""
+      },
+      "AdministrativeData": {
+        "DateBirth": null,
+        "DateDeath": null,
+        "Sex": 1,
+        "EstimatedAge": "P52Y"
+      },
+      "Part1": [
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "GB61.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/412389819/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "GB60.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/476391827/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "5A11",
+              "LinearizationURI": "http://id.who.int/icd/entity/119724091",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": [
+            {
+              "Text": "",
+              "Code": "BA00.Z",
+              "LinearizationURI": "http://id.who.int/icd/entity/761947693/mms/unspecified",
+              "FoundationURI": "",
+              "Interval": "",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Conditions": []
+        }
+      ],
+      "Part2": {
+        "Conditions": [
+          {
+            "Text": "",
+            "Code": "3A9Z",
+            "LinearizationURI": "http://id.who.int/icd/entity/224336967/mms/unspecified",
+            "FoundationURI": "",
+            "Interval": "",
+            "Status": ""
+          },
+          {
+            "Text": "",
+            "Code": "BC45",
+            "LinearizationURI": " http://id.who.int/icd/entity/273368763",
+            "FoundationURI": "",
+            "Interval": "",
+            "Status": ""
+          }
+        ]
+      },
+      "Surgery": {
+        "WasPerformed": null,
+        "Reason": "",
+        "Date": ""
+      },
+      "Autopsy": {
+        "WasRequested": null,
+        "Findings": null
+      },
+      "MannerOfDeath": {
+        "MannerOfDeath": null,
+        "DateOfExternalCauseOrPoisoning": "",
+        "DescriptionExternalCause": "",
+        "PlaceOfOccuranceExternalCause": null
+      },
+      "FetalOrInfantDeath": {
+        "MultiplePregnancy": null,
+        "Stillborn": null,
+        "DeathWithin24h": null,
+        "BirthHeight": null,
+        "PregnancyWeeks": null,
+        "AgeMother": null,
+        "PerinatalDescription": ""
+      },
+      "MaternalDeath": {
+        "WasPregnant": null,
+        "TimeFromPregnancy": null,
+        "PregnancyContribute": null
+      },
+      "StructuredReport": [],
+      "ReportTabular": "",
+      "ReportRuleFlow": "",
+      "ReportRuleProgression": ""
+    }
+  ]
+}
