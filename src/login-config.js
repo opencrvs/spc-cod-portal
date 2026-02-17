@@ -8,6 +8,8 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
+
+// eslint-disable-next-line no-undef
 window.config = {
   AUTH_API_URL: 'http://localhost:7070/auth/',
   CONFIG_API_URL: 'http://localhost:2021',
