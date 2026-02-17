@@ -137,9 +137,7 @@ export async function updateRecordWithCauseOfDeath(
         row.Comments || eventDeclaration?.['irisOutput.comment'] || ''
     }
 
-    // Step 2: Validate the updated declaration (Skipped as per tech design due to the fact that validate is now a custom action)
-
-    // Step 3: Register the event
+    // Step 2: Register the event
     const registerResult = await client.event.actions.register.request.mutate({
       declaration: updatedDeclaration,
       annotation: {},
@@ -164,23 +162,20 @@ export async function getUserById(
   const client = createClient(url, `Bearer ${token}`)
 
   try {
-    const response = await client.user.get.query(userId)
+    const userOrSystem = await client.user.get.query(userId)
 
-    if (!response) {
-      return null
+    console.log('userOrSystem :>> ', userOrSystem)
+
+    if (userOrSystem.type === 'user') {
+      console.log('userOrSystem :>> ', userOrSystem)
+      return {
+        id: userOrSystem.id || userId,
+        email: userOrSystem.email || '',
+        firstName: userOrSystem.name?.[0]?.given?.[0] || '',
+        lastName: userOrSystem.name?.[0]?.family || ''
+      }
     }
-
-    const user = await response
-
-    return {
-      id: user.id || userId,
-      email: 'test@test.com',
-      firstName: 'Test',
-      lastName: 'User'
-      // email: user.email || '',
-      // firstName: user.name?.[0]?.given?.[0] || '',
-      // lastName: user.name?.[0]?.family || ''
-    }
+    return null
   } catch (error) {
     return null
   }
