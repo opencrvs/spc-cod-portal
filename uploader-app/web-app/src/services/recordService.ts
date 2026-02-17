@@ -167,7 +167,6 @@ export async function getUserById(
     console.log('userOrSystem :>> ', userOrSystem)
 
     if (userOrSystem.type === 'user') {
-      console.log('userOrSystem :>> ', userOrSystem)
       return {
         id: userOrSystem.id || userId,
         email: userOrSystem.email || '',
@@ -201,25 +200,18 @@ export function getCreatedByFromLegalStatuses(
 
 /**
  * Send email notification to a user about processed records
+ * Uses the custom ident-uploader-notification endpoint
  */
 export async function sendProcessingNotificationEmail(
   token: string,
   userInfo: UserInfo,
   recordIds: string[]
 ): Promise<boolean> {
-  const url = new URL('email', GATEWAY_HOST).toString()
+  const url = new URL('ident-uploader-notification', GATEWAY_HOST).toString()
 
-  const loginUrl = 'https://login.spc-cod.opencrvs.org'
-
-  const emailContent = `
-    <p>Dear ${userInfo.firstName} ${userInfo.lastName},</p>
-    <p>The following records have been encoded with cause of death codes and are ready to view:</p>
-    <ul>
-      ${recordIds.map((id) => `<li>${id}</li>`).join('')}
-    </ul>
-    <p>Login to <a href="${loginUrl}">${loginUrl}</a> in order to access.</p>
-    <p>SPC Regional Coding Group</p>
-  `
+  console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
+  console.log('[IDENT-UPLOADER] Record IDs:', recordIds)
+  console.log('[IDENT-UPLOADER] URL:', url)
 
   try {
     const response = await fetch(url, {
@@ -229,19 +221,30 @@ export async function sendProcessingNotificationEmail(
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        subject: 'Death Records Processed - Cause of Death Codes Updated',
-        html: emailContent,
-        from: 'noreply@opencrvs.org',
-        to: userInfo.email
+        recipient: {
+          name: {
+            firstname: userInfo.firstName,
+            surname: userInfo.lastName
+          },
+          email: userInfo.email
+        },
+        recordIds
       })
     })
 
+    console.log('[IDENT-UPLOADER] Response status:', response.status)
+
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('[IDENT-UPLOADER] Error response:', errorText)
       return false
     }
 
+    const result = await response.json()
+    console.log('[IDENT-UPLOADER] Success response:', result)
     return true
   } catch (error) {
+    console.error('[IDENT-UPLOADER] Exception:', error)
     return false
   }
 }

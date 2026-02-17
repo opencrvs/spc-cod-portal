@@ -57,6 +57,10 @@ import { dashboardQueriesHandler } from './api/dashboards/handler'
 import { fontsHandler } from './api/fonts/handler'
 import { recordNotificationHandler } from './api/record-notification/handler'
 import {
+  identUploaderNotificationHandler,
+  identUploaderNotificationSchema
+} from './api/ident-uploader-notification/handler'
+import {
   getCustomEventsHandler,
   onAnyActionHandler,
   onCustomActionHandler
@@ -560,6 +564,20 @@ export async function createServer() {
     options: {
       tags: ['api'],
       description: 'Checks for enabled notification for record'
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/ident-uploader-notification',
+    handler: identUploaderNotificationHandler,
+    options: {
+      tags: ['api'],
+      validate: {
+        payload: identUploaderNotificationSchema
+      },
+      description:
+        'Sends email notification to a user about their processed death records from the IDENT uploader'
     }
   })
 
