@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -9,9 +10,9 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-const scheme = window.location.protocol; // "http:" or "https:"
-const hostname = "{{hostname}}"; // Replace dynamically if needed
-const sentry = "{{sentry}}"; // Replace dynamically if needed
+const scheme = window.location.protocol // "http:" or "https:"
+const hostname = '{{hostname}}' // Replace dynamically if needed
+const sentry = '{{sentry}}' // Replace dynamically if needed
 window.config = {
   AUTH_API_URL: `${scheme}//gateway.${hostname}/auth/`,
   CONFIG_API_URL: `${scheme}//config.${hostname}`,
@@ -21,4 +22,4 @@ window.config = {
   CLIENT_APP_URL: `${scheme}//register.${hostname}/`,
   COUNTRY_CONFIG_URL: `${scheme}//countryconfig.${hostname}`,
   SENTRY: sentry
-};
+}
