@@ -225,7 +225,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileMinus',
     name: {
       id: 'workqueues.requiresUpdates.title',
-      defaultMessage: 'Requires updates',
+      defaultMessage: 'Rejected',
       description: 'Title of requires updates workqueue'
     },
     query: {
@@ -257,7 +257,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileMinus',
     name: {
       id: 'workqueues.requiresUpdates.title',
-      defaultMessage: 'Requires updates',
+      defaultMessage: 'Rejected',
       description: 'Title of requires updates workqueue'
     },
     query: {

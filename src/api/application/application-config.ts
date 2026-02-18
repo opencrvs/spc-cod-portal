@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import { join } from 'path'
 
 export const applicationConfig = {
-  APPLICATION_NAME: 'SPC Regional Coding Group',
+  APPLICATION_NAME: 'SPC Mortality Coding Portal',
   BIRTH: {
     REGISTRATION_TARGET: 30,
     LATE_REGISTRATION_TARGET: 365,

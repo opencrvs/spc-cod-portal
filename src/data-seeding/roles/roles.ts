@@ -37,7 +37,7 @@ export const roles: Role[] = [
       'record.declared.review-duplicates[event=death]',
       'record.registered.correct[event=death]',
       'record.unassign-others[event=death]',
-      'dashboard.view[id=export|statistics]'
+      'dashboard.view[id=statistics]'
     ]
   },
   {
