@@ -430,7 +430,7 @@ export const deceased = defineFormPage({
     {
       id: 'deceased.dob',
       type: FieldType.DATE,
-      required: false,
+      required: true,
       analytics: true,
       validation: [
         {
@@ -458,27 +458,6 @@ export const deceased = defineFormPage({
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.deceased.field.dob.label'
       }
-    },
-    {
-      id: `deceased.deceasedAge`,
-      type: FieldType.NUMBER,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: `Age`,
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.age.label'
-      },
-      validation: [
-        {
-          validator: field('deceased.deceasedAge').isBetween(0, 120),
-          message: {
-            defaultMessage: 'Age must be between 0 and 120',
-            description: 'Error message for invalid age',
-            id: 'event.death.action.declare.form.section.deceased.field.age.error'
-          }
-        }
-      ]
     },
     {
       id: 'deceased.eventDate',
