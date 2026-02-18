@@ -72,16 +72,6 @@ export async function identUploaderNotificationHandler(
       .code(200)
   }
 
-  // Validate recipient email
-  if (!recipient.email) {
-    logger.warn(
-      `Ident uploader notification skipped: No email provided for recipient`
-    )
-    return h
-      .response({ success: false, message: 'No email provided' })
-      .code(400)
-  }
-
   const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
   const applicationName = applicationConfig.APPLICATION_NAME || 'OpenCRVS'
 

@@ -1,4 +1,4 @@
-import { GATEWAY_HOST } from '../util/constants'
+import { GATEWAY_HOST, COUNTRY_CONFIG_HOST } from '../util/constants'
 import { createClient } from '@opencrvs/toolkit/api'
 import { v4 as uuidv4 } from 'uuid'
 import { getDecodedToken } from './token'
@@ -76,8 +76,8 @@ export async function findRecordByCertificateKey(
 
     if (results.length === 0) {
       console.log(
-        '[DEBUG] findRecordByCertificateKey - Not processed as UCCode was absent'
-      ) // TODO: make sure this message is returned to the user in the UI
+        '[DEBUG] findRecordByCertificateKey - Not processed as certificateKey was absent'
+      )
       return null
     }
 
@@ -200,14 +200,18 @@ export function getCreatedByFromLegalStatuses(
 
 /**
  * Send email notification to a user about processed records
- * Uses the custom ident-uploader-notification endpoint
+ * Uses the custom ident-uploader-notification endpoint on country config server
  */
 export async function sendProcessingNotificationEmail(
   token: string,
   userInfo: UserInfo,
   recordIds: string[]
 ): Promise<boolean> {
-  const url = new URL('ident-uploader-notification', GATEWAY_HOST).toString()
+  // Use COUNTRY_CONFIG_HOST since the endpoint is defined in country config server (port 3040)
+  const url = new URL(
+    'ident-uploader-notification',
+    COUNTRY_CONFIG_HOST
+  ).toString()
 
   console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
   console.log('[IDENT-UPLOADER] Record IDs:', recordIds)

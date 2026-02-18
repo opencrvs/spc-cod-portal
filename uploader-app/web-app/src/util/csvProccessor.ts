@@ -210,11 +210,19 @@ async function sendEmailNotifications(
         continue
       }
 
-      // Send single email with all record IDs for this user // is it possible to call the notification handler
-      await sendProcessingNotificationEmail(token, userInfo, recordIds)
+      // Send single email with all record IDs for this user
+      const result = await sendProcessingNotificationEmail(
+        token,
+        userInfo,
+        recordIds
+      )
+      console.log(
+        `[EMAIL-NOTIFICATION] Email sent to user ${userId} for ${recordIds.length} records. Result:`,
+        result
+      )
     } catch (error) {
       console.error(
-        `[DEBUG] sendEmailNotifications - Error sending email to user ${userId}:`,
+        `[EMAIL-NOTIFICATION] Error sending email to user ${userId}:`,
         error
       )
     }
