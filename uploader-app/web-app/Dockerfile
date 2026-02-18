@@ -1,5 +1,9 @@
 # Stage 1: Build Vite app
 FROM node:22-alpine AS builder
+
+ARG VITE_EXTERNAL_CLIENT_URL
+ENV VITE_EXTERNAL_CLIENT_URL=$VITE_EXTERNAL_CLIENT_URL
+
 WORKDIR /app
 COPY package.json yarn.lock ./
 COPY . .
