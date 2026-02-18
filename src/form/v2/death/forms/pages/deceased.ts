@@ -22,9 +22,10 @@ import {
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
 
 const GenderTypes = {
-  MALE: 'male',
-  FEMALE: 'female',
-  UNKNOWN: 'unknown'
+  MALE: '1',
+  FEMALE: '2',
+  OTHER: '8',
+  UNKNOWN: '9'
 } as const
 
 export const SPCCountryType = {
@@ -397,6 +398,11 @@ const genderMessageDescriptors = {
     defaultMessage: 'Female',
     description: 'Label for option female',
     id: 'form.field.label.sexFemale'
+  },
+  OTHER: {
+    defaultMessage: 'Other',
+    description: '',
+    id: 'form.field.label.otherOption'
   },
   UNKNOWN: {
     defaultMessage: 'Unknown',

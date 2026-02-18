@@ -858,7 +858,7 @@ event.birth.action.declare.label,This is shown as the action name anywhere the u
 event.birth.action.delete.label,Label for delete button in dropdown menu,Delete
 event.birth.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name
 event.birth.action.mark-as-duplicate.label,Label for review potential duplicate button in dropdown menu,Review
-event.birth.action.register.label,Label for review record button in dropdown menu,Register
+event.birth.action.register.label,Label for review record button in dropdown menu,Manually Encode
 event.birth.action.request-correction.label,This is shown as the action name anywhere the user can trigger the action from,Correct record
 event.birth.action.validate.label,This is shown as the action name anywhere the user can trigger the action from,Review
 event.birth.label,This is what this event is referred as in the system,Birth
