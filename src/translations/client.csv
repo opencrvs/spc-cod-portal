@@ -755,7 +755,7 @@ countries.ZAF,,South Africa
 countries.ZMB,,Zambia
 countries.ZWE,,Zimbabwe
 dashboard.completenessTitle,Completeness title,Completeness Dashboard
-dashboard.exportTitle,Export title,Export
+dashboard.exportTitle,Export title,Download for encoding
 dashboard.registrationsTitle,Registrations title,Registrations Dashboard
 dashboard.registryTitle,Registry title,Registry
 dashboard.statisticsTitle,Statistics title,Statistics
