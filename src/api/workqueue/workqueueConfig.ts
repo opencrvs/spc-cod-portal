@@ -207,11 +207,7 @@ export const Workqueues = defineWorkqueues([
         }
       ]
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    actions: [],
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
