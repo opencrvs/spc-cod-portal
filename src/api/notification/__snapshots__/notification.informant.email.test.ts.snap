@@ -57,7 +57,7 @@ exports[`Informant notification - Email > birth - REGISTER 1`] = `
     </br>
     <p>
         Best regards, <br />
-        SPC Regional Coding Group Team
+        SPC Mortality Coding Portal Team
     </p>
     </br>
     <i>This is an automated message. Please do not reply to this email.</i>
@@ -127,7 +127,7 @@ exports[`Informant notification - Email > death - REGISTER 1`] = `
     </br>
     <p>
         Best regards, <br />
-        SPC Regional Coding Group Team
+        SPC Mortality Coding Portal Team
     </p>
     </br>
     <i>This is an automated message. Please do not reply to this email.</i>

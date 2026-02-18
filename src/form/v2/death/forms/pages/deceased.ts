@@ -22,9 +22,10 @@ import {
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
 
 const GenderTypes = {
-  MALE: 'male',
-  FEMALE: 'female',
-  UNKNOWN: 'unknown'
+  MALE: '1',
+  FEMALE: '2',
+  OTHER: '8',
+  UNKNOWN: '9'
 } as const
 
 export const SPCCountryType = {
@@ -398,6 +399,11 @@ const genderMessageDescriptors = {
     description: 'Label for option female',
     id: 'form.field.label.sexFemale'
   },
+  OTHER: {
+    defaultMessage: 'Other',
+    description: '',
+    id: 'form.field.label.otherOption'
+  },
   UNKNOWN: {
     defaultMessage: 'Unknown',
     description: 'Label for option unknown',
@@ -430,7 +436,7 @@ export const deceased = defineFormPage({
     {
       id: 'deceased.dob',
       type: FieldType.DATE,
-      required: false,
+      required: true,
       analytics: true,
       validation: [
         {
@@ -458,27 +464,6 @@ export const deceased = defineFormPage({
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.deceased.field.dob.label'
       }
-    },
-    {
-      id: `deceased.deceasedAge`,
-      type: FieldType.NUMBER,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: `Age`,
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.deceased.field.age.label'
-      },
-      validation: [
-        {
-          validator: field('deceased.deceasedAge').isBetween(0, 120),
-          message: {
-            defaultMessage: 'Age must be between 0 and 120',
-            description: 'Error message for invalid age',
-            id: 'event.death.action.declare.form.section.deceased.field.age.error'
-          }
-        }
-      ]
     },
     {
       id: 'deceased.eventDate',
@@ -533,7 +518,7 @@ export const deceased = defineFormPage({
     },
 
     {
-      id: 'eventDetails.immediateCauseOfDeath',
+      id: 'eventDetails.placeOfDeathHelper',
       type: FieldType.PARAGRAPH,
       label: {
         defaultMessage: 'Place of death',
