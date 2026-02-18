@@ -518,7 +518,7 @@ export const deceased = defineFormPage({
     },
 
     {
-      id: 'eventDetails.immediateCauseOfDeath',
+      id: 'eventDetails.placeOfDeathHelper',
       type: FieldType.PARAGRAPH,
       label: {
         defaultMessage: 'Place of death',
