@@ -42,7 +42,56 @@ const spcSymptomOptions = createSelectOptions(
   SymptomType,
   spcSymptomMessageDescriptors
 )
-
+const durationOptions = [
+  {
+    value: 'Minutes',
+    label: {
+      id: 'unit.minutes',
+      defaultMessage: 'Minutes',
+      description: 'Minutes'
+    }
+  },
+  {
+    value: 'Hours',
+    label: {
+      id: 'unit.hours',
+      defaultMessage: 'Hours',
+      description: 'Hours'
+    }
+  },
+  {
+    value: 'Days',
+    label: {
+      id: 'unit.days',
+      defaultMessage: 'Days',
+      description: 'Days'
+    }
+  },
+  {
+    value: 'Weeks',
+    label: {
+      id: 'unit.weeks',
+      defaultMessage: 'Weeks',
+      description: 'Weeks'
+    }
+  },
+  {
+    value: 'Months',
+    label: {
+      id: 'unit.months',
+      defaultMessage: 'Months',
+      description: 'Months'
+    }
+  },
+  {
+    value: 'Years',
+    label: {
+      id: 'unit.years',
+      defaultMessage: 'Years',
+      description: 'Years'
+    }
+  }
+]
 export const eventDetails = defineFormPage({
   id: 'eventDetails',
   type: PageTypes.enum.FORM,
@@ -54,15 +103,16 @@ export const eventDetails = defineFormPage({
   fields: [
     {
       id: 'eventDetails.immediateCauseOfDeath',
-      type: FieldType.SELECT,
-      required: false,
+      type: FieldType.AUTOCOMPLETE,
       analytics: true,
       label: {
         defaultMessage: 'Cause of death A',
         description: 'This is the label for the field',
         id: 'eventDetails.immediateCauseOfDeath'
       },
-      options: spcSymptomOptions
+      configuration: {
+        url: 'http://localhost:3040/causes-of-death?terms='
+      }
     },
     {
       id: 'eventDetails.otherImmediateCauseOfDeath',
@@ -85,16 +135,16 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.immediateCauseOfDeathInterval',
-      type: FieldType.NUMBER,
+      type: FieldType.NUMBER_WITH_UNIT,
       required: false,
       analytics: true,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.immediateCauseOfDeathInterval'
-      }
+      },
+      options: durationOptions
     },
-
     //
     {
       id: 'eventDetails.divider2',
@@ -103,13 +153,16 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCause1',
-      type: FieldType.SELECT,
+      type: FieldType.AUTOCOMPLETE,
+      analytics: true,
       label: {
         defaultMessage: 'Cause of death B',
         description: 'This is the label for the field',
         id: 'eventDetails.antecedentCause1'
       },
-      options: spcSymptomOptions
+      configuration: {
+        url: 'http://localhost:3040/causes-of-death?terms='
+      }
     },
     {
       id: 'eventDetails.otherAntecedentCause1',
@@ -130,14 +183,15 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCauseInterval1',
-      type: FieldType.NUMBER,
+      type: FieldType.NUMBER_WITH_UNIT,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.antecedentCauseInterval1'
       },
       required: false,
-      analytics: true
+      analytics: true,
+      options: durationOptions
     },
 
     //
@@ -148,15 +202,17 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCause2',
-      type: FieldType.SELECT,
-      required: false,
+      type: FieldType.AUTOCOMPLETE,
       analytics: true,
+      required: false,
       label: {
         defaultMessage: 'Cause of death C',
         description: 'This is the label for the field',
         id: 'eventDetails.antecedentCause2'
       },
-      options: spcSymptomOptions
+      configuration: {
+        url: 'http://localhost:3040/causes-of-death?terms='
+      }
     },
     {
       id: 'eventDetails.otherAntecedentCause2',
@@ -177,14 +233,15 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCauseInterval2',
-      type: FieldType.NUMBER,
+      type: FieldType.NUMBER_WITH_UNIT,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.antecedentCauseInterval2'
       },
       required: false,
-      analytics: true
+      analytics: true,
+      options: durationOptions
     },
     {
       id: 'eventDetails.divider4',
@@ -193,13 +250,16 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCause3',
-      type: FieldType.SELECT,
+      type: FieldType.AUTOCOMPLETE,
+      analytics: true,
       label: {
         defaultMessage: 'Cause of death D',
         description: 'This is the label for the field',
         id: 'eventDetails.antecedentCause3'
       },
-      options: spcSymptomOptions
+      configuration: {
+        url: 'http://localhost:3040/causes-of-death?terms='
+      }
     },
     {
       id: 'eventDetails.otherAntecedentCause3',
@@ -220,14 +280,15 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCauseInterval3',
-      type: FieldType.NUMBER,
+      type: FieldType.NUMBER_WITH_UNIT,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.antecedentCauseInterval3'
       },
       required: false,
-      analytics: true
+      analytics: true,
+      options: durationOptions
     },
     {
       id: 'eventDetails.divider5',
@@ -236,15 +297,17 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCause4',
-      type: FieldType.SELECT,
-      required: false,
+      type: FieldType.AUTOCOMPLETE,
       analytics: true,
+      required: false,
       label: {
         defaultMessage: 'Cause of death E',
         description: 'This is the label for the field',
         id: 'eventDetails.antecedentCause4'
       },
-      options: spcSymptomOptions
+      configuration: {
+        url: 'http://localhost:3040/causes-of-death?terms='
+      }
     },
     {
       id: 'eventDetails.otherAntecedentCause4',
@@ -265,14 +328,15 @@ export const eventDetails = defineFormPage({
     },
     {
       id: 'eventDetails.antecedentCauseInterval4',
-      type: FieldType.NUMBER,
+      type: FieldType.NUMBER_WITH_UNIT,
       required: false,
       analytics: true,
       label: {
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.antecedentCauseInterval4'
-      }
+      },
+      options: durationOptions
     },
     {
       id: 'eventDetails.divider6',
