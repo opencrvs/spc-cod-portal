@@ -197,24 +197,17 @@ export const Workqueues = defineWorkqueues([
           status: {
             type: 'anyOf',
             terms: ['DECLARED']
-          },
-          flags: {
-            anyOf: ['validated'],
-            noneOf: [InherentFlags.REJECTED]
           }
         },
         {
           flags: {
-            anyOf: [InherentFlags.CORRECTION_REQUESTED]
+            anyOf: [InherentFlags.CORRECTION_REQUESTED, 'validated'],
+            noneOf: [InherentFlags.REJECTED]
           }
         }
       ]
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    actions: [],
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -232,7 +225,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileMinus',
     name: {
       id: 'workqueues.requiresUpdates.title',
-      defaultMessage: 'Requires updates',
+      defaultMessage: 'Rejected',
       description: 'Title of requires updates workqueue'
     },
     query: {
@@ -264,7 +257,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileMinus',
     name: {
       id: 'workqueues.requiresUpdates.title',
-      defaultMessage: 'Requires updates',
+      defaultMessage: 'Rejected',
       description: 'Title of requires updates workqueue'
     },
     query: {

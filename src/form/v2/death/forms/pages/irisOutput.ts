@@ -13,7 +13,9 @@ import {
   defineFormPage,
   FieldType,
   ConditionalType,
-  never
+  never,
+  event,
+  ActionType
 } from '@opencrvs/toolkit/events'
 
 export const irisOutput = defineFormPage({
@@ -23,7 +25,7 @@ export const irisOutput = defineFormPage({
     description: 'Form section title for iris output',
     id: 'spcCodingGroup.irisOutput.title'
   },
-  // conditional: event.hasAction(ActionType.REGISTER), I assume this will hide the page unless the event is being registered
+  conditional: event.hasAction(ActionType.REGISTER),
   fields: [
     {
       id: 'irisOutput.ucCode',

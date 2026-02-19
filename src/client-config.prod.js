@@ -41,19 +41,10 @@
         id: 'export',
         title: {
           id: 'dashboard.exportTitle',
-          defaultMessage: 'Export',
+          defaultMessage: 'Download for encoding',
           description: 'Menu item for export dashboard'
         },
         url: `${scheme}//metabase.${hostname}/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
-      },
-      {
-        id: 'statistics',
-        title: {
-          id: 'dashboard.statisticsTitle',
-          defaultMessage: 'Statistics',
-          description: 'Menu item for statistics dashboard'
-        },
-        url: `${scheme}//metabase.${hostname}/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
       },
       {
         id: 'uploader',
@@ -66,6 +57,15 @@
         context: {
           auth: 'REQUEST_AUTH_TOKEN'
         }
+      },
+      {
+        id: 'statistics',
+        title: {
+          id: 'dashboard.statisticsTitle',
+          defaultMessage: 'Statistics',
+          description: 'Menu item for statistics dashboard'
+        },
+        url: `${scheme}//metabase.${hostname}/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
       }
     ],
     // NOTE: This is not valid javascript until replaced during build time.

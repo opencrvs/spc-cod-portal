@@ -243,7 +243,7 @@ constants.collectedBy,The collected by sec text,Collected by
 constants.collectorDetails,Label for collector details,Collector Details
 constants.comment,Label for rejection comment,Comment
 constants.communityLeader,The description for Community Leader type,Community Leader
-constants.countryName,Name of the OpenCRVS implementation country,SPC Regional Coding Group
+constants.countryName,Name of the OpenCRVS implementation country,SPC Mortality Coding Portal
 constants.customTimePeriod,Label for Custom time period,Custom time period
 constants.dataEntryClerk,The description for DATA_ENTRY_CLERK type,Data entry clerk
 constants.dateOfDeclaration,Date of declaration label,Date of declaration
@@ -755,7 +755,7 @@ countries.ZAF,,South Africa
 countries.ZMB,,Zambia
 countries.ZWE,,Zimbabwe
 dashboard.completenessTitle,Completeness title,Completeness Dashboard
-dashboard.exportTitle,Export title,Export
+dashboard.exportTitle,Export title,Download for encoding
 dashboard.registrationsTitle,Registrations title,Registrations Dashboard
 dashboard.registryTitle,Registry title,Registry
 dashboard.statisticsTitle,Statistics title,Statistics
@@ -858,7 +858,7 @@ event.birth.action.declare.label,This is shown as the action name anywhere the u
 event.birth.action.delete.label,Label for delete button in dropdown menu,Delete
 event.birth.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name
 event.birth.action.mark-as-duplicate.label,Label for review potential duplicate button in dropdown menu,Review
-event.birth.action.register.label,Label for review record button in dropdown menu,Register
+event.birth.action.register.label,Label for review record button in dropdown menu,Manually Encode
 event.birth.action.request-correction.label,This is shown as the action name anywhere the user can trigger the action from,Correct record
 event.birth.action.validate.label,This is shown as the action name anywhere the user can trigger the action from,Review
 event.birth.label,This is what this event is referred as in the system,Birth
@@ -1912,7 +1912,7 @@ review.declare.confirmModal.cancel,The label for modal cancel button when declar
 review.declare.confirmModal.confirm,The label for modal confirm button when declaring,Confirm
 review.declare.confirmModal.description,The description for review action modal when declaring,This declaration will be sent for coding
 review.declare.confirmModal.title,The title for review action modal when declaring,Send for coding?
-review.declare.description.complete,The description for declare action when form is complete,"On submission, an SPC Regional Coding Group officer will process the coding through Iris at the next available opportunity"
+review.declare.description.complete,The description for declare action when form is complete,"On submission, an SPC Mortality Coding Portal officer will process the coding through Iris at the next available opportunity"
 review.declare.description.incomplete,The description for declare action when form is complete,The informant will receive an email with a tracking ID that they can use to provide the additional mandatory information required for registration
 review.declare.incomplete.confirmModal.cancel,The label for modal cancel button when declaring,Cancel
 review.declare.incomplete.confirmModal.confirm,The label for modal confirm button when declaring,Confirm
@@ -1933,7 +1933,7 @@ review.form.section.review.title,Form section title for Review,Review
 review.form.title,Review form label for update action,Review form
 review.header.subject.subjectWitName,Header subject that shows which declaration type to review with informant name,"{eventType, select, birth {Birth} death {Death} other {Marriage} } declaration for {name}"
 review.header.subject.subjectWithoutName,Header subject that shows which declaration type to review,"{eventType, select, birth {Birth} death {Death} other {Marriage}} Declaration"
-review.header.title.govtName,Header title that shows bgd govt name,SPC Regional Coding Group
+review.header.title.govtName,Header title that shows bgd govt name,SPC Mortality Coding Portal
 review.inputs.additionalComments,Label for input Additional comments,Comments
 review.inputs.brideSignature,Label for informants signature input,Signature of Bride
 review.inputs.groomSignature,Label for informants signature input,Signature of Groom
@@ -1950,7 +1950,7 @@ review.register.confirmModal.cancel,The label for modal cancel button when regis
 review.register.confirmModal.confirm,The label for modal confirm button when registering,Send for processing
 review.register.confirmModal.description,The description for review action modal when registering,‎
 review.register.confirmModal.title,The title for review action modal when registering,Process the {event}?
-review.register.description.complete,The description for registration action when form is complete,"On submission, an SPC Regional Coding Group officer will process the coding through Iris at the next available opportunity"
+review.register.description.complete,The description for registration action when form is complete,"On submission, an SPC Mortality Coding Portal officer will process the coding through Iris at the next available opportunity"
 review.register.reject,The label for reject button of review action,Reject
 review.register.title,The title shown when reviewing a record to register,Send for coding
 review.rej.form.reasons.missSupDoc,Label for rejection option missing supporting doc,Missing supporting documents
@@ -1974,7 +1974,7 @@ review.validate.confirmModal.cancel,The label for modal cancel button when valid
 review.validate.confirmModal.confirm,The label for modal confirm button when validating,Confirm
 review.validate.confirmModal.description,The description for review action modal when validating,This declaration will be sent for approval prior to registration.
 review.validate.confirmModal.title,The title for review action modal when validating,Send for approval?
-review.validate.description.complete,The description for validate action when form is complete,"On submission, an SPC Regional Coding Group officer will process the coding through Iris at the next available opportunity"
+review.validate.description.complete,The description for validate action when form is complete,"On submission, an SPC Mortality Coding Portal officer will process the coding through Iris at the next available opportunity"
 review.validate.description.incomplete,The description for validate action when form is complete,Please add mandatory information before sending for approval
 review.validate.reject,The label for reject button of review action,Reject
 review.validate.title,The title shown when reviewing a record to validate,Send for approval
