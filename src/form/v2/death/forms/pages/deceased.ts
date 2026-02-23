@@ -16,10 +16,12 @@ import {
   FieldType,
   PageTypes,
   field,
-  or
+  or,
+  never
 } from '@opencrvs/toolkit/events'
 
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
+import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
 
 const GenderTypes = {
   MALE: '1',
@@ -431,6 +433,38 @@ export const deceased = defineFormPage({
         defaultMessage: 'Certificate Key',
         description: 'This is the label for the field',
         id: 'spcRegionalGroup.certificateKey'
+      }
+    },
+    {
+      id: 'deceased.fetch-http-certificateKey',
+      type: FieldType.HTTP,
+      required: true,
+      analytics: true,
+      conditionals: [
+        {
+          type: ConditionalType.DISPLAY_ON_REVIEW,
+          conditional: never()
+        }
+      ],
+      label: {
+        defaultMessage: 'Certificate Key',
+        description: 'This is the label for the field',
+        id: 'spcRegionalGroup.certificateKey'
+      },
+      configuration: {
+        trigger: field(`deceased.certificateKey`),
+        url: `${COUNTRY_CONFIG_URL}/check-deceased-keys`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        params: {
+          id: field('deceased.certificateKey')
+        },
+        errorValue: {
+          verificationStatus: 'failed'
+        },
+        timeout: 5000
       }
     },
     {
