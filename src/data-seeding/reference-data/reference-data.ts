@@ -20,7 +20,7 @@ export async function syncReferenceData() {
   const client = getClient()
 
   const icd10Records = await readCSVToJSON<Icd10CodeRecord[]>(
-    './src/data-seeding/reference-data/source/merged-codes.deduped.csv'
+    './src/data-seeding/reference-data/source/specV2021SR40-Codes.csv'
   )
 
   await client.transaction().execute(async (trx) => {
