@@ -10,9 +10,7 @@ export interface Icd10CodeRecord {
 
 // Source priority ranking
 const SOURCE_PRIORITY: Record<string, number> = {
-  'iris-dictionary': 1,
-  'specV2021SR40-Codes': 2,
-  'who-2019': 3
+  SpecV2021SR40: 1
 }
 
 export async function onSearchHandler(
