@@ -568,16 +568,16 @@ export async function createServer() {
   })
 
   server.route({
-    method: 'POST',
+    method: 'GET',
     path: '/check-deceased-keys',
     handler: async (request, h) => {
-      const { id } = request.payload as { id: string }
+      const { id } = request.query as { id: string }
       const result = await checkDeceasedKeys(id, getClient())
       return h.response({ exists: result }).code(200)
     },
     options: {
       validate: {
-        payload: Joi.object({
+        query: Joi.object({
           id: Joi.string().required()
         })
       },
