@@ -56,7 +56,7 @@ export async function findRecordByCertificateKey(
       query: {
         type: 'and',
         clauses: [
-          { status: { type: 'exact', term: 'DECLARED' }, eventType: 'death' },
+          { eventType: 'death' },
           {
             data: {
               'deceased.certificateKey': {

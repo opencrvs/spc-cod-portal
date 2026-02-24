@@ -88,6 +88,17 @@ export const processCSVRow = async (
       }
     }
 
+    const isAlreadyProcessed = record.status === 'REGISTERED'
+
+    if (isAlreadyProcessed) {
+      return {
+        rowIndex,
+        id,
+        status: 'skipped',
+        message: `Record with ID "${id}" has already been processed`
+      }
+    }
+
     // Check if there are any IRIS output fields to update
     const hasIrisData =
       row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments
