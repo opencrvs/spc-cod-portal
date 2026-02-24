@@ -18,8 +18,6 @@ import {
 } from '@opencrvs/toolkit/events'
 import { GATEWAY_URL } from '@countryconfig/constants'
 import { v4 as uuidv4 } from 'uuid'
-import { sendInformantNotification } from '../notification/informantNotification'
-
 export interface ActionConfirmationRequest extends Hapi.Request {
   payload: EventDocument
 }
@@ -65,7 +63,8 @@ export async function onRegisterHandler(
 
   const registrationNumber = generateRegistrationNumber()
 
-  await sendInformantNotification({ event, token, registrationNumber })
+  // Skipping sendInformantNotification call as SPC forms do not have an informant field.
+  /* await sendInformantNotification({ event, token, registrationNumber }) */
 
   return h.response({ registrationNumber }).code(200)
 
