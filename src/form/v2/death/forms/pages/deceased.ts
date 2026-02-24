@@ -475,9 +475,6 @@ export const deceased = defineFormPage({
         params: {
           id: field('deceased.certificateKey')
         },
-        errorValue: {
-          verificationStatus: 'failed'
-        },
         timeout: 5000
       }
     },
