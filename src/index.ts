@@ -581,7 +581,6 @@ export async function createServer() {
           id: Joi.string().required()
         })
       },
-      auth: false,
       tags: ['api'],
       description: 'Checks for deceased keys in analytics'
     }
