@@ -82,12 +82,12 @@ export const irisOutput = defineFormPage({
       }
     },
     {
-      id: 'irisOutput.comment',
+      id: 'irisOutput.freeText',
       type: FieldType.TEXTAREA,
       label: {
-        defaultMessage: 'Comment',
-        id: 'event.death.action.declare.form.review.comment.label',
-        description: 'Label for the comment field in the review section'
+        defaultMessage: 'Free text',
+        id: 'spcCodingGroup.freeText.title',
+        description: 'Label for the free text field in the Iris Output section'
       },
       defaultValue: 'Default',
       analytics: true,

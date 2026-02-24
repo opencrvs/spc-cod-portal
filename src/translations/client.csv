@@ -2041,6 +2041,7 @@ settings.user.label.nameBN,,Bengali name
 settings.user.label.nameEN,,Full name
 settings.verifyPhone,Verify phone number title,Verify phone number
 signature.upload.modal.title,Title for the signature upload modal,Upload Signature
+spcCodingGroup.freeText.title,Label for the free text field in the Iris Output section,Free text
 sysAdHome.config,The title of config tab,Config
 sysAdHome.devices,The title of devices tab,Devices
 sysAdHome.network,The title of network tab,Network

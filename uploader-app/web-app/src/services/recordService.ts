@@ -123,6 +123,8 @@ export async function updateRecordWithCauseOfDeath(
     // Merge the IRIS output fields with the event declaration
     const updatedDeclaration = {
       ...eventDeclaration,
+      'eventDetails.comments':
+        row.Comments || eventDeclaration?.['eventDetails.comments'] || '',
       'irisOutput.ucCode':
         row.UCCode || eventDeclaration?.['irisOutput.ucCode'] || '',
       'irisOutput.selectedCodes':
@@ -133,8 +135,8 @@ export async function updateRecordWithCauseOfDeath(
         row.MultipleCodes ||
         eventDeclaration?.['irisOutput.multipleCodes'] ||
         '',
-      'irisOutput.comment':
-        row.Comments || eventDeclaration?.['irisOutput.comment'] || ''
+      'irisOutput.freeText':
+        row.FreeText || eventDeclaration?.['irisOutput.freeText'] || ''
     }
 
     // Step 2: Register the event
