@@ -931,6 +931,7 @@ event.death.action.correction.reason.option.materialError.label,Label for the ma
 event.death.action.correction.reason.option.materialOmission.label,Label for the material omission option,Informant did not provide this information (Material omission)
 event.death.action.correction.reason.option.other.label,Label for the other option,Other
 event.death.action.correction.reason.other.label,Label for the reason,Specify reason
+event.death.action.declare.field.certificateKey.error,This is the error message for invalid certificate key,Certificate key exists already
 event.death.action.declare.form.label,This is what this form is referred as in the system,Death declaration form
 event.death.action.declare.form.nid.unique,This is the error message for non-unique ID Number,National id must be unique
 event.death.action.declare.form.review.comment.label,Label for the comment field in the review section,Comment
@@ -1147,6 +1148,7 @@ form.birth.child.title,Form section title for Child,Child's details
 form.customField.label.numberOfDependants,,No. of dependants
 form.customField.label.reasonForLateRegistrationBirth,,Reason for delayed registration
 form.customField.label.reasonForLateRegistrationDeath,,Reason for late registration
+form.fetch-loader.label,This is the label for the loader to check if the deceased certificate key exists in the system,Checking if deceased certificate key exists
 form.field.dateRangepicker.checkbox.dateLabel,,{rangeStart} to {rangeEnd}
 form.field.helpertext.nid,Helper text for nid input field,The National ID can only be numeric and must be 10 digits long
 form.field.hideLabel,Button to hide section,Hide

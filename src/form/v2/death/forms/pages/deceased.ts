@@ -17,7 +17,8 @@ import {
   PageTypes,
   field,
   or,
-  never
+  never,
+  not
 } from '@opencrvs/toolkit/events'
 
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
@@ -433,13 +434,26 @@ export const deceased = defineFormPage({
         defaultMessage: 'Certificate Key',
         description: 'This is the label for the field',
         id: 'spcRegionalGroup.certificateKey'
-      }
+      },
+      validation: [
+        {
+          message: {
+            id: 'event.death.action.declare.field.certificateKey.error',
+            defaultMessage: 'Certificate key exists already',
+            description: 'This is the error message for invalid certificate key'
+          },
+          validator: not(
+            field('deceased.fetch-http-certificateKey')
+              .get('data.exists')
+              .isEqualTo(true)
+          )
+        }
+      ]
     },
     {
       id: 'deceased.fetch-http-certificateKey',
       type: FieldType.HTTP,
       required: true,
-      analytics: true,
       conditionals: [
         {
           type: ConditionalType.DISPLAY_ON_REVIEW,
@@ -465,6 +479,37 @@ export const deceased = defineFormPage({
           verificationStatus: 'failed'
         },
         timeout: 5000
+      }
+    },
+    {
+      id: `deceased.fetch-loader`,
+      type: FieldType.LOADER,
+      parent: field(`deceased.fetch-http-certificateKey`),
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: not(
+            field(`deceased.fetch-http-certificateKey`).get('loading').isFalsy()
+          )
+        },
+        {
+          type: ConditionalType.DISPLAY_ON_REVIEW,
+          conditional: never()
+        }
+      ],
+      label: {
+        id: 'form.fetch-loader.label',
+        defaultMessage: 'Checking if deceased certificate key exists',
+        description:
+          'This is the label for the loader to check if the deceased certificate key exists in the system'
+      },
+      configuration: {
+        text: {
+          id: 'form.fetch-loader.label',
+          defaultMessage: 'Checking if deceased certificate key exists',
+          description:
+            'This is the label for the loader to check if the deceased certificate key exists in the system'
+        }
       }
     },
     {
