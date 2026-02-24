@@ -50,6 +50,9 @@ PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U 
 DROP SCHEMA IF EXISTS analytics CASCADE;
 CREATE SCHEMA analytics;
 
+-- Drop indexes that reference the analytics schema
+DROP INDEX IF EXISTS event_actions_deceased_cert_key_idx;
+
 -- Drop and recreate analytics user
 DROP ROLE IF EXISTS "$ANALYTICS_POSTGRES_USER";
 EOSQL
