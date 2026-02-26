@@ -33,6 +33,14 @@ export const applicationConfig = {
       id: 'province',
       label: {
         id: 'field.address.province.label',
+        defaultMessage: 'Country',
+        description: 'Label for province in address'
+      }
+    },
+    {
+      id: 'district',
+      label: {
+        id: 'field.address.district.label',
         defaultMessage: 'Island / District / Village',
         description: 'Label for province in address'
       }
