@@ -24,6 +24,7 @@ interface ResultsScreenProps {
 export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
   const hasSkipped = summary.skipped > 0
   const hasErrors = summary.errors > 0
+  const hasRejected = summary.rejected > 0
 
   return (
     <div className="flex flex-col items-center h-screen overflow-y-auto p-8 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -138,6 +139,19 @@ export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
           </Alert>
         )}
 
+        {/* Rejected Message */}
+        {hasRejected && (
+          <Alert
+            icon={<AlertCircle className="w-5 h-5" />}
+            title="Records Rejected"
+            color="red"
+            mb="md"
+          >
+            {summary.rejected} record(s) were rejected by IRIS during processing. See details
+            below.
+          </Alert>
+        )}
+
         {/* Detailed Results */}
         <Card shadow="sm" padding="lg" radius="md" withBorder mb="xl">
           <Text size="lg" fw={500} mb="md">
@@ -149,14 +163,14 @@ export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
               const Icon =
                 result.status === 'success'
                   ? CheckCircle
-                  : result.status === 'error'
+                  : result.status === 'error' || result.status === 'rejected'
                     ? XCircle
                     : SkipForward
 
               const color =
                 result.status === 'success'
                   ? 'green'
-                  : result.status === 'error'
+                  : result.status === 'error' || result.status === 'rejected'
                     ? 'red'
                     : 'orange'
 

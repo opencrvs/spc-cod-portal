@@ -14,8 +14,10 @@ import {
   FieldType,
   ConditionalType,
   never,
+  user,
   event,
-  ActionType
+  ActionType,
+  or
 } from '@opencrvs/toolkit/events'
 
 export const irisOutput = defineFormPage({
@@ -25,7 +27,10 @@ export const irisOutput = defineFormPage({
     description: 'Form section title for iris output',
     id: 'spcCodingGroup.irisOutput.title'
   },
-  conditional: event.hasAction(ActionType.REGISTER),
+  conditional: or(
+    user.hasRole('CODING_OFFICER'),
+    event.hasAction(ActionType.REGISTER)
+  ),
   fields: [
     {
       id: 'irisOutput.ucCode',

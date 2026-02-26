@@ -66,6 +66,7 @@ export const processCSVRow = async (
   token: string
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
+  const status = row.Status
 
   if (!id) {
     return {
@@ -88,14 +89,24 @@ export const processCSVRow = async (
       }
     }
 
-    const isAlreadyProcessed = record.status === 'REGISTERED'
+    const isAlreadyRegistered = record.status === 'REGISTERED'
+    const isAlreadyRejected = record.flags?.includes('register:rejected')
 
-    if (isAlreadyProcessed) {
+    if (isAlreadyRegistered) {
       return {
         rowIndex,
         id,
         status: 'skipped',
-        message: `Record with ID "${id}" has already been processed`
+        message: `Record with ID "${id}" has already been registered`
+      }
+    }
+
+    if (isAlreadyRejected) {
+      return {
+        rowIndex,
+        id,
+        status: 'skipped',
+        message: `Record with ID "${id}" has already been rejected`
       }
     }
 
@@ -113,6 +124,9 @@ export const processCSVRow = async (
       }
     }
 
+    //NOTE: if the record can be found and isnt already registered
+    //or does not have a register:rejected flag, then proceed
+
     const updated = await updateRecordWithCauseOfDeath(
       token,
       record.id,
@@ -126,6 +140,17 @@ export const processCSVRow = async (
         id,
         status: 'error',
         message: 'Failed to update record'
+      }
+    }
+
+    if (status === 'Rejected') {
+      const rejectReason = row.RejectReason
+
+      return {
+        rowIndex,
+        id,
+        status: 'rejected',
+        message: `Record with ID "${id}" has status Rejected`
       }
     }
 
@@ -172,6 +197,7 @@ export const processCSV = async (
     successful: results.filter((r) => r.status === 'success').length,
     skipped: results.filter((r) => r.status === 'skipped').length,
     errors: results.filter((r) => r.status === 'error').length,
+    rejected: results.filter((r) => r.status === 'rejected').length,
     results
   }
 

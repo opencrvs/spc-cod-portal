@@ -8,7 +8,7 @@ export interface CSVRow {
 export interface ProcessingResult {
   rowIndex: number
   id: string
-  status: 'success' | 'skipped' | 'error'
+  status: 'success' | 'skipped' | 'error' | 'rejected'
   message: string
   causesOfDeath?: string[]
   /** The user ID who created the record (from legalStatuses.DECLARED.createdBy) */
@@ -22,6 +22,7 @@ export interface ProcessingSummary {
   successful: number
   skipped: number
   errors: number
+  rejected: number
   results: ProcessingResult[]
 }
 

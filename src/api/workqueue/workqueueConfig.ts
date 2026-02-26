@@ -1,4 +1,6 @@
 import {
+  ActionStatus,
+  ActionType,
   EventStatus,
   InherentFlags,
   defineWorkqueues,
@@ -161,7 +163,9 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED]
+        noneOf: [
+          `${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()
+        ]
       },
       updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
@@ -197,6 +201,11 @@ export const Workqueues = defineWorkqueues([
           status: {
             type: 'anyOf',
             terms: ['DECLARED']
+          },
+          flags: {
+            noneOf: [
+              `${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()
+            ]
           }
         },
         {
@@ -231,7 +240,7 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'anyOf', terms: ['DECLARED', 'NOTIFIED'] },
       flags: {
-        anyOf: [InherentFlags.REJECTED]
+        anyOf: [`${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()]
       },
       createdBy: { type: 'exact', term: user('id') }
     },
@@ -261,8 +270,9 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of requires updates workqueue'
     },
     query: {
+      status: { type: 'anyOf', terms: ['DECLARED'] },
       flags: {
-        anyOf: [InherentFlags.REJECTED]
+        anyOf: [`${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()]
       },
       updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },

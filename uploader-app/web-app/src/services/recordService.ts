@@ -139,10 +139,10 @@ export async function updateRecordWithCauseOfDeath(
         row.FreeText || eventDeclaration?.['irisOutput.freeText'] || ''
     }
 
-    // Step 2: Register the event
+    // Step 2: Request event registration
     const registerResult = await client.event.actions.register.request.mutate({
       declaration: updatedDeclaration,
-      annotation: {},
+      annotation: { status: row.Status || '', reason: row.Reject || '' }, // Pass in the IRIS status and reason columns
       eventId,
       transactionId: uuidv4()
     })
