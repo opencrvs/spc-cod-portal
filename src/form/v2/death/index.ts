@@ -147,7 +147,7 @@ export const deathEvent = defineConfig({
         id: 'event.death.action.register.supportingCopy',
         description: 'Confirmation text for the register action',
         defaultMessage:
-          'Registering this death event will create an official civil registration record. Please ensure all details are correct before proceeding.'
+          'Manually encoding means not processing this record through Iris and selecting UCCodes yourself. Please ensure all details are correct before proceeding.'
       },
       flags: [{ id: 'pending-first-certificate-issuance', operation: 'add' }],
       conditionals: [],
