@@ -33,3 +33,4 @@ export const PRODUCTION = env.isProd
 export const QA_ENV = env.QA_ENV
 export const ANALYTICS_DATABASE_URL = env.ANALYTICS_DATABASE_URL
 export const REFERENCE_DATA_DATABASE_URL = env.REFERENCE_DATA_DATABASE_URL
+export const COD_URL = env.COD_URL

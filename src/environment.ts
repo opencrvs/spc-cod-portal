@@ -40,5 +40,9 @@ export const env = cleanEnv(process.env, {
     devDefault:
       'postgres://events_reference_data:reference_data_password@localhost:5432/events',
     desc: 'The database URL for reads and writes to `reference_data.icd10`. See `/infrastructure/postgres/setup-reference-data.sh` for how the default database is set up for your country.'
+  }),
+  COD_URL: url({
+    devDefault: 'http://localhost:3040/causes-of-death?terms=',
+    desc: 'The URL for the COD service.'
   })
 })
