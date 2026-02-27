@@ -66,7 +66,7 @@ export const processCSVRow = async (
   token: string
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
-  const status = row.Status
+  const rowStatus = row.Status
 
   if (!id) {
     return {
@@ -89,10 +89,10 @@ export const processCSVRow = async (
       }
     }
 
-    const isAlreadyRegistered = record.status === 'REGISTERED'
-    const isAlreadyRejected = record.flags?.includes('register:rejected')
+    const markedAsRegisteredInOcrvs = record.status === 'REGISTERED'
+    const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
 
-    if (isAlreadyRegistered) {
+    if (markedAsRegisteredInOcrvs) {
       return {
         rowIndex,
         id,
@@ -101,7 +101,7 @@ export const processCSVRow = async (
       }
     }
 
-    if (isAlreadyRejected) {
+    if (markedAsRejectedInOcrvs && rowStatus === 'Rejected') {
       return {
         rowIndex,
         id,
@@ -124,14 +124,10 @@ export const processCSVRow = async (
       }
     }
 
-    //NOTE: if the record can be found and isnt already registered
-    //or does not have a register:rejected flag, then proceed
-
     const updated = await updateRecordWithCauseOfDeath(
       token,
-      record.id,
-      row,
-      record.declaration
+      record,
+      row
     )
 
     if (!updated) {
@@ -143,7 +139,7 @@ export const processCSVRow = async (
       }
     }
 
-    if (status === 'Rejected') {
+    if (rowStatus === 'Rejected') {
       const rejectReason = row.RejectReason
 
       return {

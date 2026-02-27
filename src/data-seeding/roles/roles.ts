@@ -103,7 +103,8 @@ export const roles: Role[] = [
       'record.register[event=death]',
       'record.registered.correct[event=death]',
       'dashboard.view[id=uploader|export|statistics]',
-      'record.unassign-others[event=death]'
+      'record.unassign-others[event=death]',
+      'record.declared.edit[event=death]'
     ]
   }
 ]

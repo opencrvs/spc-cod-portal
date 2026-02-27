@@ -95,10 +95,12 @@ export async function findRecordByCertificateKey(
  */
 export async function updateRecordWithCauseOfDeath(
   token: string,
-  eventId: string,
-  row: any,
-  eventDeclaration: any
+  record: DeathRecord,
+  row: any
 ): Promise<boolean> {
+  const eventId = record.id
+  const eventDeclaration = record.declaration
+  const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
   const url = new URL('events', GATEWAY_HOST).toString()
   const client = createClient(url, `Bearer ${token}`)
 
@@ -139,18 +141,46 @@ export async function updateRecordWithCauseOfDeath(
         row.FreeText || eventDeclaration?.['irisOutput.freeText'] || ''
     }
 
-    if (row.Status === 'Final') {
-      // Step 2: Request event registration
+    if (row.Status === 'Final' && markedAsRejectedInOcrvs) {
+      // If the IRIS status has changed to "Final"
+      // and the record has a [rejected] flag,
+      // we should attempt to reprocess it
+      
+      // An event in 'DECLARED' state with [rejected] flag
+      // can only accept the following actions
+      // READ, NOTIFY, CUSTOM, EDIT, ARCHIVE.
+
+      // Request EDIT action to remove the "rejected" flag
+      const editResult = await client.event.actions.edit.request.mutate({
+        transactionId: uuidv4(),
+        declaration: updatedDeclaration,
+        eventId,
+        content: { reason: row.Reject || '' },
+        keepAssignment: true
+      })
+
+      // Request REGISTER action
       const registerResult = await client.event.actions.register.request.mutate(
         {
           declaration: updatedDeclaration,
-          annotation: { status: row.Status || '', reason: row.Reject || '' }, // Pass in the IRIS status and reason columns
+          annotation: { status: row.Status || '', reason: row.Reject || '' },
+          eventId,
+          transactionId: uuidv4()
+        }
+      )
+
+    } else if (row.Status === 'Final') {
+      // Request REGISTER action
+      const registerResult = await client.event.actions.register.request.mutate(
+        {
+          declaration: updatedDeclaration,
+          annotation: { status: row.Status || '', reason: row.Reject || '' },
           eventId,
           transactionId: uuidv4()
         }
       )
     } else {
-      // Step 3: Request event rejection if the IRIS status is "Rejected"
+      // Request REJECT action if the IRIS status is "Rejected"
       const rejectResult = await client.event.actions.reject.request.mutate({
         transactionId: uuidv4(),
         declaration: updatedDeclaration,
