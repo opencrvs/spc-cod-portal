@@ -163,9 +163,7 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'exact', term: EventStatus.enum.DECLARED },
       flags: {
-        noneOf: [
-          `${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()
-        ]
+        noneOf: [InherentFlags.CORRECTION_REQUESTED]
       },
       updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
@@ -203,9 +201,7 @@ export const Workqueues = defineWorkqueues([
             terms: ['DECLARED']
           },
           flags: {
-            noneOf: [
-              `${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()
-            ]
+            noneOf: [InherentFlags.REJECTED]
           }
         },
         {
@@ -270,11 +266,29 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of requires updates workqueue'
     },
     query: {
-      status: { type: 'anyOf', terms: ['DECLARED'] },
-      flags: {
-        anyOf: [`${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()]
-      },
-      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
+      type: 'or',
+      clauses: [
+        {
+          status: { type: 'anyOf', terms: ['DECLARED'] },
+          flags: {
+            anyOf: [InherentFlags.REJECTED]
+          },
+          updatedAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        },
+        {
+          status: { type: 'anyOf', terms: ['DECLARED'] },
+          flags: {
+            anyOf: [InherentFlags.REJECTED]
+          },
+          createdAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        }
+      ]
     },
     actions: [
       {
@@ -341,12 +355,23 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of sent for approval workqueue'
     },
     query: {
-      flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: ['pending-first-certificate-issuance']
-      },
-      status: { type: 'exact', term: 'REGISTERED' },
-      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
+      type: 'or',
+      clauses: [
+        {
+          status: { type: 'anyOf', terms: ['REGISTERED'] },
+          updatedAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        },
+        {
+          status: { type: 'anyOf', terms: ['REGISTERED'] },
+          createdAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        }
+      ]
     },
     actions: [
       {
