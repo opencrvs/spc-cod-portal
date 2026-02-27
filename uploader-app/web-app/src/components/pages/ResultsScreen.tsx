@@ -37,7 +37,7 @@ export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <div className="text-center">
               <Text size="sm" c="dimmed" mb={4}>
@@ -79,6 +79,23 @@ export function ResultsScreen({ summary, onUploadNew }: ResultsScreenProps) {
               </Text>
               <Text size="xl" fw={700} c="orange">
                 {summary.skipped}
+              </Text>
+            </div>
+          </Card>
+
+          <Card
+            shadow="sm"
+            padding="lg"
+            radius="md"
+            withBorder
+            className="border-red-200"
+          >
+            <div className="text-center">
+              <Text size="sm" c="dimmed" mb={4}>
+                Rejected
+              </Text>
+              <Text size="xl" fw={700} c="red">
+                {summary.rejected}
               </Text>
             </div>
           </Card>
