@@ -139,13 +139,25 @@ export async function updateRecordWithCauseOfDeath(
         row.FreeText || eventDeclaration?.['irisOutput.freeText'] || ''
     }
 
-    // Step 2: Request event registration
-    const registerResult = await client.event.actions.register.request.mutate({
-      declaration: updatedDeclaration,
-      annotation: { status: row.Status || '', reason: row.Reject || '' }, // Pass in the IRIS status and reason columns
-      eventId,
-      transactionId: uuidv4()
-    })
+    if (row.Status === 'Final') {
+      // Step 2: Request event registration
+      const registerResult = await client.event.actions.register.request.mutate(
+        {
+          declaration: updatedDeclaration,
+          annotation: { status: row.Status || '', reason: row.Reject || '' }, // Pass in the IRIS status and reason columns
+          eventId,
+          transactionId: uuidv4()
+        }
+      )
+    } else {
+      // Step 3: Request event rejection if the IRIS status is "Rejected"
+      const rejectResult = await client.event.actions.reject.request.mutate({
+        transactionId: uuidv4(),
+        declaration: updatedDeclaration,
+        eventId,
+        content: { reason: row.Reject || '' }
+      })
+    }
 
     return true
   } catch (error) {

@@ -66,17 +66,7 @@ export async function onRegisterHandler(
   // Skipping sendInformantNotification call as SPC forms do not have an informant field.
   /* await sendInformantNotification({ event, token, registrationNumber }) */
 
-  const valid = action?.annotation?.status === 'Final'
-
-  if (valid) {
-    // If the Status says "Final", proceed to register
-    return h.response({ registrationNumber }).code(200)
-  } else {
-    // If the Status says "Rejected", reject the registration action
-    return h
-      .response({ reason: 'Record was rejected by IRIS during processing' })
-      .code(400)
-  }
+  return h.response({ registrationNumber }).code(200)
 
   // OPTION 2: Immediate rejection (HTTP 400)
   // To reject the registration immediately, uncomment the following:
