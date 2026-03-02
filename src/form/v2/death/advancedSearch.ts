@@ -38,9 +38,6 @@ export const advancedSearchDeath = [
       id: 'advancedSearch.form.deceasedDetails'
     },
     fields: [
-      field('deceased.country', {
-        searchCriteriaLabelPrefix: deceasedPrefix
-      }).exact(),
       field('deceased.certificateKey', {
         searchCriteriaLabelPrefix: deceasedPrefix
       }).exact(),
