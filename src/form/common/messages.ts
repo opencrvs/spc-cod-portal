@@ -127,7 +127,7 @@ export const informantMessageDescriptors = {
 
 export const formMessageDescriptors = {
   primaryAddress: {
-    defaultMessage: 'Usual place of residence',
+    defaultMessage: 'Place of death',
     description: 'Title of the primary adress',
     id: 'form.field.label.primaryAddress'
   },

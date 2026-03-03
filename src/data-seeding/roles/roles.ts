@@ -27,7 +27,7 @@ export const roles: Role[] = [
       SCOPES.PERFORMANCE_READ_DASHBOARDS,
       SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
       SCOPES.SEARCH_DEATH,
-      'search[event=death,access=my-jurisdiction]',
+      'search[event=death,access=all]',
       'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|in-review|encoded]',
       'record.create[event=death]',
       'record.read[event=death]',
@@ -103,7 +103,8 @@ export const roles: Role[] = [
       'record.register[event=death]',
       'record.registered.correct[event=death]',
       'dashboard.view[id=uploader|export|statistics]',
-      'record.unassign-others[event=death]'
+      'record.unassign-others[event=death]',
+      'record.declared.edit[event=death]'
     ]
   }
 ]

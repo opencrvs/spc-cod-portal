@@ -14,8 +14,10 @@ import {
   FieldType,
   ConditionalType,
   never,
+  user,
   event,
-  ActionType
+  ActionType,
+  or
 } from '@opencrvs/toolkit/events'
 
 export const irisOutput = defineFormPage({
@@ -25,7 +27,10 @@ export const irisOutput = defineFormPage({
     description: 'Form section title for iris output',
     id: 'spcCodingGroup.irisOutput.title'
   },
-  conditional: event.hasAction(ActionType.REGISTER),
+  conditional: or(
+    user.hasRole('CODING_OFFICER'),
+    event.hasAction(ActionType.REGISTER)
+  ),
   fields: [
     {
       id: 'irisOutput.ucCode',
@@ -82,12 +87,12 @@ export const irisOutput = defineFormPage({
       }
     },
     {
-      id: 'irisOutput.comment',
+      id: 'irisOutput.freeText',
       type: FieldType.TEXTAREA,
       label: {
-        defaultMessage: 'Comment',
-        id: 'event.death.action.declare.form.review.comment.label',
-        description: 'Label for the comment field in the review section'
+        defaultMessage: 'Free text',
+        id: 'spcCodingGroup.freeText.title',
+        description: 'Label for the free text field in the Iris Output section'
       },
       defaultValue: 'Default',
       analytics: true,

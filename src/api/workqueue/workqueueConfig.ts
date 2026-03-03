@@ -1,4 +1,6 @@
 import {
+  ActionStatus,
+  ActionType,
   EventStatus,
   InherentFlags,
   defineWorkqueues,
@@ -197,6 +199,9 @@ export const Workqueues = defineWorkqueues([
           status: {
             type: 'anyOf',
             terms: ['DECLARED']
+          },
+          flags: {
+            noneOf: [InherentFlags.REJECTED]
           }
         },
         {
@@ -231,7 +236,7 @@ export const Workqueues = defineWorkqueues([
     query: {
       status: { type: 'anyOf', terms: ['DECLARED', 'NOTIFIED'] },
       flags: {
-        anyOf: [InherentFlags.REJECTED]
+        anyOf: [`${ActionType.REGISTER}:${ActionStatus.Rejected}`.toLowerCase()]
       },
       createdBy: { type: 'exact', term: user('id') }
     },
@@ -261,10 +266,29 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of requires updates workqueue'
     },
     query: {
-      flags: {
-        anyOf: [InherentFlags.REJECTED]
-      },
-      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
+      type: 'or',
+      clauses: [
+        {
+          status: { type: 'anyOf', terms: ['DECLARED'] },
+          flags: {
+            anyOf: [InherentFlags.REJECTED]
+          },
+          updatedAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        },
+        {
+          status: { type: 'anyOf', terms: ['DECLARED'] },
+          flags: {
+            anyOf: [InherentFlags.REJECTED]
+          },
+          createdAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        }
+      ]
     },
     actions: [
       {
@@ -331,12 +355,23 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of sent for approval workqueue'
     },
     query: {
-      flags: {
-        noneOf: [InherentFlags.CORRECTION_REQUESTED],
-        anyOf: ['pending-first-certificate-issuance']
-      },
-      status: { type: 'exact', term: 'REGISTERED' },
-      updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
+      type: 'or',
+      clauses: [
+        {
+          status: { type: 'anyOf', terms: ['REGISTERED'] },
+          updatedAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        },
+        {
+          status: { type: 'anyOf', terms: ['REGISTERED'] },
+          createdAtLocation: {
+            type: 'within',
+            location: user('primaryOfficeId')
+          }
+        }
+      ]
     },
     actions: [
       {

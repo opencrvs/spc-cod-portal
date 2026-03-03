@@ -17,7 +17,7 @@ import {
   TranslationConfig
 } from '@opencrvs/toolkit/events'
 import { createSelectOptions } from '@countryconfig/form/v2/utils'
-
+import { COD_URL } from '@countryconfig/constants'
 import { emptyMessage } from '@countryconfig/form/v2/utils'
 
 export const SymptomType = {
@@ -111,7 +111,7 @@ export const eventDetails = defineFormPage({
         id: 'eventDetails.immediateCauseOfDeath'
       },
       configuration: {
-        url: 'http://localhost:3040/causes-of-death?terms='
+        url: COD_URL
       }
     },
     {
@@ -161,7 +161,7 @@ export const eventDetails = defineFormPage({
         id: 'eventDetails.antecedentCause1'
       },
       configuration: {
-        url: 'http://localhost:3040/causes-of-death?terms='
+        url: COD_URL
       }
     },
     {
@@ -211,7 +211,7 @@ export const eventDetails = defineFormPage({
         id: 'eventDetails.antecedentCause2'
       },
       configuration: {
-        url: 'http://localhost:3040/causes-of-death?terms='
+        url: COD_URL
       }
     },
     {
@@ -258,7 +258,7 @@ export const eventDetails = defineFormPage({
         id: 'eventDetails.antecedentCause3'
       },
       configuration: {
-        url: 'http://localhost:3040/causes-of-death?terms='
+        url: COD_URL
       }
     },
     {
@@ -306,7 +306,7 @@ export const eventDetails = defineFormPage({
         id: 'eventDetails.antecedentCause4'
       },
       configuration: {
-        url: 'http://localhost:3040/causes-of-death?terms='
+        url: COD_URL
       }
     },
     {

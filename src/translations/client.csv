@@ -578,7 +578,7 @@ countries.ESH,,Western Sahara
 countries.ESP,,Spain
 countries.EST,,Estonia
 countries.ETH,,Ethiopia
-countries.FAR,,Farajaland
+countries.FAR,,SPC
 countries.FIN,,Finland
 countries.FJI,,Fiji
 countries.FLK,,Falkland Islands (Malvinas)
@@ -825,7 +825,7 @@ event.birth.action.declare.form.section.documents.field.proofOfBirth.label,This 
 event.birth.action.declare.form.section.documents.field.proofOfFather.label,This is the label for the field,Proof of father's ID
 event.birth.action.declare.form.section.documents.field.proofOfMother.label,This is the label for the field,Proof of mother's ID
 event.birth.action.declare.form.section.documents.field.proofOther.label,This is the label for the field,Other
-event.birth.action.declare.form.section.father.field.address.addressSameAs.label,This is the label for the field,Same as mother's usual place of residence?
+event.birth.action.declare.form.section.father.field.address.addressSameAs.label,This is the label for the field,Same as mother's Place of death?
 event.birth.action.declare.form.section.father.field.age.label,This is the label for the field,Age of father
 event.birth.action.declare.form.section.father.field.name.label,This is the label for the field,Father's name
 event.birth.action.declare.form.section.father.field.reason.label,This is the label for the field,Reason
@@ -840,8 +840,8 @@ event.birth.action.declare.form.section.mother.field.age.label,This is the label
 event.birth.action.declare.form.section.mother.field.name.label,This is the label for the field,Mother's name
 event.birth.action.declare.form.section.mother.field.previousBirths.label,This is the label for the field,No. of previous births
 event.birth.action.declare.form.section.mother.field.reason.label,This is the label for the field,Reason
-event.birth.action.declare.form.section.person.field.address.label,This is the label for the field,Usual place of residence
-event.birth.action.declare.form.section.person.field.addressHelper.label,This is the label for the field,Usual place of residence
+event.birth.action.declare.form.section.person.field.address.label,This is the label for the field,Place of death
+event.birth.action.declare.form.section.person.field.addressHelper.label,This is the label for the field,Place of death
 event.birth.action.declare.form.section.person.field.age.checkbox.label,This is the label for the field,Exact date of birth unknown
 event.birth.action.declare.form.section.person.field.age.postfix,This is the postfix for age field,years
 event.birth.action.declare.form.section.person.field.brn.label,This is the label for the field,ID Number
@@ -937,8 +937,8 @@ event.death.action.declare.form.nid.unique,This is the error message for non-uni
 event.death.action.declare.form.review.comment.label,Label for the comment field in the review section,Comment
 event.death.action.declare.form.review.signature.label,Label for the signature field in the review section,Signature of informant
 event.death.action.declare.form.review.title,Title of the form to show in review page,"{deceased.name.firstname, select, __EMPTY__ {{deceased.name.surname, select, __EMPTY__ {Death declaration} other {Death declaration for {deceased.name.surname}}}} other {{deceased.name.surname, select, __EMPTY__ {Death declaration for {deceased.name.firstname}} other {Death declaration for {deceased.name.firstname} {deceased.name.surname}}}}}"
-event.death.action.declare.form.section.deceased.field.address.label,This is the label for the field,Usual place of residence
-event.death.action.declare.form.section.deceased.field.addressHelper.label,This is the label for the field,Usual place of residence
+event.death.action.declare.form.section.deceased.field.address.label,This is the label for the field,Place of death
+event.death.action.declare.form.section.deceased.field.addressHelper.label,This is the label for the field,Place of death
 event.death.action.declare.form.section.deceased.field.age.checkbox.label,This is the label for the field,Exact date of birth unknown
 event.death.action.declare.form.section.deceased.field.age.error,Error message for invalid age,Age must be between 0 and 120
 event.death.action.declare.form.section.deceased.field.age.label,This is the label for the field,Age
@@ -966,9 +966,9 @@ event.death.action.declare.form.section.event.field.description.label,Descriptio
 event.death.action.declare.form.section.event.field.manner.label,This is the label for the field,Manner of death default for Iris ICD10
 event.death.action.declare.form.section.event.field.reason.label,This is the label for the field,Reason for late registration
 event.death.action.declare.form.section.event.field.sourceCauseDeath.label,This is the label for the field,Source of cause of death
-event.death.action.declare.form.section.informant.field.address.addressSameAs.label,This is the label for the field,Same as deceased's usual place of residence?
-event.death.action.declare.form.section.informant.field.address.label,This is the label for the field,Usual place of residence
-event.death.action.declare.form.section.informant.field.addressHelper.label,This is the label for the field,Usual place of residence
+event.death.action.declare.form.section.informant.field.address.addressSameAs.label,This is the label for the field,Same as deceased's Place of death?
+event.death.action.declare.form.section.informant.field.address.label,This is the label for the field,Place of death
+event.death.action.declare.form.section.informant.field.addressHelper.label,This is the label for the field,Place of death
 event.death.action.declare.form.section.informant.field.age.checkbox.label,This is the label for the field,Exact date of birth unknown
 event.death.action.declare.form.section.informant.field.age.label,This is the label for the field,Age of informant
 event.death.action.declare.form.section.informant.field.age.postfix,This is the postfix for age field,years
@@ -990,9 +990,9 @@ event.death.action.declare.form.section.person.field.idType.label,This is the la
 event.death.action.declare.form.section.person.field.nationality.label,This is the label for the field,Nationality
 event.death.action.declare.form.section.person.field.nid.label,This is the label for the field,ID Number
 event.death.action.declare.form.section.person.field.passport.label,This is the label for the field,ID Number
-event.death.action.declare.form.section.spouse.field.address.addressSameAs.label,This is the label for the field,Same as deceased's usual place of residence?
-event.death.action.declare.form.section.spouse.field.address.label,This is the label for the field,Usual place of residence
-event.death.action.declare.form.section.spouse.field.addressHelper.label,This is the label for the field,Usual place of residence
+event.death.action.declare.form.section.spouse.field.address.addressSameAs.label,This is the label for the field,Same as deceased's Place of death?
+event.death.action.declare.form.section.spouse.field.address.label,This is the label for the field,Place of death
+event.death.action.declare.form.section.spouse.field.addressHelper.label,This is the label for the field,Place of death
 event.death.action.declare.form.section.spouse.field.age.checkbox.label,This is the label for the field,Exact date of birth unknown
 event.death.action.declare.form.section.spouse.field.age.label,This is the label for the field,Age of spouse
 event.death.action.declare.form.section.spouse.field.age.postfix,This is the postfix for age field,years
@@ -1041,7 +1041,7 @@ event.death.summary.eventDetails.placeOfDeath.label,Label for place of death,Pla
 event.death.summary.informant.contact.empty,This is shown when there is no informant information,No contact details provided
 event.death.summary.informant.contact.label,This is the label for the informant information,Contact
 event.death.summary.informant.contact.value,This is the contact value of the informant,{informant.phoneNo} {informant.email}
-event.death.title,This is the title of the summary,{deceased.country}: {deceased.certificateKey}
+event.death.title,This is the title of the summary,{deceased.certificateKey}
 event.default.action.certificate.template.type.label,Select certificate template,Type
 event.default.action.certificate.template.type.notFound,Select certificate template options not found,"No template available for this event, contact Admin"
 event.history.role,Label for the role in event history,"{role, select, MR_OFFICER {Medical Records Officer} CODING_OFFICER {Regional Coding Officer} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} other {Unknown}}"
@@ -1054,8 +1054,8 @@ event.summary.assignedTo.value,Assigned to value,{event.assignedTo}
 event.summary.event.label,Label for the event field,Event
 event.summary.flags.label,Flags of the event,Flags
 event.summary.flags.placeholder,Message when no flags are present,No flags
-event.summary.registrationNumber.empty,No registration number message,No registration number
-event.summary.registrationNumber.label,Label for the registration number field,Internal reference number
+event.summary.registrationNumber.empty,No registration number message,Awaiting encoding
+event.summary.registrationNumber.label,Label for the registration number field,Encoded record number
 event.summary.registrationNumber.value,Value for the registration number field,{event.registrationNumber}
 event.summary.status.label,Label for the status field,Status
 event.summary.status.value,Value for the status field,"{event.status, select, CREATED {Draft} NOTIFIED {Notified} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Encoded} CERTIFIED {Certified} REJECTED {Requires update} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} other {Unknown}}"
@@ -1112,7 +1112,7 @@ event.tennis-club-membership.summary.field.recommender.firstname.empty,Shown whe
 event.tennis-club-membership.summary.field.recommender.firstname.label,Label for the recommender's first name field,Recommender's First Name
 event.tennis-club-membership.summary.field.recommender.id.empty,Shown when the recommender id is missing in summary,Recommender's id missing
 event.tennis-club-membership.summary.field.recommender.id.label,Label for the recommender's ID field,Recommender's ID
-events.history.status,Events status history,"{status, select, Requested {Waiting for external validation} other {{action, select, CREATE {Declaration started} NOTIFY {Sent incomplete} VALIDATE {Sent for approval} DRAFT {Draft} DECLARE {Sent for review} REGISTER {Registered} PRINT_CERTIFICATE {Certified} REJECT {Rejected} ARCHIVE {Archived} DUPLICATE_DETECTED {Flagged as potential duplicate} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} CORRECTED {Record corrected} REQUEST_CORRECTION {Correction requested} APPROVE_CORRECTION {Correction approved} REJECT_CORRECTION {Correction rejected} READ {Viewed} ASSIGN {Assigned} UNASSIGN {Unassigned} UPDATE {Updated} other {Unknown}}}}"
+events.history.status,Events status history,"{status, select, Requested {Waiting for external validation} other {{action, select, CREATE {Declaration started} NOTIFY {Sent incomplete} VALIDATE {Sent for approval} DRAFT {Draft} DECLARE {Sent for review} REGISTER {Registered} PRINT_CERTIFICATE {Certified} REJECT {Rejected} EDIT {Edited} ARCHIVE {Archived} DUPLICATE_DETECTED {Flagged as potential duplicate} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} CORRECTED {Record corrected} REQUEST_CORRECTION {Correction requested} APPROVE_CORRECTION {Correction approved} REJECT_CORRECTION {Correction rejected} READ {Viewed} ASSIGN {Assigned} UNASSIGN {Unassigned} UPDATE {Updated} other {Unknown}}}}"
 events.outbox.processingAction,Message in outbox when processing action,"{action, select, DECLARE {Sending} REGISTER {Registering} VALIDATE {Sending for approval} NOTIFY {Sending} REJECT {Sending for updates} ARCHIVE {Archiving} PRINT_CERTIFICATE {Certifying} REQUEST_CORRECTION {Requesting correction} APPROVE_CORRECTION {Approving correction} REJECT_CORRECTION {Rejecting correction} ASSIGN {Assigning} UNASSIGN {Unassigning} other {processing action}}"
 events.outbox.waitingForAction,Message in outbox when waiting for action,"Waiting to {action, select, DECLARE {send} CREATE {send} REGISTER {register} VALIDATE {send for approval} NOTIFY {send} REJECT {send for updates} ARCHIVE {archive} PRINT_CERTIFICATE {certify} REQUEST_CORRECTION {request correction} APPROVE_CORRECTION {approve correction} REJECT_CORRECTION {reject correction} ASSIGN {assign} UNASSIGN {unassign} other {action}}"
 events.status,Dynamic event status,"{status, select, OUTBOX {Syncing..} CREATED {Draft} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Encoded} CERTIFIED {Certified} REJECTED {Rejected} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} NOTIFIED {In progress} other {Unknown}}"
@@ -1123,12 +1123,12 @@ field.address.addressLine1.label,This is the label for the field,Address Line 1
 field.address.addressLine2.label,This is the label for the field,Address Line 2
 field.address.addressLine3.label,This is the label for the field,Address Line 3
 field.address.cityOrTown.label,This is the label for the field,City / Town
-field.address.country.label,Label for country in address,Country
-field.address.district.label,Label for district in address,District
+field.address.country.label,Label for country in address,SPC
+field.address.district.label,Label for district in address,Island / District / Village
 field.address.district2.label,This is the label for the field,District
 field.address.number.label,Label for address number,Number
 field.address.postcodeOrZip.label,This is the label for the field,Postcode / Zip
-field.address.province.label,Label for province in address,Island / District / Village
+field.address.province.label,Label for province in address,Country
 field.address.residentialArea.label,Label for residential area in address,Residential Area
 field.address.state.label,This is the label for the field,State
 field.address.street.label,Label for street in address,Street
@@ -1203,7 +1203,7 @@ form.field.label.deathDescription,,Description
 form.field.label.deceasedDeathProof,,Proof of death of deceased
 form.field.label.deceasedDocumentParagraph,,The following documents are required
 form.field.label.deceasedIDProof,,Proof of deceased's ID
-form.field.label.deceasedPrimaryAddress,,Usual place of residence
+form.field.label.deceasedPrimaryAddress,,Place of death
 form.field.label.deceasedSecondaryAddress,,Secondary Address
 form.field.label.deny,,No
 form.field.label.district,Label for District,District
@@ -1248,7 +1248,7 @@ form.field.label.iDTypeOtherLabel,,Other type of ID
 form.field.label.iDTypePassport,Option for form field: Type of ID,Passport
 form.field.label.iDTypeRefugeeNumber,,Refugee Number
 form.field.label.informant,Informant Label,Informant
-form.field.label.informantPrimaryAddress,,Usual place of residence
+form.field.label.informantPrimaryAddress,,Place of death
 form.field.label.informantRelation.bride,Label for option bride,Bride
 form.field.label.informantRelation.brother,Label for option brother,Brother
 form.field.label.informantRelation.contactPoint,,Contact Point
@@ -1319,12 +1319,12 @@ form.field.label.physician,,Physician
 form.field.label.placeOfBirth,,Location
 form.field.label.placeOfBirthPreview,,Place of delivery
 form.field.label.placeOfDeath,,Place of death
-form.field.label.placeOfDeathSameAsPrimary,,Deceased's usual place of residence
+form.field.label.placeOfDeathSameAsPrimary,,Deceased's Place of death
 form.field.label.placeOfMarriage,,Place of marriage
 form.field.label.polygamy,,Polygamous
-form.field.label.primaryAddress,,Usual place of residence
-form.field.label.primaryAddressSameAsDeceasedsPrimary,,Same as deceased's usual place of residence?
-form.field.label.primaryAddressSameAsOtherPrimary,,Same as mother's usual place of residence?
+form.field.label.primaryAddress,,Place of death
+form.field.label.primaryAddressSameAsDeceasedsPrimary,,Same as deceased's Place of death?
+form.field.label.primaryAddressSameAsOtherPrimary,,Same as mother's Place of death?
 form.field.label.privateHome,Select item for Private Home,Residential address
 form.field.label.proofOfBirth,,Proof of birth
 form.field.label.proofOfBridesID,,Proof of bride's identity
@@ -1371,7 +1371,7 @@ form.field.nidNotVerified,,Authenticate
 form.field.nidNotVerifiedReviewSection,,Unauthenticated
 form.field.nidVerificationOngoing,Label for indicating offline status for the user. NID verification is not currently available offline.,National ID authentication is currently not available offline.
 form.field.nidVerified,,Authenticated
-form.field.previewGroups.primaryAddress,,Usual place of residence
+form.field.previewGroups.primaryAddress,,Place of death
 form.field.previewGroups.secondaryAddress,,Secondary address
 form.field.select.placeholder,,Select
 form.field.showLabel,Button to show section,Show
@@ -2043,6 +2043,7 @@ settings.user.label.nameBN,,Bengali name
 settings.user.label.nameEN,,Full name
 settings.verifyPhone,Verify phone number title,Verify phone number
 signature.upload.modal.title,Title for the signature upload modal,Upload Signature
+spcCodingGroup.freeText.title,Label for the free text field in the Iris Output section,Free text
 sysAdHome.config,The title of config tab,Config
 sysAdHome.devices,The title of devices tab,Devices
 sysAdHome.network,The title of network tab,Network
