@@ -12,6 +12,9 @@
     "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
     "build": "yarn workspace web-app build"
   },
+  "dependencies": {
+    "@opencrvs/toolkit": "1.9.6-rc.cecba71"
+  },
   "devDependencies": {
     "concurrently": "^9.1.2",
     "eslint": "^9.18.0",
