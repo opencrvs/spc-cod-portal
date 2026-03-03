@@ -29,7 +29,7 @@ export const deathEvent = defineConfig({
   },
   dateOfEvent: field('deceased.eventDate'),
   title: {
-    defaultMessage: '{deceased.country}: {deceased.certificateKey}',
+    defaultMessage: '{deceased.certificateKey}',
     description: 'This is the title of the summary',
     id: 'event.death.title'
   },
