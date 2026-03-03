@@ -17,9 +17,10 @@ import {
   field,
   or,
   user,
-  AddressType
+  AddressType,
   never,
-  not
+  not,
+  ConditionalType
 } from '@opencrvs/toolkit/events'
 
 import { createSelectOptions, emptyMessage } from '@countryconfig/form/v2/utils'
