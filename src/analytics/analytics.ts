@@ -30,7 +30,7 @@ import {
   Location
 } from '@opencrvs/toolkit/events'
 import { differenceInDays } from 'date-fns'
-import { ExpressionBuilder, Kysely } from 'kysely'
+import { ExpressionBuilder, Kysely, sql } from 'kysely'
 import { chunk, pickBy } from 'lodash'
 import { getClient } from './postgres'
 import { getStatistics } from '@countryconfig/utils'
@@ -420,4 +420,14 @@ export async function syncLocationStatistics() {
         .execute()
     }
   })
+}
+
+export async function checkDeceasedKeys(id: string, trx: Kysely<any>) {
+  const exists = await trx
+    .selectFrom('analytics.event_actions')
+    .where(sql<boolean>`declaration ->> 'deceased_certificateKey' = ${id}`)
+    .limit(1)
+    .executeTakeFirst()
+
+  return Boolean(exists)
 }

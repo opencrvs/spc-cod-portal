@@ -14,6 +14,7 @@ require('dotenv').config()
 import StreamArray from 'stream-json/streamers/StreamArray'
 import path from 'path'
 import * as Hapi from '@hapi/hapi'
+import Joi from 'joi'
 import * as Pino from 'hapi-pino'
 import * as JWT from 'hapi-auth-jwt2'
 import * as inert from '@hapi/inert'
@@ -76,6 +77,7 @@ import { onRegisterHandler } from './api/registration'
 import { workqueueconfigHandler } from './api/workqueue/handler'
 import getUserNotificationRoutes from './config/routes/userNotificationRoutes'
 import {
+  checkDeceasedKeys,
   importAdministrativeAreas,
   importEvent,
   importEvents,
@@ -566,6 +568,25 @@ export async function createServer() {
     options: {
       tags: ['api'],
       description: 'Checks for enabled notification for record'
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/check-deceased-keys',
+    handler: async (request, h) => {
+      const { id } = request.query as { id: string }
+      const result = await checkDeceasedKeys(id, getClient())
+      return h.response({ exists: result }).code(200)
+    },
+    options: {
+      validate: {
+        query: Joi.object({
+          id: Joi.string().required()
+        })
+      },
+      tags: ['api'],
+      description: 'Checks for deceased keys in analytics'
     }
   })
 
