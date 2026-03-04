@@ -1123,7 +1123,7 @@ field.address.addressLine1.label,This is the label for the field,Address Line 1
 field.address.addressLine2.label,This is the label for the field,Address Line 2
 field.address.addressLine3.label,This is the label for the field,Address Line 3
 field.address.cityOrTown.label,This is the label for the field,City / Town
-field.address.country.label,Label for country in address,SPC
+field.address.country.label,Label for country in address,Regional Mortality Group
 field.address.district.label,Label for district in address,Island / District / Village
 field.address.district2.label,This is the label for the field,District
 field.address.number.label,Label for address number,Number

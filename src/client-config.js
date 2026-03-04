@@ -60,7 +60,7 @@
           defaultMessage: 'Statistics',
           description: 'Menu item for statistics dashboard'
         },
-        url: `http://localhost:4444/public/dashboard/41940907-8542-4e18-a05d-2408e7e9838a#bordered=false&titled=false&refresh=300`
+        url: `http://localhost:4444/public/dashboard/dc66b77a-79df-4f68-8fc8-5e5d5a2d7a35#bordered=false&titled=false&refresh=300`
       }
     ],
     FEATURES: {}
