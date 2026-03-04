@@ -112,7 +112,7 @@ export const processCSVRow = async (
 
     // Check if there are any IRIS output fields to update
     const hasIrisData =
-      row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments
+      row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
 
     if (!hasIrisData) {
       return {
@@ -120,7 +120,7 @@ export const processCSVRow = async (
         id,
         status: 'skipped',
         message:
-          'No IRIS output data (UCCode, SelectedCodes, MultipleCodes, Comments) found in row'
+          'No IRIS output data (UCCode, SelectedCodes, MultipleCodes, Comments, FreeText) found in row'
       }
     }
 

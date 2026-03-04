@@ -249,7 +249,7 @@ export const deceased = defineFormPage({
       id: 'deceased.address',
       type: FieldType.ADDRESS,
       required: true,
-      secured: true,
+      analytics: true,
       hideLabel: true,
       label: {
         defaultMessage: 'Place of death',
