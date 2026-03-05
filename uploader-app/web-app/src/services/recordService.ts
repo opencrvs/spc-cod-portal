@@ -1,4 +1,4 @@
-import { env } from '../util/constants'
+import { GATEWAY_HOST, COUNTRY_CONFIG_HOST } from '../util/constants'
 import { createClient } from '@opencrvs/toolkit/api'
 import { v4 as uuidv4 } from 'uuid'
 import { getDecodedToken } from './token'
@@ -48,8 +48,7 @@ export async function findRecordByCertificateKey(
   token: string,
   certificateKey: string
 ): Promise<DeathRecord | null> {
-  const url = new URL('events', env.GATEWAY_URL).toString()
-  console.log("findRecordByCertificateKey:  URL - ", url )
+  const url = new URL('events', GATEWAY_HOST).toString()
   const client = createClient(url, `Bearer ${token}`)
 
   try {
@@ -102,7 +101,7 @@ export async function updateRecordWithCauseOfDeath(
   const eventId = record.id
   const eventDeclaration = record.declaration
   const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
-  const url = new URL('events', env.GATEWAY_URL).toString()
+  const url = new URL('events', GATEWAY_HOST).toString()
   const client = createClient(url, `Bearer ${token}`)
 
   const decodedToken = getDecodedToken(token)
@@ -203,7 +202,7 @@ export async function getUserById(
   token: string,
   userId: string
 ): Promise<UserInfo | null> {
-  const url = new URL('events', env.GATEWAY_URL).toString()
+  const url = new URL('events', GATEWAY_HOST).toString()
   const client = createClient(url, `Bearer ${token}`)
 
   try {
@@ -252,10 +251,10 @@ export async function sendProcessingNotificationEmail(
   userInfo: UserInfo,
   recordIds: string[]
 ): Promise<boolean> {
-  // Use COUNTRY_CONFIG_URL since the endpoint is defined in country config server (port 3040)
+  // Use COUNTRY_CONFIG_HOST since the endpoint is defined in country config server (port 3040)
   const url = new URL(
     'ident-uploader-notification',
-    env.COUNTRY_CONFIG_URL
+    COUNTRY_CONFIG_HOST
   ).toString()
 
   console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)

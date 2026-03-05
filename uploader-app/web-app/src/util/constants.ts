@@ -1,10 +1,14 @@
-import { cleanEnv, url } from 'envalid'
+import.meta.env.VITE_SCHEME || 'https'
 
-export const env = cleanEnv(process.env, {
-  GATEWAY_URL: url({ devDefault: 'http://localhost:7070' }),
-  COUNTRY_CONFIG_URL: url({ devDefault: 'http://localhost:3040' }),
-})
+export const GATEWAY_HOST =
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:7070'
+    : process.env.GATEWAY_URL
 
+export const COUNTRY_CONFIG_HOST =
+  import.meta.env.MODE === 'development'
+    ? 'http://localhost:3040'
+    : process.env.COUNTRY_CONFIG_URL
 
 export const REQUIRED_HEADERS = [
   'UCCode',
