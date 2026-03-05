@@ -22,6 +22,7 @@ import * as Sentry from 'hapi-sentry'
 import fetch from 'node-fetch'
 import {
   CLIENT_APP_URL,
+  UPLOADER_APP_URL,
   DOMAIN,
   LOGIN_URL,
   SENTRY_DSN,
@@ -209,7 +210,7 @@ async function getPublicKey(): Promise<string> {
 export async function createServer() {
   let whitelist: string[] = [DOMAIN]
   if (DOMAIN[0] !== '*') {
-    whitelist = [LOGIN_URL, CLIENT_APP_URL]
+    whitelist = [LOGIN_URL, CLIENT_APP_URL, UPLOADER_APP_URL]
   }
   logger.info(`Whitelist: ${JSON.stringify(whitelist)}`)
   const server = new Hapi.Server({
