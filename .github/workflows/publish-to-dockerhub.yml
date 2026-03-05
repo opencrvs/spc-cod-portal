@@ -94,6 +94,8 @@ jobs:
           file: ./uploader-app/web-app/Dockerfile
           build-args: |
             VITE_EXTERNAL_CLIENT_URL=https://register.spc-cod-qa.opencrvs.org
+            VITE_GATEWAY_URL=https://gateway.spc-cod-qa.opencrvs.org
+            VITE_COUNTRY_CONFIG_URL=https://countryconfig.spc-cod-qa.opencrvs.org
           tags: |
             ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader:${{ steps.country_config.outputs.version }}
 
