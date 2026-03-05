@@ -1,15 +1,3 @@
-export const SCHEME = import.meta.env.VITE_SCHEME || 'https'
-
-export const GATEWAY_HOST =
-  import.meta.env.MODE === 'development'
-    ? 'http://localhost:7070'
-    : SCHEME + '://gateway.'
-
-export const COUNTRY_CONFIG_HOST =
-  import.meta.env.MODE === 'development'
-    ? 'http://localhost:3040'
-    : SCHEME + '://countryconfig.'
-
 export const REQUIRED_HEADERS = [
   'UCCode',
   'SelectedCodes',
@@ -17,3 +5,9 @@ export const REQUIRED_HEADERS = [
   'CertificateKey',
   'Comments' // IRIS output
 ]
+
+export const GATEWAY_HOST =
+  import.meta.env.VITE_GATEWAY_URL || 'http://localhost:7070'
+
+export const COUNTRY_CONFIG_HOST =
+  import.meta.env.VITE_COUNTRY_CONFIG_URL || 'http://localhost:3040'
