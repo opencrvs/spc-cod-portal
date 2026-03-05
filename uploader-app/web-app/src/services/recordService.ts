@@ -49,6 +49,7 @@ export async function findRecordByCertificateKey(
   certificateKey: string
 ): Promise<DeathRecord | null> {
   const url = new URL('events', env.GATEWAY_URL).toString()
+  console.log("findRecordByCertificateKey:  URL - ", url )
   const client = createClient(url, `Bearer ${token}`)
 
   try {
