@@ -1,14 +1,14 @@
-export const SCHEME = import.meta.env.VITE_SCHEME || 'https'
+import.meta.env.VITE_SCHEME || 'https'
 
 export const GATEWAY_HOST =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:7070'
-    : SCHEME + '://gateway.'
+    : process.env.GATEWAY_URL
 
 export const COUNTRY_CONFIG_HOST =
   import.meta.env.MODE === 'development'
     ? 'http://localhost:3040'
-    : SCHEME + '://countryconfig.'
+    : process.env.COUNTRY_CONFIG_URL
 
 export const REQUIRED_HEADERS = [
   'UCCode',
