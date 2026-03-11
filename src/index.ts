@@ -55,7 +55,10 @@ import { conditionalsHandler } from './form/common/custom-validation-conditional
 import { COUNTRY_WIDE_CRUDE_DEATH_RATE } from './api/application/application-config'
 import { handlebarsHandler } from './form/common/certificate/handlebars/handler'
 import { trackingIDHandler } from './api/tracking-id/handler'
-import { dashboardQueriesHandler } from './api/dashboards/handler'
+import {
+  dashboardQueriesHandler,
+  externalRecordToEncodeHandler
+} from './api/dashboards/handler'
 import { fontsHandler } from './api/fonts/handler'
 import { recordNotificationHandler } from './api/record-notification/handler'
 import {
@@ -703,6 +706,16 @@ export async function createServer() {
     method: 'POST',
     path: `/trigger/events/{event}/actions/${ActionType.CUSTOM}`,
     handler: onCustomActionHandler,
+    options: {
+      tags: ['api', 'events'],
+      description: 'Receives notifications on event custom action'
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: `/insert-external-record-to-encode/{countryCode}`,
+    handler: externalRecordToEncodeHandler,
     options: {
       tags: ['api', 'events'],
       description: 'Receives notifications on event custom action'
