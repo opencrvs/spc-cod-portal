@@ -97,7 +97,7 @@ const durationOptions = [
 
 type CauseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'Other'
 
-const symptomNames = [
+const symptomNumber = [
   'one',
   'two',
   'three',
@@ -120,8 +120,8 @@ const symptomNumberLabel = [
 ]
 
 function createSymptomFields(letter: CauseLetter) {
-  return symptomNames.flatMap((name, index) => {
-    const basePath = `eventDetails.causeOfDeath${letter}.symptom.${name}`
+  return symptomNumber.flatMap((number, index) => {
+    const basePath = `eventDetails.causeOfDeath${letter}.symptom.${number}`
 
     const autocompleteField: any = {
       id: basePath,
@@ -134,6 +134,15 @@ function createSymptomFields(letter: CauseLetter) {
       },
       configuration: {
         url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
+      }
+    }
+
+    if (index === 0) {
+      autocompleteField.helperText = {
+        defaultMessage:
+          'Select the condition that most directly led to death, or choose "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `eventDetails.causeOfDeath${letter}.symptom.one.helperText`
       }
     }
 
@@ -188,46 +197,7 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       },
       configuration: { styles: { fontVariant: 'h3' as const } }
     },
-    {
-      id: `${base}.symptom.one`,
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      helperText: {
-        defaultMessage:
-          'Select the condition that most directly led to death, or choose "Other" to enter a diagnosis not listed',
-        description: 'This is the label for the field',
-        id: `${base}.symptom.one.helperText`
-      },
-      label: {
-        defaultMessage: 'Symptom 1',
-        description: 'This is the label for the field',
-        id: `${base}.symptom.one.label`
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: `${base}.symptom.one.other`,
-      type: FieldType.TEXTAREA,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage:
-          'Enter the diagnosis or condition not found in the list above',
-        description: 'This is the label for the field',
-        id: `${base}.symptom.one.other.label`
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`${base}.symptom.one`)
-            .get('value')
-            .isEqualTo('OTHER')
-        }
-      ]
-    },
-    ...createSymptomFields(letter).slice(2),
+    ...createSymptomFields(letter),
     {
       id: `${base}.add.symptom.button`,
       type: FieldType.BUTTON,
@@ -322,7 +292,6 @@ export const eventDetails = defineFormPage({
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
-    // Other significant conditions
     ...otherSignificantSymptoms
   ]
 })
