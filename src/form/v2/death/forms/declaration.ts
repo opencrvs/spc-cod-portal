@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import { defineDeclarationForm } from '@opencrvs/toolkit/events'
+import { defineDeclarationForm, FieldType } from '@opencrvs/toolkit/events'
 import { deceased } from './pages/deceased'
 import { irisOutput } from './pages/irisOutput'
 import { eventDetails } from './pages/eventDetails'
@@ -20,7 +20,18 @@ export const DEATH_DECLARATION_REVIEW = {
     defaultMessage: 'Death coding for {deceased.certificateKey}',
     description: 'Title of the form to show in review page'
   },
-  fields: []
+  fields: [
+    {
+      id: 'review.comment',
+      type: FieldType.TEXTAREA,
+      label: {
+        defaultMessage: 'Comments',
+        id: 'event.death.action.declare.form.review.comment.label',
+        description: 'Label for the comment field in the review section'
+      },
+      required: false
+    }
+  ]
 }
 
 export const DEATH_DECLARATION_FORM = defineDeclarationForm({
