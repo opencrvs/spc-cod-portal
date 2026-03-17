@@ -13,6 +13,8 @@ import {
   defineFormPage,
   field,
   FieldType,
+  never,
+  not,
   PageTypes,
   TranslationConfig
 } from '@opencrvs/toolkit/events'
@@ -92,6 +94,191 @@ const durationOptions = [
     }
   }
 ]
+
+type CauseLetter = 'A' | 'B' | 'C' | 'D' | 'E'
+
+const symptomNames = [
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight'
+] as const
+
+const symptomNumberLabel = [
+  'Symptom 1',
+  'Symptom 2',
+  'Symptom 3',
+  'Symptom 4',
+  'Symptom 5',
+  'Symptom 6',
+  'Symptom 7',
+  'Symptom 8'
+]
+
+function createSymptomFields(letter: CauseLetter) {
+  return symptomNames.flatMap((name, index) => {
+    const basePath = `eventDetails.causeOfDeath${letter}.symptom.${name}`
+
+    const autocompleteField: any = {
+      id: basePath,
+      type: FieldType.AUTOCOMPLETE,
+      analytics: true,
+      label: {
+        defaultMessage: symptomNumberLabel[index],
+        description: 'This is the label for the field',
+        id: `${basePath}.label`
+      },
+      configuration: {
+        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
+      }
+    }
+
+    if (index > 0) {
+      autocompleteField.conditionals = [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field(
+            `eventDetails.causeOfDeath${letter}.add.symptom.button`
+          ).isGreaterThan(index - 1)
+        }
+      ]
+    }
+
+    const otherField = {
+      id: `${basePath}.other`,
+      type: FieldType.TEXTAREA,
+      required: false,
+      analytics: true,
+      label: {
+        defaultMessage:
+          'Enter the diagnosis or condition not found in the list above',
+        description: 'This is the label for the field',
+        id: `${basePath}.other.label`
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field(basePath).get('value').isEqualTo('OTHER')
+        }
+      ]
+    }
+
+    return [autocompleteField, otherField]
+  })
+}
+
+export function createCauseOfDeathFields(letter: CauseLetter) {
+  const base = `eventDetails.causeOfDeath${letter}`
+
+  return [
+    {
+      id: base,
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: `Cause of death ${letter}`,
+        description: 'This is the label for the field',
+        id: `${base}.label`
+      },
+      configuration: { styles: { fontVariant: 'h3' as const } }
+    },
+    {
+      id: `${base}.symptom.one`,
+      type: FieldType.AUTOCOMPLETE,
+      analytics: true,
+      helperText: {
+        defaultMessage:
+          'Select the condition that most directly led to death, or choose "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${base}.symptom.one.helperText`
+      },
+      label: {
+        defaultMessage: 'Symptom 1',
+        description: 'This is the label for the field',
+        id: `${base}.symptom.one.label`
+      },
+      configuration: {
+        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
+      }
+    },
+    {
+      id: `${base}.symptom.one.other`,
+      type: FieldType.TEXTAREA,
+      required: false,
+      analytics: true,
+      label: {
+        defaultMessage:
+          'Enter the diagnosis or condition not found in the list above',
+        description: 'This is the label for the field',
+        id: `${base}.symptom.one.other.label`
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field(`${base}.symptom.one`)
+            .get('value')
+            .isEqualTo('OTHER')
+        }
+      ]
+    },
+    ...createSymptomFields(letter).slice(2),
+    {
+      id: `${base}.add.symptom.button`,
+      type: FieldType.BUTTON,
+      hideLabel: true,
+      label: {
+        defaultMessage: 'Add another symptom',
+        description: 'This is the label for the field',
+        id: `${base}.add.symptom.buttonText`
+      },
+      configuration: {
+        text: {
+          defaultMessage: 'Add another symptom',
+          description: 'This is the label for the field',
+          id: `${base}.add.symptom.buttonText`
+        },
+        icon: 'Plus'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.ENABLE,
+          conditional: not(field(`${base}.add.symptom.button`).isEqualTo(7))
+        },
+        {
+          type: ConditionalType.DISPLAY_ON_REVIEW,
+          conditional: never()
+        }
+      ]
+    },
+    {
+      id: `${base}.interval`,
+      type: FieldType.NUMBER_WITH_UNIT,
+      required: false,
+      analytics: true,
+      helperText: {
+        defaultMessage: 'Interval between onset and death',
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.causeOfDeath${letter}.interval.helperText`
+      },
+      label: {
+        defaultMessage: 'Duration',
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.causeOfDeath${letter}.interval`
+      },
+      options: durationOptions
+    }
+  ]
+}
+
+const causeOfDeathA = createCauseOfDeathFields('A')
+const causeOfDeathB = createCauseOfDeathFields('B')
+const causeOfDeathC = createCauseOfDeathFields('C')
+const causeOfDeathD = createCauseOfDeathFields('D')
+const causeOfDeathE = createCauseOfDeathFields('E')
+
 export const eventDetails = defineFormPage({
   id: 'eventDetails',
   type: PageTypes.enum.FORM,
@@ -101,248 +288,37 @@ export const eventDetails = defineFormPage({
     id: 'form.death.eventDetails.title'
   },
   fields: [
-    {
-      id: 'eventDetails.immediateCauseOfDeath',
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      label: {
-        defaultMessage: 'Cause of death A',
-        description: 'This is the label for the field',
-        id: 'eventDetails.immediateCauseOfDeath'
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: 'eventDetails.otherImmediateCauseOfDeath',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other cause of death A',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherImmediateCauseOfDeath'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`eventDetails.immediateCauseOfDeath`).isEqualTo(
-            'OTHER'
-          )
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.immediateCauseOfDeathInterval',
-      type: FieldType.NUMBER_WITH_UNIT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.immediateCauseOfDeathInterval'
-      },
-      options: durationOptions
-    },
-    //
+    ...causeOfDeathA,
     {
       id: 'eventDetails.divider2',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
-    {
-      id: 'eventDetails.antecedentCause1',
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      label: {
-        defaultMessage: 'Cause of death B',
-        description: 'This is the label for the field',
-        id: 'eventDetails.antecedentCause1'
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: 'eventDetails.otherAntecedentCause1',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other antecedent cause 1',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherAntecedentCause1'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`eventDetails.antecedentCause1`).isEqualTo('OTHER')
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.antecedentCauseInterval1',
-      type: FieldType.NUMBER_WITH_UNIT,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.antecedentCauseInterval1'
-      },
-      required: false,
-      analytics: true,
-      options: durationOptions
-    },
-
-    //
+    ...causeOfDeathB,
     {
       id: 'eventDetails.divider3',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
-    {
-      id: 'eventDetails.antecedentCause2',
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      required: false,
-      label: {
-        defaultMessage: 'Cause of death C',
-        description: 'This is the label for the field',
-        id: 'eventDetails.antecedentCause2'
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: 'eventDetails.otherAntecedentCause2',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other antecedent cause 2',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherAntecedentCause2'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`eventDetails.antecedentCause2`).isEqualTo('OTHER')
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.antecedentCauseInterval2',
-      type: FieldType.NUMBER_WITH_UNIT,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.antecedentCauseInterval2'
-      },
-      required: false,
-      analytics: true,
-      options: durationOptions
-    },
+    ...causeOfDeathC,
     {
       id: 'eventDetails.divider4',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
-    {
-      id: 'eventDetails.antecedentCause3',
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      label: {
-        defaultMessage: 'Cause of death D',
-        description: 'This is the label for the field',
-        id: 'eventDetails.antecedentCause3'
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: 'eventDetails.otherAntecedentCause3',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other antecedent cause 3',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherAntecedentCause3'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`eventDetails.antecedentCause3`).isEqualTo('OTHER')
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.antecedentCauseInterval3',
-      type: FieldType.NUMBER_WITH_UNIT,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.antecedentCauseInterval3'
-      },
-      required: false,
-      analytics: true,
-      options: durationOptions
-    },
+    ...causeOfDeathD,
     {
       id: 'eventDetails.divider5',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
-    {
-      id: 'eventDetails.antecedentCause4',
-      type: FieldType.AUTOCOMPLETE,
-      analytics: true,
-      required: false,
-      label: {
-        defaultMessage: 'Cause of death E',
-        description: 'This is the label for the field',
-        id: 'eventDetails.antecedentCause4'
-      },
-      configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
-      }
-    },
-    {
-      id: 'eventDetails.otherAntecedentCause4',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other antecedent cause 4',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherAntecedentCause4'
-      },
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: field(`eventDetails.antecedentCause4`).isEqualTo('OTHER')
-        }
-      ]
-    },
-    {
-      id: 'eventDetails.antecedentCauseInterval4',
-      type: FieldType.NUMBER_WITH_UNIT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.antecedentCauseInterval4'
-      },
-      options: durationOptions
-    },
+    ...causeOfDeathE,
     {
       id: 'eventDetails.divider6',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
+    // Other significant conditions
     {
       id: 'eventDetails.otherSignificantCondition',
       type: FieldType.TEXT,
@@ -363,23 +339,6 @@ export const eventDetails = defineFormPage({
         defaultMessage: 'Duration',
         description: 'This is the label for the field',
         id: 'spcCodingGroup.significantConditionInterval'
-      }
-    },
-    {
-      id: 'eventDetails.divider7',
-      type: FieldType.DIVIDER,
-      label: emptyMessage
-    },
-    {
-      id: 'eventDetails.comments',
-      type: FieldType.TEXTAREA,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Comments',
-        description:
-          'Description of cause of death by lay person or verbal autopsy',
-        id: 'spcCodingGroup.comments'
       }
     }
   ]
