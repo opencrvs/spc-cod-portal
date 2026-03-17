@@ -95,7 +95,7 @@ const durationOptions = [
   }
 ]
 
-type CauseLetter = 'A' | 'B' | 'C' | 'D' | 'E'
+type CauseLetter = 'A' | 'B' | 'C' | 'D' | 'E' | 'Other'
 
 const symptomNames = [
   'one',
@@ -179,7 +179,10 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       id: base,
       type: FieldType.PARAGRAPH,
       label: {
-        defaultMessage: `Cause of death ${letter}`,
+        defaultMessage:
+          letter === 'Other'
+            ? 'Other significant conditions'
+            : `Cause of death ${letter}`,
         description: 'This is the label for the field',
         id: `${base}.label`
       },
@@ -278,6 +281,7 @@ const causeOfDeathB = createCauseOfDeathFields('B')
 const causeOfDeathC = createCauseOfDeathFields('C')
 const causeOfDeathD = createCauseOfDeathFields('D')
 const causeOfDeathE = createCauseOfDeathFields('E')
+const otherSignificantSymptoms = createCauseOfDeathFields('Other')
 
 export const eventDetails = defineFormPage({
   id: 'eventDetails',
@@ -290,56 +294,35 @@ export const eventDetails = defineFormPage({
   fields: [
     ...causeOfDeathA,
     {
-      id: 'eventDetails.divider2',
+      id: 'eventDetails.divider1',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     ...causeOfDeathB,
     {
-      id: 'eventDetails.divider3',
+      id: 'eventDetails.divider2',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     ...causeOfDeathC,
     {
-      id: 'eventDetails.divider4',
+      id: 'eventDetails.divider3',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     ...causeOfDeathD,
     {
-      id: 'eventDetails.divider5',
+      id: 'eventDetails.divider4',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     ...causeOfDeathE,
     {
-      id: 'eventDetails.divider6',
+      id: 'eventDetails.divider5',
       type: FieldType.DIVIDER,
       label: emptyMessage
     },
     // Other significant conditions
-    {
-      id: 'eventDetails.otherSignificantCondition',
-      type: FieldType.TEXT,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Other significant conditions contributing to death',
-        description: 'This is the label for the field',
-        id: 'eventDetails.otherSignificantCondition'
-      }
-    },
-    {
-      id: 'eventDetails.significantConditionInterval',
-      type: FieldType.NUMBER,
-      required: false,
-      analytics: true,
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: 'spcCodingGroup.significantConditionInterval'
-      }
-    }
+    ...otherSignificantSymptoms
   ]
 })
