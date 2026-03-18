@@ -19,21 +19,19 @@ export async function onSearchHandler(
     return h.response({ error: "Missing 'terms' parameter" }).code(400)
   }
 
-  // Normalize input
   const likeTerm = `%${terms}%`
-  const codePrefix = `${terms.toUpperCase()}%`
 
-  const rows = await db
-    .selectFrom('icd10')
-    .select(['code', 'label'])
-    .where((eb) =>
-      eb.or([eb('code', 'ilike', codePrefix), eb('label', 'ilike', likeTerm)])
-    )
-    .limit(50)
-    .execute()
+  try {
+    const rows = await db
+      .selectFrom('icd10')
+      .select(['id', 'label'])
+      .where((eb) => eb('label', 'ilike', likeTerm))
+      .limit(50)
+      .execute()
 
-  const codes = rows.map((r) => r.code)
-  const displays = rows.map((r) => [r.code, r.label]) // uuid + label to be returned instead
-
-  return h.response([codes, displays]).code(200)
+    return h.response({ results: rows }).code(200)
+  } catch (err) {
+    request.log(['error'], err)
+    return h.response({ error: 'Internal server error' }).code(500)
+  }
 }
