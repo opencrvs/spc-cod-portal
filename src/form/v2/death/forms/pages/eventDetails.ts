@@ -133,7 +133,8 @@ function createSymptomFields(letter: CauseLetter) {
         id: `${basePath}.label`
       },
       configuration: {
-        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`
+        url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`,
+        defaultOptions: [{ label: 'Other', value: 'OTHER' }]
       }
     }
 
@@ -159,7 +160,7 @@ function createSymptomFields(letter: CauseLetter) {
 
     const otherField = {
       id: `${basePath}.other`,
-      type: FieldType.TEXTAREA,
+      type: FieldType.TEXT,
       required: false,
       analytics: true,
       label: {
