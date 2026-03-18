@@ -8,6 +8,8 @@ import {
   user
 } from '@opencrvs/toolkit/events'
 
+// Example of a column that is used in the workqueue config
+// eslint-disable-next-line no-unused-vars
 const DATE_OF_EVENT_COLUMN = {
   label: {
     id: 'workqueues.dateOfEvent',
@@ -27,11 +29,7 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of in progress workqueue'
     },
     query: {},
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ]
+    action: { type: ActionType.READ }
   },
   {
     slug: 'correction-requested',
@@ -42,11 +40,7 @@ export const Workqueues = defineWorkqueues([
       description: 'Title of correction requested workqueue'
     },
     query: {},
-    actions: [
-      {
-        type: 'READ'
-      }
-    ]
+    action: { type: ActionType.READ }
   },
   {
     slug: 'waiting-for-attestation',
@@ -75,7 +69,7 @@ export const Workqueues = defineWorkqueues([
         value: event.field('status')
       }
     ],
-    actions: [],
+    action: { type: ActionType.READ },
     query: {}
   },
   {
@@ -89,11 +83,7 @@ export const Workqueues = defineWorkqueues([
     query: {
       assignedTo: { type: 'exact', term: user('id') }
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ]
+    action: { type: ActionType.READ }
   },
   {
     slug: 'recent',
@@ -110,11 +100,7 @@ export const Workqueues = defineWorkqueues([
         term: 'last7Days'
       }
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    action: { type: ActionType.READ },
     emptyMessage: {
       id: 'workqueues.recent.emptyMessage',
       defaultMessage: 'No recent records',
@@ -139,7 +125,7 @@ export const Workqueues = defineWorkqueues([
       },
       createdBy: { type: 'exact', term: user('id') }
     },
-    actions: [],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -167,11 +153,7 @@ export const Workqueues = defineWorkqueues([
       },
       updatedAtLocation: { type: 'within', location: user('primaryOfficeId') }
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -212,7 +194,7 @@ export const Workqueues = defineWorkqueues([
         }
       ]
     },
-    actions: [],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -227,7 +209,7 @@ export const Workqueues = defineWorkqueues([
   },
   {
     slug: 'requires-updates-self',
-    icon: 'FileMinus',
+    icon: 'FileX',
     name: {
       id: 'workqueues.requiresUpdates.title',
       defaultMessage: 'Rejected',
@@ -240,11 +222,7 @@ export const Workqueues = defineWorkqueues([
       },
       createdBy: { type: 'exact', term: user('id') }
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -259,7 +237,7 @@ export const Workqueues = defineWorkqueues([
   },
   {
     slug: 'requires-updates-office',
-    icon: 'FileMinus',
+    icon: 'FileX',
     name: {
       id: 'workqueues.requiresUpdates.title',
       defaultMessage: 'Rejected',
@@ -290,11 +268,7 @@ export const Workqueues = defineWorkqueues([
         }
       ]
     },
-    actions: [
-      {
-        type: 'DEFAULT'
-      }
-    ],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -309,7 +283,7 @@ export const Workqueues = defineWorkqueues([
   },
   {
     slug: 'sent-for-approval',
-    icon: 'FileText',
+    icon: 'Handshake',
     name: {
       id: 'workqueues.sentForApproval.title',
       defaultMessage: 'Sent for encoding',
@@ -333,7 +307,7 @@ export const Workqueues = defineWorkqueues([
         }
       ]
     },
-    actions: [],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {
@@ -348,7 +322,7 @@ export const Workqueues = defineWorkqueues([
   },
   {
     slug: 'encoded',
-    icon: 'FileText',
+    icon: 'FilePlus',
     name: {
       id: 'workqueues.sentForApproval.title',
       defaultMessage: 'Encoded',
@@ -373,11 +347,7 @@ export const Workqueues = defineWorkqueues([
         }
       ]
     },
-    actions: [
-      {
-        type: 'PRINT_CERTIFICATE'
-      }
-    ],
+    action: { type: ActionType.READ },
     columns: [
       DATE_OF_EVENT_COLUMN,
       {

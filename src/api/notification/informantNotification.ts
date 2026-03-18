@@ -131,7 +131,7 @@ async function getNotificationParams(
       trackingId: event.trackingId,
       crvsOffice:
         (locations ?? []).find(
-          ({ id }) => id === pendingAction.createdAtLocation
+          ({ id }: { id: string }) => id === pendingAction.createdAtLocation
         )?.name || '',
       registrationLocation: '',
       applicationName: applicationConfig.APPLICATION_NAME,

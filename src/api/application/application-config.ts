@@ -1,32 +1,15 @@
 import { countryLogo } from '@countryconfig/api/application/country-logo'
+import { defineApplicationConfig } from '@opencrvs/toolkit/application-config'
 import * as fs from 'fs'
 import { join } from 'path'
 
-export const applicationConfig = {
+export const applicationConfig = defineApplicationConfig({
   APPLICATION_NAME: 'SPC Mortality Coding Portal',
-  BIRTH: {
-    REGISTRATION_TARGET: 30,
-    LATE_REGISTRATION_TARGET: 365,
-    FEE: {
-      ON_TIME: 0,
-      LATE: 5.5,
-      DELAYED: 15
-    },
-    PRINT_IN_ADVANCE: true
-  },
   COUNTRY_LOGO: countryLogo,
   SYSTEM_IANA_TIMEZONE: 'Pacific/Fiji', // Default timezone for the country. Basis for date and time calculations during searches.
   CURRENCY: {
     languagesAndCountry: ['en-US'],
     isoCode: 'USD'
-  },
-  DEATH: {
-    REGISTRATION_TARGET: 45,
-    FEE: {
-      ON_TIME: 0,
-      DELAYED: 0
-    },
-    PRINT_IN_ADVANCE: true
   },
   ADMIN_STRUCTURE: [
     {
@@ -44,36 +27,26 @@ export const applicationConfig = {
         defaultMessage: 'Island / District / Village',
         description: 'Label for province in address'
       }
+    },
+    {
+      id: 'village',
+      label: {
+        id: 'field.address.village.label',
+        defaultMessage: 'Village',
+        description: 'Label for village in address'
+      }
     }
   ],
-  PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',
-  NID_NUMBER_PATTERN: '^[0-9]{10}$',
+  /*,
   LOGIN_BACKGROUND: {
     backgroundImage: `data:image/jpg;base64,${fs
       .readFileSync(join(__dirname, 'ocean.jpg'))
       .toString('base64')}`,
     imageFit: 'FILL'
-  },
-  MARRIAGE: {
-    REGISTRATION_TARGET: 45,
-    FEE: {
-      ON_TIME: 10,
-      DELAYED: 45
-    },
-    PRINT_IN_ADVANCE: true
-  },
-  FIELD_AGENT_AUDIT_LOCATIONS: 'DISTRICT',
-  DECLARATION_AUDIT_LOCATIONS: 'DISTRICT',
-  FEATURES: {
-    DEATH_REGISTRATION: true,
-    MARRIAGE_REGISTRATION: false,
-    EXTERNAL_VALIDATION_WORKQUEUE: false,
-    PRINT_DECLARATION: true,
-    DATE_OF_BIRTH_UNKNOWN: true
-  },
+  },*/
+  PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',
   USER_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
-  SIGNATURE_REQUIRED_FOR_ROLES: [],
   SEARCH_DEFAULT_CRITERIA: 'TRACKING_ID'
   /*
    * SEARCH_DEFAULT_CRITERIA's value can be one of the following
@@ -84,9 +57,7 @@ export const applicationConfig = {
    * | 'PHONE_NUMBER',
    * | 'EMAIL'
    */
-}
-
-export const COUNTRY_WIDE_CRUDE_DEATH_RATE = 10
+})
 
 type EventNotificationFlags = {
   'sent-notification'?: boolean

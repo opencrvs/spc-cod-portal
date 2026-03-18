@@ -8,7 +8,17 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { ActionType, defineConfig, field } from '@opencrvs/toolkit/events'
+import {
+  ActionType,
+  ConditionalType,
+  defineConfig,
+  field,
+  and,
+  status,
+  not,
+  flag,
+  InherentFlags
+} from '@opencrvs/toolkit/events'
 import {
   DEATH_DECLARATION_REVIEW,
   DEATH_DECLARATION_FORM
@@ -85,6 +95,15 @@ export const deathEvent = defineConfig({
         id: 'event.birth.flag.pending-first-certificate-issuance',
         defaultMessage: 'Pending first certificate issuance',
         description: 'Flag label for first certificate issuance'
+      },
+      requiresAction: true
+    },
+    {
+      id: 'validated',
+      label: {
+        id: 'event.birth.flag.validated',
+        defaultMessage: 'Validated',
+        description: 'Flag label for validated'
       },
       requiresAction: true
     }
@@ -166,6 +185,68 @@ export const deathEvent = defineConfig({
       }
     },
     {
+      type: ActionType.CUSTOM,
+      customActionType: 'VALIDATE_DECLARATION',
+      icon: 'Stamp',
+      label: {
+        defaultMessage: 'Validate',
+        description:
+          'This is shown as the action name anywhere the user can trigger the action from',
+        id: 'event.death.custom.action.validate-declaration.label'
+      },
+      supportingCopy: {
+        defaultMessage:
+          'Approving this declaration confirms it as legally accepted and eligible for registration.',
+        description:
+          'This is the supporting copy for the Validate declaration -action',
+        id: 'event.death.custom.action.validate-declaration.supportingCopy'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: and(status('DECLARED'), not(flag('validated')))
+        },
+        {
+          type: ConditionalType.ENABLE,
+          conditional: not(flag(InherentFlags.POTENTIAL_DUPLICATE))
+        }
+      ],
+      flags: [{ id: 'validated', operation: 'add' }],
+      form: [
+        {
+          id: 'comments',
+          type: 'TEXTAREA',
+          label: {
+            defaultMessage: 'Comments',
+            description:
+              'This is the label for the comments field for the validate declaration action',
+            id: 'event.death.custom.action.validate-declaration.field.comments.label'
+          }
+        }
+      ],
+      auditHistoryLabel: {
+        defaultMessage: 'Validated',
+        description:
+          'The label to show in audit history for the validate action',
+        id: 'event.death.custom.action.validate-declaration.audit-history-label'
+      }
+    },
+    {
+      type: ActionType.REJECT,
+      label: {
+        defaultMessage: 'Reject',
+        description:
+          'This is shown as the action name anywhere the user can trigger the action from',
+        id: 'event.death.action.reject.label'
+      },
+      supportingCopy: {
+        id: 'rejectModal.description',
+        defaultMessage:
+          'Rejecting this declaration will return it to the submitter for updates. Please ensure a valid reason for rejection has been recorded.',
+        description: 'The description for reject modal'
+      }
+    },
+    {
       type: ActionType.REGISTER,
       label: {
         defaultMessage: 'Register',
@@ -195,7 +276,7 @@ export const deathEvent = defineConfig({
     {
       type: ActionType.PRINT_CERTIFICATE,
       label: {
-        defaultMessage: 'Print certificate',
+        defaultMessage: 'Print',
         description:
           'This is shown as the action name anywhere the user can trigger the action from',
         id: 'event.death.action.collect-certificate.label'

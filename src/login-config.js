@@ -11,12 +11,9 @@
 
 // eslint-disable-next-line no-undef
 window.config = {
-  AUTH_API_URL: 'http://localhost:7070/auth/',
-  CONFIG_API_URL: 'http://localhost:2021',
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
-  LANGUAGES: 'en,fr',
-  CLIENT_APP_URL: 'http://localhost:3000/',
-  COUNTRY_CONFIG_URL: 'http://localhost:3040',
+  LANGUAGES: ['en', 'fr'],
+  LOGIN_BACKGROUND: { backgroundColor: '36304E' },
   SENTRY: ''
 }
