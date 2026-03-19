@@ -28,7 +28,8 @@ export const irisOutput = defineFormPage({
   },
   conditional: or(
     user.hasRole('CODING_OFFICER'),
-    event.hasAction(ActionType.REGISTER)
+    event.hasAction(ActionType.REGISTER),
+    event.hasAction(ActionType.REJECT)
   ),
   fields: [
     {
