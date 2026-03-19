@@ -26,7 +26,10 @@ export const irisOutput = defineFormPage({
     description: 'Form section title for iris output',
     id: 'spcCodingGroup.irisOutput.title'
   },
-  conditional: or(event.hasAction(ActionType.REGISTER)),
+  conditional: or(
+    user.hasRole('CODING_OFFICER'),
+    event.hasAction(ActionType.REGISTER)
+  ),
   fields: [
     {
       id: 'irisOutput.ucCode',
