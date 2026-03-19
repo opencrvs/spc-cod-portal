@@ -34,7 +34,7 @@
     COUNTRY_CONFIG_URL: `${scheme}//countryconfig.${hostname}`,
     // Country code in uppercase ALPHA-3 format
     COUNTRY: 'FAR',
-    LANGUAGES: 'en,fr',
+    LANGUAGES: 'en',
     SENTRY: sentry,
     DASHBOARDS: [
       {

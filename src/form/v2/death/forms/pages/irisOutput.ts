@@ -13,7 +13,6 @@ import {
   defineFormPage,
   FieldType,
   ConditionalType,
-  never,
   user,
   event,
   ActionType,
@@ -27,10 +26,7 @@ export const irisOutput = defineFormPage({
     description: 'Form section title for iris output',
     id: 'spcCodingGroup.irisOutput.title'
   },
-  conditional: or(
-    user.hasRole('CODING_OFFICER'),
-    event.hasAction(ActionType.REGISTER)
-  ),
+  conditional: or(event.hasAction(ActionType.REGISTER)),
   fields: [
     {
       id: 'irisOutput.ucCode',
@@ -38,11 +34,11 @@ export const irisOutput = defineFormPage({
       conditionals: [
         {
           type: ConditionalType.ENABLE,
-          conditional: never()
+          conditional: user.hasRole('CODING_OFFICER')
         }
       ],
       required: false,
-      defaultValue: 'Default',
+      defaultValue: 'None',
       analytics: true,
       label: {
         defaultMessage: 'UC Code',
@@ -56,11 +52,11 @@ export const irisOutput = defineFormPage({
       conditionals: [
         {
           type: ConditionalType.ENABLE,
-          conditional: never()
+          conditional: user.hasRole('CODING_OFFICER')
         }
       ],
       required: false,
-      defaultValue: 'Default',
+      defaultValue: 'None',
       analytics: true,
       label: {
         defaultMessage: 'Selected Codes',
@@ -74,11 +70,11 @@ export const irisOutput = defineFormPage({
       conditionals: [
         {
           type: ConditionalType.ENABLE,
-          conditional: never()
+          conditional: user.hasRole('CODING_OFFICER')
         }
       ],
       required: false,
-      defaultValue: 'Default',
+      defaultValue: 'None',
       analytics: true,
       label: {
         defaultMessage: 'Multiple Codes',
@@ -94,9 +90,14 @@ export const irisOutput = defineFormPage({
         id: 'spcCodingGroup.freeText.title',
         description: 'Label for the free text field in the Iris Output section'
       },
-      defaultValue: 'Default',
       analytics: true,
-      required: false
+      required: false,
+      conditionals: [
+        {
+          type: ConditionalType.ENABLE,
+          conditional: user.hasRole('CODING_OFFICER')
+        }
+      ]
     }
   ]
 })

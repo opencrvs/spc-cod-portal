@@ -59,8 +59,7 @@ CREATE SCHEMA IF NOT EXISTS reference_data;
 CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
-  code text NOT NULL,
-  source text NOT NULL
+  code text NOT NULL
 );
 
 -- Required for fuzzy search performance

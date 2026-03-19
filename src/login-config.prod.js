@@ -18,7 +18,7 @@ window.config = {
   CONFIG_API_URL: `${scheme}//config.${hostname}`,
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
-  LANGUAGES: 'en,fr',
+  LANGUAGES: 'en',
   CLIENT_APP_URL: `${scheme}//register.${hostname}/`,
   COUNTRY_CONFIG_URL: `${scheme}//countryconfig.${hostname}`,
   SENTRY: sentry
