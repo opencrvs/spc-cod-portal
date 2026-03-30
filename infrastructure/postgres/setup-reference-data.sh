@@ -59,7 +59,10 @@ CREATE SCHEMA IF NOT EXISTS reference_data;
 CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
-  code text NOT NULL
+  code text NOT NULL,
+  created_at timestamp with time zone DEFAULT now() NOT NULL,
+  updated_at timestamp with time zone DEFAULT now() NOT NULL,
+  valid_until timestamp with time zone
 );
 
 -- Required for fuzzy search performance
