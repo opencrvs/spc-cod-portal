@@ -1,10 +1,10 @@
-import { SCOPES, Scope } from '@opencrvs/toolkit/scopes'
+import { SCOPES } from '@opencrvs/toolkit/scopes'
 import { MessageDescriptor } from 'react-intl'
 
 type Role = {
   id: string
   label: MessageDescriptor
-  scopes: Scope[]
+  scopes: string[]
 }
 
 export const roles: Role[] = [
@@ -16,7 +16,6 @@ export const roles: Role[] = [
       id: 'userRole.medicalRecordsOfficer'
     },
     scopes: [
-      SCOPES.RECORD_READ,
       SCOPES.PERFORMANCE_READ,
       SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
       SCOPES.USER_READ_MY_JURISDICTION,
@@ -54,6 +53,7 @@ export const roles: Role[] = [
       SCOPES.ORGANISATION_READ_LOCATIONS,
       SCOPES.PERFORMANCE_READ,
       SCOPES.RECORD_REINDEX,
+      SCOPES.INTEGRATION_CREATE,
       SCOPES.PERFORMANCE_READ_DASHBOARDS
     ]
   },
