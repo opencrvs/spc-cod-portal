@@ -29,7 +29,7 @@
     MINIO_BUCKET: 'ocrvs',
     // Country code in uppercase ALPHA-3 format
     COUNTRY: 'FAR',
-    LANGUAGES: ['en', 'fr'],
+    LANGUAGES: 'en',
     SENTRY: sentry,
     REGISTER_BACKGROUND: { backgroundColor: '36304E' },
     DASHBOARDS: [

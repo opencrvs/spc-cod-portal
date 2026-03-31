@@ -125,8 +125,6 @@ export async function updateRecordWithCauseOfDeath(
     // Merge the IRIS output fields with the event declaration
     const updatedDeclaration = {
       ...eventDeclaration,
-      'eventDetails.comments':
-        row.Comments || eventDeclaration?.['eventDetails.comments'] || '',
       'irisOutput.ucCode':
         row.UCCode || eventDeclaration?.['irisOutput.ucCode'] || '',
       'irisOutput.selectedCodes':
@@ -145,7 +143,7 @@ export async function updateRecordWithCauseOfDeath(
       // If the IRIS status has changed to "Final"
       // and the record has a [rejected] flag,
       // we should attempt to reprocess it
-      
+
       // An event in 'DECLARED' state with [rejected] flag
       // can only accept the following actions
       // READ, NOTIFY, CUSTOM, EDIT, ARCHIVE.
@@ -163,18 +161,25 @@ export async function updateRecordWithCauseOfDeath(
       const registerResult = await client.event.actions.register.request.mutate(
         {
           declaration: updatedDeclaration,
-          annotation: { status: row.Status || '', reason: row.Reject || '' },
+          annotation: {
+            status: row.Status || '',
+            reason: row.Reject || '',
+            'review.comments': row.Comments || ''
+          },
           eventId,
           transactionId: uuidv4()
         }
       )
-
     } else if (row.Status === 'Final') {
       // Request REGISTER action
       const registerResult = await client.event.actions.register.request.mutate(
         {
           declaration: updatedDeclaration,
-          annotation: { status: row.Status || '', reason: row.Reject || '' },
+          annotation: {
+            status: row.Status || '',
+            reason: row.Reject || '',
+            'review.comments': row.Comments || ''
+          },
           eventId,
           transactionId: uuidv4()
         }
@@ -184,6 +189,11 @@ export async function updateRecordWithCauseOfDeath(
       const rejectResult = await client.event.actions.reject.request.mutate({
         transactionId: uuidv4(),
         declaration: updatedDeclaration,
+        annotation: {
+          status: row.Status || '',
+          reason: row.Reject || '',
+          'review.comments': row.Comments || ''
+        },
         eventId,
         content: { reason: row.Reject || '' }
       })

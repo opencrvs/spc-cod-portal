@@ -156,6 +156,12 @@ export const deceased = defineFormPage({
       type: FieldType.DATE,
       required: true,
       analytics: true,
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: not(field('deceased.dobUnknown').isEqualTo(true))
+        }
+      ],
       validation: [
         {
           message: {
@@ -182,6 +188,46 @@ export const deceased = defineFormPage({
         description: 'This is the label for the field',
         id: 'event.death.action.declare.form.section.deceased.field.dob.label'
       }
+    },
+    {
+      id: 'deceased.dobUnknown',
+      type: FieldType.CHECKBOX,
+      label: {
+        defaultMessage: 'Exact date of birth unknown',
+        description: 'This is the label for the field',
+        id: 'event.birth.action.declare.form.section.person.field.age.checkbox.label'
+      },
+      conditionals: [
+        {
+          type: ConditionalType.DISPLAY_ON_REVIEW,
+          conditional: never()
+        }
+      ]
+    },
+    {
+      id: 'deceased.age',
+      type: FieldType.AGE,
+      required: true,
+      analytics: true,
+      label: {
+        defaultMessage: 'Age of deceased (at the time of event)',
+        description: 'This is the label for the field',
+        id: 'event.birth.action.declare.form.section.deceased.field.age.label'
+      },
+      configuration: {
+        asOfDate: field('deceased.eventDate'),
+        postfix: {
+          defaultMessage: 'years',
+          description: 'This is the postfix for age field',
+          id: 'event.birth.action.declare.form.section.person.field.age.postfix'
+        }
+      },
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field('deceased.dobUnknown').isEqualTo(true)
+        }
+      ]
     },
     {
       id: 'deceased.eventDate',

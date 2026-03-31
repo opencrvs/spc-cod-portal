@@ -13,7 +13,7 @@
 window.config = {
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
-  LANGUAGES: ['en', 'fr'],
+  LANGUAGES: ['en'],
   LOGIN_BACKGROUND: { backgroundColor: '36304E' },
   SENTRY: ''
 }

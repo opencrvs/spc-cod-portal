@@ -24,7 +24,7 @@
     MINIO_BASE_URL: 'http://localhost:3535', // URL without path/bucket information, used for file uploads, v2
     // Country code in uppercase ALPHA-3 format
     COUNTRY: 'FAR',
-    LANGUAGES: ['en', 'fr'],
+    LANGUAGES: 'en',
     SENTRY: '',
     REGISTER_BACKGROUND: { backgroundColor: '36304E' },
     DASHBOARDS: [
