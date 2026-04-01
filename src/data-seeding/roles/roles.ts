@@ -65,7 +65,6 @@ export const roles: Role[] = [
       id: 'userRole.regionalCodingOfficer'
     },
     scopes: [
-      SCOPES.RECORD_READ,
       SCOPES.PERFORMANCE_READ,
       SCOPES.ORGANISATION_READ_LOCATIONS,
       SCOPES.PERFORMANCE_READ_DASHBOARDS,
@@ -84,7 +83,8 @@ export const roles: Role[] = [
       'type=record.register&event=death',
       'type=record.print-certified-copies&event=death',
       'type=record.correct&event=death',
-      'type=record.unassign-others&event=death'
+      'type=record.unassign-others&event=death',
+      'dashboard.view[id=uploader|export|statistics]'
     ]
   }
 ]
