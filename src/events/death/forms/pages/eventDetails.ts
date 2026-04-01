@@ -160,7 +160,7 @@ function createSymptomFields(letter: CauseLetter) {
 
     const otherField = {
       id: `${basePath}.other`,
-      type: FieldType.TEXT,
+      type: FieldType.TEXTAREA,
       required: false,
       analytics: true,
       label: {
@@ -187,7 +187,7 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
   return [
     {
       id: base,
-      type: FieldType.PARAGRAPH,
+      type: FieldType.HEADING,
       label: {
         defaultMessage:
           letter === 'Other'
@@ -196,7 +196,7 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
         description: 'This is the label for the field',
         id: `${base}.label`
       },
-      configuration: { styles: { fontVariant: 'h3' as const } }
+      configuration: { styles: { fontVariant: 'h3' } }
     },
     ...createSymptomFields(letter),
     {
@@ -270,24 +270,6 @@ export const eventDetails = defineFormPage({
       label: emptyMessage
     },
     ...causeOfDeathB,
-    {
-      id: 'eventDetails.addressHelper',
-      type: FieldType.HEADING,
-      label: {
-        defaultMessage: 'Place of death',
-        description: 'This is the label for the field',
-        id: 'event.death.action.declare.form.section.event.field.addressHelper.label'
-      },
-      configuration: {
-        styles: { fontVariant: 'h3' }
-      },
-      conditionals: [
-        {
-          type: ConditionalType.DISPLAY_ON_REVIEW,
-          conditional: never()
-        }
-      ]
-    },
     {
       id: 'eventDetails.divider2',
       type: FieldType.DIVIDER,
