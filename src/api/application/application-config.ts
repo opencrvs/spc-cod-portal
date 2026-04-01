@@ -1,7 +1,5 @@
 import { countryLogo } from '@countryconfig/api/application/country-logo'
 import { defineApplicationConfig } from '@opencrvs/toolkit/application-config'
-import * as fs from 'fs'
-import { join } from 'path'
 
 export const applicationConfig = defineApplicationConfig({
   APPLICATION_NAME: 'SPC Mortality Coding Portal',
@@ -27,23 +25,8 @@ export const applicationConfig = defineApplicationConfig({
         defaultMessage: 'Island / District / Village',
         description: 'Label for province in address'
       }
-    },
-    {
-      id: 'village',
-      label: {
-        id: 'field.address.village.label',
-        defaultMessage: 'Village',
-        description: 'Label for village in address'
-      }
     }
   ],
-  /*,
-  LOGIN_BACKGROUND: {
-    backgroundImage: `data:image/jpg;base64,${fs
-      .readFileSync(join(__dirname, 'ocean.jpg'))
-      .toString('base64')}`,
-    imageFit: 'FILL'
-  },*/
   PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',
   USER_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
