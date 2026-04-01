@@ -11,12 +11,19 @@
  */
 import { defineLoginConfig } from '@opencrvs/toolkit/application-config'
 import { applicationConfig } from '@countryconfig/api/application/application-config'
+import * as fs from 'fs'
+import { join } from 'path'
 
 export default defineLoginConfig({
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
   LANGUAGES: ['en'],
-  LOGIN_BACKGROUND: { backgroundColor: '36304E' },
+  LOGIN_BACKGROUND: {
+    backgroundImage: `data:image/jpg;base64,${fs
+      .readFileSync(join(__dirname, 'ocean.jpg'))
+      .toString('base64')}`,
+    imageFit: 'FILL'
+  },
   SENTRY: '',
   USER_NOTIFICATION_DELIVERY_METHOD:
     applicationConfig.USER_NOTIFICATION_DELIVERY_METHOD,

@@ -10,6 +10,8 @@
  */
 import { defineClientConfig } from '@opencrvs/toolkit/application-config'
 import { env } from './environment'
+import * as fs from 'fs'
+import { join } from 'path'
 
 export default defineClientConfig({
   MINIO_BUCKET: 'ocrvs',
@@ -19,7 +21,12 @@ export default defineClientConfig({
   COUNTRY: 'FAR',
   LANGUAGES: ['en', 'fr'],
   SENTRY: env.SENTRY_DSN ?? '',
-  REGISTER_BACKGROUND: { backgroundColor: '36304E' },
+  REGISTER_BACKGROUND: {
+    backgroundImage: `data:image/jpg;base64,${fs
+      .readFileSync(join(__dirname, 'ocean.jpg'))
+      .toString('base64')}`,
+    imageFit: 'FILL'
+  },
   DASHBOARDS: [
     {
       id: 'registrations',
