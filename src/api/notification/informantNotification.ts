@@ -15,19 +15,22 @@ import {
   deepMerge,
   EventDocument,
   FieldUpdateValue,
-  getPendingAction
+  getPendingAction,
+  type Location
 } from '@opencrvs/toolkit/events'
 import { applicationConfig } from '../application/application-config'
 import { COUNTRY_LOGO_URL } from './constant'
 import { GATEWAY_URL } from '@countryconfig/constants'
 import { createClient } from '@opencrvs/toolkit/api'
-import { Event } from '@countryconfig/form/types/types'
-import { InformantType as BirthInformantType } from '@countryconfig/form/v2/birth/forms/pages/informant'
+
+import { InformantType as BirthInformantType } from '@countryconfig/events/birth/forms/pages/informant'
 import { InformantTemplateType } from './sms-service'
 import { generateFailureLog, NotificationParams, notify } from './handler'
 // import { InformantType as DeathInformantType } from '@countryconfig/form/v2/death/forms/pages/informant'
-import { birthEvent } from '@countryconfig/form/v2/birth'
-import { deathEvent } from '@countryconfig/form/v2/death'
+import { birthEvent } from '@countryconfig/events/birth'
+import { deathEvent } from '@countryconfig/events/death'
+import { InformantType as DeathInformantType } from '@countryconfig/events/death/forms/pages/informant'
+import { Event } from '@countryconfig/events/utils'
 
 const resolveName = (name: FieldUpdateValue) => {
   const nameObj = {
@@ -53,7 +56,7 @@ const resolveName = (name: FieldUpdateValue) => {
   }
 }
 
-async function getLocations(token: string) {
+async function getLocations(token: string): Promise<Location[]> {
   const url = new URL('events', GATEWAY_URL).toString()
   const client = createClient(url, `Bearer ${token}`)
   return client.locations.list.query()
@@ -131,7 +134,7 @@ async function getNotificationParams(
       trackingId: event.trackingId,
       crvsOffice:
         (locations ?? []).find(
-          ({ id }) => id === pendingAction.createdAtLocation
+          ({ id }: { id: string }) => id === pendingAction.createdAtLocation
         )?.name || '',
       registrationLocation: '',
       applicationName: applicationConfig.APPLICATION_NAME,
