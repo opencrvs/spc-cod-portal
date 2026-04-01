@@ -13,6 +13,7 @@ import { chunk } from 'lodash'
 import { getClient } from './postgres'
 import { readCSVToJSON } from '@countryconfig/utils'
 import { Icd10CodeRecord } from './handler'
+import { sql } from 'kysely'
 
 const INSERT_MAX_CHUNK_SIZE = 1000
 
@@ -38,14 +39,30 @@ export async function syncReferenceData() {
           batch.map((l) => ({
             id: l.id,
             label: l.label,
-            code: l.code
+            code: l.code,
+            validUntil: l.validUntil
           }))
         )
         .onConflict((oc) =>
-          oc.column('id').doUpdateSet((eb) => ({
-            label: eb.ref('excluded.label'),
-            code: eb.ref('excluded.code')
-          }))
+          oc.column('id').doUpdateSet({
+            label: () => sql`CASE
+              WHEN excluded.label IS NOT NULL
+              THEN excluded.label
+              ELSE reference_data.icd10.label
+            END`,
+            code: () => sql`CASE
+              WHEN excluded.code IS NOT NULL
+              THEN excluded.code
+              ELSE reference_data.icd10.code
+            END`,
+            validUntil: () =>
+              sql`CASE
+              WHEN excluded.valid_until IS NOT NULL
+              THEN excluded.valid_until
+              ELSE reference_data.icd10.valid_until
+            END`,
+            updatedAt: () => sql`now()`
+          })
         )
         .execute()
     }

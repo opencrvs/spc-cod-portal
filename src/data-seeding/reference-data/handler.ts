@@ -1,11 +1,16 @@
 import { getClient } from './postgres'
 import Hapi from '@hapi/hapi'
+import * as z from 'zod/v4'
+import { UUID } from '@opencrvs/toolkit/events'
 
-export interface Icd10CodeRecord {
-  id: string
-  label: string
-  code: string
-}
+export const Icd10CodeRecord = z.object({
+  id: UUID,
+  label: z.string(),
+  code: z.string().nullish(),
+  validUntil: z.iso.datetime().nullable()
+})
+
+export type Icd10CodeRecord = z.infer<typeof Icd10CodeRecord>
 
 export async function onSearchHandler(
   request: Hapi.Request,
