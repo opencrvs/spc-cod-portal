@@ -148,24 +148,6 @@ export const Workqueues = defineWorkqueues([
     },
     query: {
       status: { type: 'exact', term: EventStatus.enum.DECLARED },
-      flags: { noneOf: [InherentFlags.POTENTIAL_DUPLICATE] },
-      'legalStatuses.DECLARED.createdByRole': {
-        type: 'anyOf',
-        terms: ['EMBASSY_OFFICIAL']
-      }
-    },
-    action: { type: ActionType.READ }
-  },
-  {
-    slug: 'escalated',
-    icon: 'FileArrowUp',
-    name: {
-      id: 'workqueues.escalated.title',
-      defaultMessage: 'Escalated',
-      description: 'Title of escalated workqueue'
-    },
-    query: {
-      ...createdInMyAdminArea,
       flags: {
         noneOf: [InherentFlags.CORRECTION_REQUESTED]
       },
