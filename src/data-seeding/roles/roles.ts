@@ -32,7 +32,7 @@ export const roles: Role[] = [
       'type=record.archive&event=death',
       'type=record.print-certified-copies&event=death',
       'type=record.request-correction&event=death',
-      'type=record.custom-action&event=death&customActionTypes=VALIDATE_DECLARATION',
+      'type=record.custom-action&event=death',
       'dashboard.view[id=statistics]'
     ]
   },
