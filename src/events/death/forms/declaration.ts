@@ -23,6 +23,7 @@ export const DEATH_DECLARATION_REVIEW = {
   fields: [
     {
       id: 'review.comment',
+      analytics: true,
       type: FieldType.TEXTAREA,
       label: {
         defaultMessage: 'Comments',

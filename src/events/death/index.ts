@@ -17,6 +17,7 @@ import {
   status,
   not,
   flag,
+  never,
   InherentFlags
 } from '@opencrvs/toolkit/events'
 import {
@@ -262,7 +263,12 @@ export const deathEvent = defineConfig({
           'Manually encoding means not processing this record through Iris and selecting UCCodes yourself. Please ensure all details are correct before proceeding.'
       },
       flags: [{ id: 'pending-first-certificate-issuance', operation: 'add' }],
-      conditionals: [],
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: never()
+        }
+      ],
       deduplication: {
         id: 'death-deduplication',
         label: {
