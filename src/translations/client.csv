@@ -1044,7 +1044,7 @@ event.death.summary.informant.contact.value,This is the contact value of the inf
 event.death.title,This is the title of the summary,{deceased.certificateKey}
 event.default.action.certificate.template.type.label,Select certificate template,Type
 event.default.action.certificate.template.type.notFound,Select certificate template options not found,"No template available for this event, contact Admin"
-event.history.role,Label for the role in event history,"{role, select, MR_OFFICER {Medical Records Officer} CODING_OFFICER {Regional Coding Officer} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} other {Unknown}}"
+event.history.role,Label for the role in event history,"{role, select, MR_OFFICER {Medical Records Officer} CODING_OFFICER {Regional Coding Officer} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} NATIONAL_SYSTEM_ADMIN {National System Admin} other {Unknown}}"
 event.history.system,Name for system initiated actions in the event history,System
 event.history.systemDefaultName,Fallback for system integration name in the event history,System integration
 event.not.downloaded,Shown when user tries to perform an action on event that is not available,Please ensure the event is first assigned and downloaded to the browser.

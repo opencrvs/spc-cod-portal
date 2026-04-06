@@ -122,15 +122,6 @@ export function UploadScreen({
               semicolon separated
             </li>
           </ul>
-          <div className="mt-4">
-            <a
-              href="/sample.csv"
-              download="sample.csv"
-              className="text-sm text-blue-700 hover:text-blue-900 underline"
-            >
-              Download accepted IRIS Ident CSV template
-            </a>
-          </div>
         </div>
       </div>
     </div>
