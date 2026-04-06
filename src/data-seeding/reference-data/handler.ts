@@ -30,7 +30,15 @@ export async function onSearchHandler(
     const rows = await db
       .selectFrom('icd10')
       .select(['id', 'label'])
-      .where((eb) => eb('label', 'ilike', likeTerm))
+      .where((eb) =>
+        eb.and([
+          eb('label', 'ilike', likeTerm),
+          eb.or([
+            eb('valid_until', 'is', null),
+            eb('valid_until', '>', new Date())
+          ])
+        ])
+      )
       .limit(50)
       .execute()
 
