@@ -35,7 +35,7 @@ export default defineClientConfig({
         defaultMessage: 'Download for encoding',
         description: 'Menu item for export dashboard'
       },
-      url: `http://localhost:4444/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
+      url: `https://metabase.${env.DOMAIN}/public/dashboard/80c014ab-e1b6-466e-b4c0-c9ebcca2e2e2#bordered=false&titled=false&refresh=300`
     },
     {
       id: 'uploader',
@@ -44,7 +44,7 @@ export default defineClientConfig({
         defaultMessage: 'Upload encoded',
         description: 'Menu item for uploader companion app'
       },
-      url: `http://localhost:3069/login`,
+      url: `https://uploader.${env.DOMAIN}/login`,
       context: {
         auth: 'REQUEST_AUTH_TOKEN'
       }
@@ -56,7 +56,7 @@ export default defineClientConfig({
         defaultMessage: 'Statistics',
         description: 'Menu item for statistics dashboard'
       },
-      url: `http://localhost:4444/public/dashboard/dc66b77a-79df-4f68-8fc8-5e5d5a2d7a35#bordered=false&titled=false&refresh=300`
+      url: `https://metabase.${env.DOMAIN}/public/dashboard/dc66b77a-79df-4f68-8fc8-5e5d5a2d7a35#bordered=false&titled=false&refresh=300`
     }
   ],
   FEATURES: {}
