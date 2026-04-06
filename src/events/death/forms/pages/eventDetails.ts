@@ -174,6 +174,16 @@ function createSymptomFields(letter: CauseLetter) {
           type: ConditionalType.SHOW,
           conditional: field(basePath).get('value').isEqualTo('OTHER')
         }
+      ],
+      validation: [
+        {
+          message: {
+            defaultMessage: 'Must not contain semicolon(s)',
+            description: 'This is the label for the field',
+            id: 'event.death.action.declare.other.condition.error'
+          },
+          validator: field(`${basePath}.other`).matches('^[^;]*$')
+        }
       ]
     }
 
