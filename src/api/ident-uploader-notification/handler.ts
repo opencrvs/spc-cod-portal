@@ -27,8 +27,25 @@ export const identUploaderNotificationSchema = Joi.object({
     }).required(),
     email: Joi.string().email().required()
   }).required(),
-  recordIds: Joi.array().items(Joi.string()).min(1).required()
+  records: Joi.array()
+    .items(
+      Joi.object({
+        status: Joi.string().valid('success', 'rejected').required(),
+        trackingId: Joi.string().required(),
+        certKey: Joi.string().required()
+      })
+    )
+    .min(1)
+    .required()
 })
+
+export interface RecordsToEmail {
+  status: 'success' | 'rejected'
+  /** The tracking ID of the record for display in emails */
+  trackingId?: string
+  /** The cert key of the record for display in emails */
+  certKey?: string
+}
 
 export interface IdentUploaderNotificationPayload {
   recipient: {
@@ -38,7 +55,7 @@ export interface IdentUploaderNotificationPayload {
     }
     email: string
   }
-  recordIds: string[]
+  records: RecordsToEmail[]
 }
 
 /**
@@ -50,10 +67,10 @@ export async function identUploaderNotificationHandler(
   h: Hapi.ResponseToolkit
 ) {
   const payload = request.payload as IdentUploaderNotificationPayload
-  const { recipient, recordIds } = payload
+  const { recipient, records } = payload
 
   logger.info(
-    `[IDENT-UPLOADER] Processing notification request for ${maskEmail(recipient.email)} with ${recordIds.length} records`
+    `[IDENT-UPLOADER] Processing notification request for ${maskEmail(recipient.email)} with ${records.length} records`
   )
 
   if (process.env.NODE_ENV !== 'production') {
@@ -78,10 +95,25 @@ export async function identUploaderNotificationHandler(
   // Build email content
   const emailBody = `
     <p>Dear ${recipient.name.firstname} ${recipient.name.surname},</p>
-    <p>The following death records have been encoded with cause of death codes and are ready to view:</p>
-    <ul>
-      ${recordIds.map((id) => `<li>${id}</li>`).join('')}
-    </ul>
+    
+      ${records
+        .map(
+          (record) =>
+            record.status === 'success' &&
+            `<p>The following death records have been encoded with cause of death codes and are ready to view:</p>
+    <ul><li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li></ul><>/p`
+        )
+        .join('')}
+
+        ${records
+          .map(
+            (record) =>
+              record.status === 'rejected' &&
+              `<p>The following death records were rejected and could not be coded:</p>
+    <ul><li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li></ul><>/p`
+          )
+          .join('')}
+    
     <p>Login to <a href="${loginUrl}">${loginUrl}</a> to access these records.</p>
     <p>Best regards,<br>${applicationName}</p>
   `

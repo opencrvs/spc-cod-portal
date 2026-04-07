@@ -15,6 +15,16 @@ export interface ProcessingResult {
   createdBy?: string
   /** The tracking ID of the record for display in emails */
   trackingId?: string
+  /** The cert key of the record for display in emails */
+  certKey?: string
+}
+
+export interface RecordsToEmail {
+  status: 'success' | 'skipped' | 'error' | 'rejected'
+  /** The tracking ID of the record for display in emails */
+  trackingId?: string
+  /** The cert key of the record for display in emails */
+  certKey?: string
 }
 
 export interface ProcessingSummary {
