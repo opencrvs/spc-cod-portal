@@ -282,6 +282,12 @@ export const deathEvent = defineConfig({
       flags: [
         { id: 'pending-first-certificate-issuance', operation: 'remove' }
       ],
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: never()
+        }
+      ],
       printForm: DEATH_CERTIFICATE_COLLECTOR_FORM
     },
     {
