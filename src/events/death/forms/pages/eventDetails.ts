@@ -9,12 +9,14 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 import {
+  and,
   ConditionalType,
   defineFormPage,
   field,
   FieldType,
   never,
   not,
+  or,
   PageTypes,
   TranslationConfig
 } from '@opencrvs/toolkit/events'
@@ -213,6 +215,7 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       id: `${base}.add.symptom.button`,
       type: FieldType.BUTTON,
       hideLabel: true,
+      defaultValue: 0,
       label: {
         defaultMessage: 'Add another symptom',
         description: 'This is the label for the field',
@@ -229,7 +232,39 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       conditionals: [
         {
           type: ConditionalType.ENABLE,
-          conditional: not(field(`${base}.add.symptom.button`).isEqualTo(7))
+          conditional: and(
+            not(field(`${base}.add.symptom.button`).isEqualTo(7)),
+            or(
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(0),
+                not(field(`${base}.symptom.one`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(1),
+                not(field(`${base}.symptom.two`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(2),
+                not(field(`${base}.symptom.three`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(3),
+                not(field(`${base}.symptom.four`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(4),
+                not(field(`${base}.symptom.five`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(5),
+                not(field(`${base}.symptom.six`).get('value').isFalsy())
+              ),
+              and(
+                field(`${base}.add.symptom.button`).isEqualTo(6),
+                not(field(`${base}.symptom.seven`).get('value').isFalsy())
+              )
+            )
+          )
         },
         {
           type: ConditionalType.DISPLAY_ON_REVIEW,
