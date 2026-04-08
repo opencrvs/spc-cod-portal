@@ -2,7 +2,7 @@ import { GATEWAY_HOST, COUNTRY_CONFIG_HOST } from '../util/constants'
 import { createClient } from '@opencrvs/toolkit/api'
 import { v4 as uuidv4 } from 'uuid'
 import { getDecodedToken } from './token'
-import { UserInfo } from '../util/types'
+import { UserInfo, RecordsToEmail } from '../util/types'
 // import fetch from 'node-fetch'
 
 export interface DeathRecord {
@@ -259,7 +259,7 @@ export function getCreatedByFromLegalStatuses(
 export async function sendProcessingNotificationEmail(
   token: string,
   userInfo: UserInfo,
-  recordIds: string[]
+  records: RecordsToEmail[]
 ): Promise<boolean> {
   // Use COUNTRY_CONFIG_HOST since the endpoint is defined in country config server (port 3040)
   const url = new URL(
@@ -268,7 +268,7 @@ export async function sendProcessingNotificationEmail(
   ).toString()
 
   console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
-  console.log('[IDENT-UPLOADER] Record IDs:', recordIds)
+  console.log('[IDENT-UPLOADER] Record IDs:', records)
   console.log('[IDENT-UPLOADER] URL:', url)
 
   try {
@@ -286,7 +286,7 @@ export async function sendProcessingNotificationEmail(
           },
           email: userInfo.email
         },
-        recordIds
+        records
       })
     })
 

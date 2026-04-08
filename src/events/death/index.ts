@@ -206,11 +206,7 @@ export const deathEvent = defineConfig({
       conditionals: [
         {
           type: ConditionalType.SHOW,
-          conditional: and(status('DECLARED'), not(flag('validated')))
-        },
-        {
-          type: ConditionalType.ENABLE,
-          conditional: not(flag(InherentFlags.POTENTIAL_DUPLICATE))
+          conditional: never()
         }
       ],
       flags: [{ id: 'validated', operation: 'add' }],
@@ -263,12 +259,7 @@ export const deathEvent = defineConfig({
           'Manually encoding means not processing this record through Iris and selecting UCCodes yourself. Please ensure all details are correct before proceeding.'
       },
       flags: [{ id: 'pending-first-certificate-issuance', operation: 'add' }],
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: never()
-        }
-      ],
+      conditionals: [],
       deduplication: {
         id: 'death-deduplication',
         label: {
@@ -290,6 +281,12 @@ export const deathEvent = defineConfig({
       },
       flags: [
         { id: 'pending-first-certificate-issuance', operation: 'remove' }
+      ],
+      conditionals: [
+        {
+          type: ConditionalType.SHOW,
+          conditional: never()
+        }
       ],
       printForm: DEATH_CERTIFICATE_COLLECTOR_FORM
     },

@@ -464,7 +464,7 @@ correction.reason.materialError,Label for material error for correction reason f
 correction.reason.materialOmission,Label for material omission for correction reason form,Informant did not provide this information (Material omission)
 correction.reason.other,,Other
 correction.reason.reasonForChange,Label for other reason for correction reason form,Reason for correction
-correction.reason.title,The title for the corrector form,Reason for correction?
+correction.reason.title,The title for the corrector form,Reason
 correction.request,Status for application being requested for correction,Requested correction
 correction.requester.relationshop.intro.label,The title for the corrector form,Note: In the case that the child is now of legal age (18) then only they should be able to request a change to their birth record.
 correction.requesterOffice,Correction requester office label,Office
@@ -1044,7 +1044,7 @@ event.death.summary.informant.contact.value,This is the contact value of the inf
 event.death.title,This is the title of the summary,{deceased.certificateKey}
 event.default.action.certificate.template.type.label,Select certificate template,Type
 event.default.action.certificate.template.type.notFound,Select certificate template options not found,"No template available for this event, contact Admin"
-event.history.role,Label for the role in event history,"{role, select, MR_OFFICER {Medical Records Officer} CODING_OFFICER {Regional Coding Officer} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} other {Unknown}}"
+event.history.role,Label for the role in event history,"{role, select, MR_OFFICER {Medical Records Officer} CODING_OFFICER {Regional Coding Officer} HEALTH {Health integration} IMPORT {Import integration} NATIONAL_ID {National ID integration} RECORD_SEARCH {Record search integration} WEBHOOK {Webhook} NATIONAL_SYSTEM_ADMIN {National System Admin} other {Unknown}}"
 event.history.system,Name for system initiated actions in the event history,System
 event.history.systemDefaultName,Fallback for system integration name in the event history,System integration
 event.not.downloaded,Shown when user tries to perform an action on event that is not available,Please ensure the event is first assigned and downloaded to the browser.
@@ -1099,7 +1099,7 @@ event.tennis-club-membership.action.form.section.refugeeNumberDetails.label,Fiel
 event.tennis-club-membership.action.form.section.relationshipToMember.label,This is the label for the relationship to member field,Relationship to Member
 event.tennis-club-membership.action.form.section.signedAffidavit.label,This is the label for uploading a signed affidavit,Signed Affidavit (Optional)
 event.tennis-club-membership.action.register.label,This is shown as the action name anywhere the user can trigger the action from,Send for processing
-event.tennis-club-membership.action.requestCorrection.form.section.corrector,This is the title of the section,Correction requester
+event.tennis-club-membership.action.requestCorrection.form.section.corrector,This is the title of the section,Reason for correction
 event.tennis-club-membership.action.requestCorrection.form.section.verify,This is the title of the section,Verify their identity
 event.tennis-club-membership.action.requestCorrection.label,This is shown as the action name anywhere the user can trigger the action from,Request correction
 event.tennis-club-membership.action.validate.label,This is shown as the action name anywhere the user can trigger the action from,Validate
