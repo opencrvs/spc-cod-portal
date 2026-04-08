@@ -25,6 +25,7 @@ function HomeComponent() {
   const [validationError, setValidationError] = useState<string>('')
 
   const handleFileSelect = async (file: File) => {
+    
     try {
       setValidationError('')
       setState('processing')

@@ -4,7 +4,32 @@ import { SENDER_EMAIL_ADDRESS } from '../notification/constant'
 import { applicationConfig } from '../application/application-config'
 import { LOGIN_URL } from '@countryconfig/constants'
 import { logger, maskEmail } from '@countryconfig/logger'
-import { IdentUploaderNotificationPayload } from './handler'
+import { IdentUploaderNotificationPayload, RecordsToEmail } from './handler'
+
+const renderSection = (
+  records: RecordsToEmail[],
+  intro: string,
+  plural: boolean = true
+) => {
+  if (!records.length) return ''
+  const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
+  return `
+    <p>${intro}</p>
+    <ul>
+      ${records
+        .map(
+          (record) =>
+            `<li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li>`
+        )
+        .join('')}
+    </ul>
+    <p>
+      Login to <a href="${loginUrl}">${loginUrl}</a> to access ${
+        plural ? 'these records' : 'this record'
+      }.
+    </p>
+  `
+}
 
 export async function sendCoDEmail(
   payload: IdentUploaderNotificationPayload,
@@ -29,43 +54,37 @@ export async function sendCoDEmail(
       .response({ success: true, message: 'Notification skipped' })
       .code(200)
   }
-  const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
+
+  const successRecords = payload.records.filter((r) => r.status === 'success')
+  const rejectedRecords = payload.records.filter((r) => r.status === 'rejected')
+  const correctedRecords = payload.records.filter(
+    (r) => r.status === 'corrected'
+  )
+
   const applicationName = applicationConfig.APPLICATION_NAME || 'OpenCRVS'
 
   // Build email content
   const emailBody = `
-    <p>Dear ${payload.recipient.name.firstname} ${payload.recipient.name.surname},</p>
-    
-      ${payload.records
-        .map(
-          (record) =>
-            record.status === 'success' &&
-            `<p>The following death records have been encoded with cause of death codes and are ready to view:</p>
-    <ul><li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li></ul></p><p>Login to <a href="${loginUrl}">${loginUrl}</a> to access these records.</p>`
-        )
-        .join('')}
+  <p>Dear ${payload.recipient.name.firstname} ${payload.recipient.name.surname},</p>
 
-        ${payload.records
-          .map(
-            (record) =>
-              record.status === 'rejected' &&
-              `<p>The following death records were rejected and could not be coded:</p>
-    <ul><li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li></ul></p><p>Login to <a href="${loginUrl}">${loginUrl}</a> to access these records.</p>`
-          )
-          .join('')}
-        
-        ${payload.records
-          .map(
-            (record) =>
-              record.status === 'corrected' &&
-              `<p>The following death record has been corrected with new information and is ready to view:</p>
-    <ul><li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li></ul></p><p>Login to <a href="${loginUrl}">${loginUrl}</a> to access this record.</p>`
-          )
-          .join('')}
-    
-    
-    <p>Best regards,<br>${applicationName}</p>
-  `
+  ${renderSection(
+    successRecords,
+    'The following death records have been encoded with cause of death codes and are ready to view:'
+  )}
+
+  ${renderSection(
+    rejectedRecords,
+    'The following death records were rejected and could not be coded:'
+  )}
+
+  ${renderSection(
+    correctedRecords,
+    'The following death record has been corrected with new information and is ready to view:',
+    false
+  )}
+
+  <p>Best regards,<br>${applicationName}</p>
+`
 
   try {
     if (process.env.NODE_ENV === 'development') {

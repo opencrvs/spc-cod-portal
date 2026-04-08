@@ -98,11 +98,12 @@ export async function onCorrectionHandler(
   if (!userInfo) {
     throw new Error('User not found for correction notification')
   }
+
   const records = [
     {
       status: 'corrected',
       trackingId: event.trackingId,
-      certKey: declaration.deceased_certificateKey
+      certKey: declaration['deceased.certificateKey']
     }
   ] as RecordsToEmail[]
 
