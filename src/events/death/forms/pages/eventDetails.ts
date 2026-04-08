@@ -223,11 +223,14 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       },
       configuration: {
         text: {
-          defaultMessage: 'Add another symptom',
+          defaultMessage: 'Add another cause',
           description: 'This is the label for the field',
           id: `${base}.add.symptom.buttonText`
         },
-        icon: 'Plus'
+        buttonType: 'tertiary',
+        buttonSize: 'small',
+        textColor: 'primary',
+        textVariant: 'bold14'
       },
       conditionals: [
         {
