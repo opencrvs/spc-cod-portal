@@ -110,16 +110,32 @@ const symptomNumber = [
   'eight'
 ] as const
 
-const symptomNumberLabel = [
-  'Symptom 1',
-  'Symptom 2',
-  'Symptom 3',
-  'Symptom 4',
-  'Symptom 5',
-  'Symptom 6',
-  'Symptom 7',
-  'Symptom 8'
-]
+function getLabelForCause(
+  letter: CauseLetter,
+  index: number,
+  basePath: string
+) {
+  switch (letter) {
+    case 'A':
+      return {
+        defaultMessage: `A.${index + 1}. Direct cause`,
+        description: 'This is the label for the field',
+        id: `${basePath}.label`
+      }
+    case 'Other':
+      return {
+        defaultMessage: `${index + 1}. Antecedent cause`,
+        description: 'This is the label for the field',
+        id: `${basePath}.label`
+      }
+    default:
+      return {
+        defaultMessage: `${letter}.${index + 1}. Antecedent cause`,
+        description: 'This is the label for the field',
+        id: `${basePath}.label`
+      }
+  }
+}
 
 function createSymptomFields(letter: CauseLetter) {
   return symptomNumber.flatMap((number, index) => {
@@ -129,11 +145,7 @@ function createSymptomFields(letter: CauseLetter) {
       id: basePath,
       type: FieldType.AUTOCOMPLETE,
       analytics: true,
-      label: {
-        defaultMessage: symptomNumberLabel[index],
-        description: 'This is the label for the field',
-        id: `${basePath}.label`
-      },
+      label: getLabelForCause(letter, index, basePath),
       configuration: {
         url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`,
         defaultOptions: [{ label: 'Other', value: 'OTHER' }]
@@ -203,8 +215,8 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
       label: {
         defaultMessage:
           letter === 'Other'
-            ? 'Other significant conditions'
-            : `Cause of death ${letter}`,
+            ? 'Part II: Other significant causes'
+            : `${letter}. Cause of death`,
         description: 'This is the label for the field',
         id: `${base}.label`
       },
