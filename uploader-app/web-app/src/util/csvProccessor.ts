@@ -183,7 +183,7 @@ export const processCSVRow = async (
 export const processCSV = async (
   rows: CSVRow[],
   token: string,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number, currentCertificateKey: string) => void
 ): Promise<ProcessingSummary> => {
   const results: ProcessingResult[] = []
 
@@ -192,7 +192,7 @@ export const processCSV = async (
     results.push(result)
 
     if (onProgress) {
-      onProgress(i + 1, rows.length)
+      onProgress(i + 1, rows.length, rows[i].CertificateKey?.trim() || '')
     }
   }
 
