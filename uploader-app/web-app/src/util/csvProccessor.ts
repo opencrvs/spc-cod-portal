@@ -67,7 +67,7 @@ export const processCSVRow = async (
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
   const rowStatus = row.Status
-
+  
   if (!id) {
     return {
       rowIndex,
@@ -141,6 +141,8 @@ export const processCSVRow = async (
 
     const trackingId = record.trackingId || id
     const certKey = id
+    // Extract createdBy from legalStatuses.DECLARED.createdBy
+    const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
 
     if (rowStatus === 'Rejected') {
       const rejectReason = row.RejectReason
@@ -150,13 +152,13 @@ export const processCSVRow = async (
         id,
         status: 'rejected',
         message: `Record with ID "${id}" has status Rejected`,
+        createdBy: createdBy || undefined,
         trackingId,
         certKey
       }
     }
 
-    // Extract createdBy from legalStatuses.DECLARED.createdBy
-    const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
+    
     
 
     return {
@@ -202,7 +204,7 @@ export const processCSV = async (
     rejected: results.filter((r) => r.status === 'rejected').length,
     results
   }
-
+ 
   // Send email notifications - one email per user with all their processed records
   await sendEmailNotifications(token, results)
 
@@ -248,7 +250,7 @@ async function sendEmailNotifications(
       if (!userInfo.email) {
         continue
       }
-
+ 
       // Send single email with all record IDs for this user
       const result = await sendProcessingNotificationEmail(
         token,
