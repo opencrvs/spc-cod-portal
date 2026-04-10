@@ -13,9 +13,6 @@ import * as fs from 'fs'
 import { join } from 'path'
 
 export default defineClientConfig({
-  MINIO_BUCKET: 'ocrvs',
-  MINIO_URL: 'http://localhost:3535/ocrvs/',
-  MINIO_BASE_URL: 'http://localhost:3535',
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
   LANGUAGES: ['en'],
