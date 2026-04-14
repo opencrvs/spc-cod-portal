@@ -28,7 +28,6 @@ import { InformantTemplateType } from './sms-service'
 import { generateFailureLog, NotificationParams, notify } from './handler'
 import { birthEvent } from '@countryconfig/events/birth'
 import { deathEvent } from '@countryconfig/events/death'
-import { InformantType as DeathInformantType } from '@countryconfig/events/death/forms/pages/informant'
 import { Event } from '@countryconfig/events/utils'
 
 const resolveName = (name: FieldUpdateValue) => {

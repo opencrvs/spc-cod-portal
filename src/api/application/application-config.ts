@@ -33,6 +33,14 @@ export const applicationConfig = defineApplicationConfig({
         defaultMessage: 'Village',
         description: 'Label for village in address'
       }
+    },
+    {
+      id: 'village',
+      label: {
+        id: 'field.address.village.label',
+        defaultMessage: 'Village',
+        description: 'Label for village in address'
+      }
     }
   ],
   PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',

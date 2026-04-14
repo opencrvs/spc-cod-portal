@@ -1,9 +1,10 @@
-import { SCOPES } from '@opencrvs/toolkit/scopes'
 import { MessageDescriptor } from 'react-intl'
+import { defineScopes } from '@opencrvs/toolkit/scopes'
 
 type Role = {
   id: string
   label: MessageDescriptor
+  // @TODO: After the last v1 scopes (user.create and user.edit) are replaced by v2 scopes, change this to EncodedScope
   scopes: string[]
 }
 
@@ -15,26 +16,25 @@ export const roles: Role[] = [
       description: 'Name for user role Medical Records Officer',
       id: 'userRole.medicalRecordsOfficer'
     },
-    scopes: [
-      SCOPES.PERFORMANCE_READ,
-      SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
-      SCOPES.USER_READ_MY_JURISDICTION,
-      SCOPES.ORGANISATION_READ_LOCATIONS_MY_JURISDICTION,
-      SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES,
-      SCOPES.PERFORMANCE_READ_DASHBOARDS,
-      'type=record.search&event=death',
-      'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|in-review|encoded]',
-      'type=record.create&event=death&placeOfEvent=administrativeArea',
-      'type=record.read&event=death',
-      'type=record.declare&event=death',
-      'type=record.edit&event=death',
-      'type=record.reject&event=death',
-      'type=record.archive&event=death',
-      'type=record.print-certified-copies&event=death',
-      'type=record.request-correction&event=death',
-      'type=record.custom-action&event=death',
-      'dashboard.view[id=statistics]'
-    ]
+    scopes: defineScopes([
+      { type: 'performance.read' },
+      { type: 'organisation.read-locations'},
+      { type: 'user.read', options: { accessLevel: 'location' } },
+      { type: 'record.print-certified-copies' },
+      { type: 'performance.read-dashboards' },
+      { type: 'workqueue', options: { ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded' ] } },
+      { type: 'record.create', options: { event: 'death', placeOfEvent: 'administrativeArea' } },
+      { type: 'record.search', options: { event: 'death' } },
+      { type: 'record.read', options: { event: 'death' } },
+      { type: 'record.declare', options: { event: 'death' } },
+      { type: 'record.edit', options: { event: 'death' } },
+      { type: 'record.reject', options: { event: 'death' } },
+      { type: 'record.archive', options: { event: 'death' } },
+      { type: 'record.print-certified-copies', options: { event: 'death' } },
+      { type: 'record.request-correction', options: { event: 'death' } }
+      /* 'type=record.custom-action&event=death',
+      'dashboard.view[id=statistics]' */
+    ])
   },
   {
     id: 'NATIONAL_SYSTEM_ADMIN',
@@ -44,17 +44,19 @@ export const roles: Role[] = [
       id: 'userRole.nationalSystemAdmin'
     },
     scopes: [
-      SCOPES.CONFIG_UPDATE_ALL,
-      SCOPES.USER_CREATE,
+      ...defineScopes([
+        { type: 'config.update-all' },
+        { type: 'user.create' },
+        { type: 'user.read' },
+        { type: 'user.update-all' },
+        { type: 'organisation.read-locations' },
+        { type: 'performance.read' },
+        { type: 'record.reindex' },
+        { type: 'integration.create' },
+        { type: 'performance.read-dashboards' }
+      ]),
       'user.create[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]',
-      'user.edit[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]',
-      SCOPES.USER_READ,
-      SCOPES.USER_UPDATE,
-      SCOPES.ORGANISATION_READ_LOCATIONS,
-      SCOPES.PERFORMANCE_READ,
-      SCOPES.RECORD_REINDEX,
-      SCOPES.INTEGRATION_CREATE,
-      SCOPES.PERFORMANCE_READ_DASHBOARDS
+      'user.edit[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]'
     ]
   },
   {
@@ -65,26 +67,25 @@ export const roles: Role[] = [
       id: 'userRole.regionalCodingOfficer'
     },
     scopes: [
-      SCOPES.PERFORMANCE_READ,
-      SCOPES.ORGANISATION_READ_LOCATIONS,
-      SCOPES.PERFORMANCE_READ_DASHBOARDS,
-      SCOPES.USER_READ_ONLY_MY_AUDIT,
-      SCOPES.ORGANISATION_READ_LOCATIONS,
-      SCOPES.USER_READ,
-      'type=record.search&event=death',
-      'workqueue[id=assigned-to-you|recent|requires-updates-office|in-review-all|encoded]',
-      'type=record.create&event=death',
-      'type=record.read&event=death',
-      'type=record.declare&event=death',
-      'type=record.edit&event=death',
-      'type=record.reject&event=death',
-      'type=record.archive&event=death',
-      'type=record.review-duplicates&event=death',
-      'type=record.register&event=death',
-      'type=record.print-certified-copies&event=death',
-      'type=record.correct&event=death',
-      'type=record.unassign-others&event=death',
-      'dashboard.view[id=uploader|export|statistics]'
+      { type: 'performance.read' },
+      { type: 'organisation.read-locations' },
+      { type: 'performance.read-dashboards' }
+      { type: 'user.read-only-my-audit' },
+      { type: 'user.read' },
+      { type: 'record.search', options: { event: 'death' } },
+      { type: 'workqueue', options: { ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded' ] } },
+      { type: 'record.create', options: { event: 'death'} },
+      { type: 'record.read', options: { event: 'death' } },
+      { type: 'record.declare', options: { event: 'death' } },
+      { type: 'record.edit', options: { event: 'death' } },
+      { type: 'record.reject', options: { event: 'death' } },
+      { type: 'record.archive', options: { event: 'death' } },
+      { type: 'record.review-duplicates', options: { event: 'death' } },
+      { type: 'record.register', options: { event: 'death' } },
+      { type: 'record.print-certified-copies', options: { event: 'death' } },
+      { type: 'record.correct', options: { event: 'death' } },
+      { type: 'record.unassign-others', options: { event: 'death' } }
+      /* 'dashboard.view[id=uploader|export|statistics]' */
     ]
   }
 ]
