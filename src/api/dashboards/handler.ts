@@ -11,12 +11,7 @@
 import * as Hapi from '@hapi/hapi'
 import * as fs from 'fs'
 import { join } from 'path'
-import { defaultQueries } from './queries'
-import {
-  EventDocument,
-  ActionDocument,
-  ActionStatus
-} from '@opencrvs/toolkit/events'
+import { EventDocument } from '@opencrvs/toolkit/events'
 import { importEvent } from '../../analytics/analytics'
 import { getClient } from '../../analytics/postgres'
 import { logger } from '@countryconfig/logger'
@@ -31,13 +26,6 @@ export async function mapGeojsonHandler(
   const filePath = join(__dirname, './file/map.geojson')
   const fileContents = await fs.promises.readFile(filePath, 'utf8')
   return h.response(fileContents).type('text/plain')
-}
-
-export async function dashboardQueriesHandler(
-  _: Hapi.Request,
-  h: Hapi.ResponseToolkit
-) {
-  return h.response(defaultQueries())
 }
 
 export async function externalRecordToEncodeHandler(

@@ -1,0 +1,115 @@
+import * as Hapi from '@hapi/hapi'
+import { sendEmail } from '../notification/email-service'
+import { SENDER_EMAIL_ADDRESS } from '../notification/constant'
+import { applicationConfig } from '../application/application-config'
+import { LOGIN_URL } from '@countryconfig/constants'
+import { logger, maskEmail } from '@countryconfig/logger'
+import { IdentUploaderNotificationPayload, RecordsToEmail } from './handler'
+
+const renderSection = (
+  records: RecordsToEmail[],
+  intro: string,
+  plural: boolean = true
+) => {
+  if (!records.length) return ''
+  const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
+  return `
+    <p>${intro}</p>
+    <ul>
+      ${records
+        .map(
+          (record) =>
+            `<li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li>`
+        )
+        .join('')}
+    </ul>
+    <p>
+      Login to <a href="${loginUrl}">${loginUrl}</a> to access ${
+        plural ? 'these records' : 'this record'
+      }.
+    </p>
+  `
+}
+
+export async function sendCoDEmail(
+  payload: IdentUploaderNotificationPayload,
+  h: Hapi.ResponseToolkit
+) {
+  logger.info(
+    `[IDENT-UPLOADER] Processing notification request for ${maskEmail(payload.recipient.email)} with ${payload.records.length} records`
+  )
+
+  if (process.env.NODE_ENV !== 'production') {
+    logger.info(
+      `[IDENT-UPLOADER] Development mode - would send email to ${payload.recipient.email}`
+    )
+  }
+
+  // Check if email delivery is configured
+  if (applicationConfig.USER_NOTIFICATION_DELIVERY_METHOD !== 'email') {
+    logger.info(
+      `Skipping ident uploader notification: USER_NOTIFICATION_DELIVERY_METHOD is not 'email'`
+    )
+    return h
+      .response({ success: true, message: 'Notification skipped' })
+      .code(200)
+  }
+
+  const successRecords = payload.records.filter((r) => r.status === 'success')
+  const rejectedRecords = payload.records.filter((r) => r.status === 'rejected')
+  const correctedRecords = payload.records.filter(
+    (r) => r.status === 'corrected'
+  )
+
+  const applicationName = applicationConfig.APPLICATION_NAME || 'OpenCRVS'
+
+  // Build email content
+  const emailBody = `
+  <p>Dear ${payload.recipient.name.firstname} ${payload.recipient.name.surname},</p>
+
+  ${renderSection(
+    successRecords,
+    'The following death records have been encoded with cause of death codes and are ready to view:'
+  )}
+
+  ${renderSection(
+    rejectedRecords,
+    'The following death records were rejected and could not be coded:'
+  )}
+
+  ${renderSection(
+    correctedRecords,
+    'The following death record has been corrected with new information and is ready to view:',
+    false
+  )}
+
+  <p>Best regards,<br>${applicationName}</p>
+`
+
+  try {
+    if (process.env.NODE_ENV === 'development') {
+      logger.info(
+        `Would send email to ${maskEmail(payload.recipient.email)} with subject: Death Records Processed - Cause of Death Codes Updated`
+      )
+      return h.response({ success: true }).code(200)
+    }
+
+    await sendEmail({
+      subject: 'Death Records Processed - Cause of Death Codes Updated',
+      html: emailBody,
+      from: SENDER_EMAIL_ADDRESS,
+      to: payload.recipient.email
+    })
+
+    logger.info(
+      `Ident uploader notification sent successfully to ${maskEmail(payload.recipient.email)}`
+    )
+
+    return h.response({ success: true }).code(200)
+  } catch (error) {
+    logger.error(`Failed to send ident uploader notification: ${error}`)
+    return h
+      .response({ success: false, message: 'Failed to send email' })
+      .code(500)
+  }
+}

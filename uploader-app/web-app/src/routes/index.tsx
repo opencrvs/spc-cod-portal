@@ -18,13 +18,15 @@ function HomeComponent() {
   const [state, setState] = useState<AppState>('upload')
   const [progress, setProgress] = useState({
     current: 0,
-    total: 0
+    total: 0,
+    currentCertificateKey: ''
   })
   const [summary, setSummary] = useState<ProcessingSummary | null>(null)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [validationError, setValidationError] = useState<string>('')
 
   const handleFileSelect = async (file: File) => {
+    
     try {
       setValidationError('')
       setState('processing')
@@ -43,11 +45,12 @@ function HomeComponent() {
         throw new Error('CSV file is empty')
       }
 
-      setProgress({ current: 0, total: rows.length })
+      setProgress({ current: 0, total: rows.length, currentCertificateKey: '' })
 
       // Process the CSV rows with the backend
-      const result = await processCSV(rows, token, (current, total) => {
-        setProgress({ current, total })
+      const result = await processCSV(rows, token, (current, total, currentCertificateKey
+      ) => {
+        setProgress({ current, total, currentCertificateKey })
       })
 
       setSummary(result)
@@ -69,7 +72,7 @@ function HomeComponent() {
 
   const handleUploadNew = () => {
     setState('upload')
-    setProgress({ current: 0, total: 0 })
+    setProgress({ current: 0, total: 0, currentCertificateKey: '' })
     setSummary(null)
     setErrorMessage('')
     setValidationError('')
@@ -88,8 +91,7 @@ function HomeComponent() {
 
           {state === 'processing' && (
             <ProcessingScreen
-              current={progress.current}
-              total={progress.total}
+              currentProgress={progress}
             />
           )}
 

@@ -8,9 +8,11 @@ set -euo pipefail
 : "${POSTGRES_USER:?Must set POSTGRES_USER}"
 : "${REFERENCE_DATA_POSTGRES_PASSWORD:?Must set REFERENCE_DATA_POSTGRES_PASSWORD}"
 : "${REFERENCE_DATA_POSTGRES_USER:?Must set REFERENCE_DATA_POSTGRES_USER}"
+: "${REFERENCE_DATA_EDITOR_PASSWORD:?Must set REFERENCE_DATA_EDITOR_PASSWORD}"
+: "${REFERENCE_DATA_EDITOR_USER:?Must set REFERENCE_DATA_EDITOR_USER}"
 : "${KEEP_ALIVE_SECONDS:=0}" # Prevent Swarm from marking this task as failed due to early exit
 
-TARGET_DB=${TARGET_DB-"events"}
+TARGET_DB=${TARGET_DB:-"events"}
 
 export TARGET_DB=${TARGET_DB//-/_}
 
@@ -45,6 +47,7 @@ EOSQL
 }
 
 create_or_update_role "$REFERENCE_DATA_POSTGRES_USER" "$REFERENCE_DATA_POSTGRES_PASSWORD" "$TARGET_DB"
+create_or_update_role "$REFERENCE_DATA_EDITOR_USER" "$REFERENCE_DATA_EDITOR_PASSWORD" "$TARGET_DB"
 
 echo "Initializing reference-data schema..."
 
@@ -60,8 +63,16 @@ CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
   code text NOT NULL,
-  source text NOT NULL
+  created_at timestamp with time zone DEFAULT now() NOT NULL,
+  updated_at timestamp with time zone DEFAULT now() NOT NULL,
+  valid_until timestamp with time zone
 );
+
+GRANT USAGE ON SCHEMA reference_data TO ${REFERENCE_DATA_EDITOR_USER};
+
+GRANT SELECT, INSERT ON TABLE reference_data.icd10 TO ${REFERENCE_DATA_EDITOR_USER};
+
+GRANT UPDATE (valid_until) ON TABLE reference_data.icd10 TO ${REFERENCE_DATA_EDITOR_USER};
 
 -- Required for fuzzy search performance
 CREATE EXTENSION IF NOT EXISTS pg_trgm;

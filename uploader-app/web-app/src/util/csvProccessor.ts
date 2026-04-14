@@ -1,5 +1,5 @@
 import * as Papa from 'papaparse'
-import { CSVRow, ProcessingResult, ProcessingSummary, UserInfo } from './types'
+import { CSVRow, ProcessingResult, ProcessingSummary, RecordsToEmail } from './types'
 import {
   findRecordByCertificateKey,
   updateRecordWithCauseOfDeath,
@@ -67,7 +67,7 @@ export const processCSVRow = async (
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
   const rowStatus = row.Status
-
+  
   if (!id) {
     return {
       rowIndex,
@@ -180,6 +180,11 @@ export const processCSVRow = async (
       }
     }
 
+    const trackingId = record.trackingId || id
+    const certKey = id
+    // Extract createdBy from legalStatuses.DECLARED.createdBy
+    const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
+
     if (rowStatus === 'Rejected') {
       const rejectReason = row.RejectReason
 
@@ -187,13 +192,15 @@ export const processCSVRow = async (
         rowIndex,
         id,
         status: 'rejected',
-        message: `Record with ID "${id}" has status Rejected`
+        message: `Record with ID "${id}" has status Rejected`,
+        createdBy: createdBy || undefined,
+        trackingId,
+        certKey
       }
     }
 
-    // Extract createdBy from legalStatuses.DECLARED.createdBy
-    const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
-    const trackingId = record.trackingId || id
+    
+    
 
     return {
       rowIndex,
@@ -201,7 +208,8 @@ export const processCSVRow = async (
       status: 'success',
       message: 'Successfully updated with IRIS output data',
       createdBy: createdBy || undefined,
-      trackingId
+      trackingId,
+      certKey
     }
   } catch (error) {
     return {
@@ -216,7 +224,7 @@ export const processCSVRow = async (
 export const processCSV = async (
   rows: CSVRow[],
   token: string,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number, currentCertificateKey: string) => void
 ): Promise<ProcessingSummary> => {
   const results: ProcessingResult[] = []
 
@@ -225,7 +233,7 @@ export const processCSV = async (
     results.push(result)
 
     if (onProgress) {
-      onProgress(i + 1, rows.length)
+      onProgress(i + 1, rows.length, rows[i].CertificateKey?.trim() || '')
     }
   }
 
@@ -237,7 +245,7 @@ export const processCSV = async (
     rejected: results.filter((r) => r.status === 'rejected').length,
     results
   }
-
+ 
   // Send email notifications - one email per user with all their processed records
   await sendEmailNotifications(token, results)
 
@@ -253,27 +261,27 @@ async function sendEmailNotifications(
   token: string,
   results: ProcessingResult[]
 ): Promise<void> {
-  // Filter successful results that have a createdBy user
-  const successfulResults = results.filter(
-    (r) => r.status === 'success' && r.createdBy
+  // Filter successful or rejected results that have a createdBy user
+  const successfulOrRejectedResults = results.filter(
+    (r) => (r.status === 'success' || r.status === 'rejected') && r.createdBy
   )
 
-  if (successfulResults.length === 0) {
+  if (successfulOrRejectedResults.length === 0) {
     return
   }
 
   // Group ALL records by createdBy user - one entry per user with all their records
-  const recordsByUser = new Map<string, string[]>()
-  for (const result of successfulResults) {
+  const recordsByUser = new Map<string, RecordsToEmail[]>()
+  for (const result of successfulOrRejectedResults) {
     if (result.createdBy) {
       const existing = recordsByUser.get(result.createdBy) || []
-      existing.push(result.trackingId || result.id)
+      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id })
       recordsByUser.set(result.createdBy, existing)
     }
   }
 
   // Send ONE email per user with ALL their records
-  for (const [userId, recordIds] of recordsByUser) {
+  for (const [userId, records] of recordsByUser) {
     try {
       const userInfo = await getUserById(token, userId)
       if (!userInfo) {
@@ -283,15 +291,15 @@ async function sendEmailNotifications(
       if (!userInfo.email) {
         continue
       }
-
+ 
       // Send single email with all record IDs for this user
       const result = await sendProcessingNotificationEmail(
         token,
         userInfo,
-        recordIds
+        records
       )
       console.log(
-        `[EMAIL-NOTIFICATION] Email sent to user ${userId} for ${recordIds.length} records. Result:`,
+        `[EMAIL-NOTIFICATION] Email sent to user ${userId} for ${records.length} records. Result:`,
         result
       )
     } catch (error) {

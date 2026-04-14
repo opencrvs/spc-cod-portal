@@ -1,17 +1,16 @@
 import { getClient } from './postgres'
 import Hapi from '@hapi/hapi'
+import * as z from 'zod/v4'
+import { UUID } from '@opencrvs/toolkit/events'
 
-export interface Icd10CodeRecord {
-  id: string
-  label: string
-  code: string
-  source: string
-}
+export const Icd10CodeRecord = z.object({
+  id: UUID,
+  label: z.string(),
+  code: z.string().nullish(),
+  validUntil: z.iso.datetime().nullable()
+})
 
-// Source priority ranking
-const SOURCE_PRIORITY: Record<string, number> = {
-  SpecV2021SR40: 1
-}
+export type Icd10CodeRecord = z.infer<typeof Icd10CodeRecord>
 
 export async function onSearchHandler(
   request: Hapi.Request,
@@ -25,30 +24,27 @@ export async function onSearchHandler(
     return h.response({ error: "Missing 'terms' parameter" }).code(400)
   }
 
-  // Normalize input
   const likeTerm = `%${terms}%`
-  const codePrefix = `${terms.toUpperCase()}%`
 
-  const rows = await db
-    .selectFrom('icd10')
-    .select(['code', 'label', 'source'])
-    .where((eb) =>
-      eb.or([eb('code', 'ilike', codePrefix), eb('label', 'ilike', likeTerm)])
-    )
-    .limit(50)
-    .execute()
+  try {
+    const rows = await db
+      .selectFrom('icd10')
+      .select(['id', 'label'])
+      .where((eb) =>
+        eb.and([
+          eb('label', 'ilike', likeTerm),
+          eb.or([
+            eb('valid_until', 'is', null),
+            eb('valid_until', '>', new Date())
+          ])
+        ])
+      )
+      .limit(50)
+      .execute()
 
-  // Apply source priority ordering in app layer
-  const sorted = rows.sort((a, b) => {
-    const pa = SOURCE_PRIORITY[a.source] ?? 999
-    const pb = SOURCE_PRIORITY[b.source] ?? 999
-
-    if (pa !== pb) return pa - pb
-    return a.code.localeCompare(b.code)
-  })
-
-  const codes = sorted.map((r) => r.code)
-  const displays = sorted.map((r) => [r.code, r.label])
-
-  return h.response([codes, displays]).code(200)
+    return h.response({ results: rows }).code(200)
+  } catch (err) {
+    request.log(['error'], err)
+    return h.response({ error: 'Internal server error' }).code(500)
+  }
 }

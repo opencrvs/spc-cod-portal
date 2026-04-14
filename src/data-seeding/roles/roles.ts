@@ -1,10 +1,10 @@
-import { SCOPES, Scope } from '@opencrvs/toolkit/scopes'
+import { SCOPES } from '@opencrvs/toolkit/scopes'
 import { MessageDescriptor } from 'react-intl'
 
 type Role = {
   id: string
   label: MessageDescriptor
-  scopes: Scope[]
+  scopes: string[]
 }
 
 export const roles: Role[] = [
@@ -16,27 +16,23 @@ export const roles: Role[] = [
       id: 'userRole.medicalRecordsOfficer'
     },
     scopes: [
-      SCOPES.RECORD_READ,
-      SCOPES.RECORD_DECLARE_DEATH,
-      SCOPES.RECORD_DECLARATION_EDIT,
-      SCOPES.RECORD_SUBMIT_FOR_UPDATES,
-      SCOPES.RECORD_DECLARATION_ARCHIVE,
-      SCOPES.RECORD_DECLARATION_REINSTATE,
-      SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES,
       SCOPES.PERFORMANCE_READ,
-      SCOPES.PERFORMANCE_READ_DASHBOARDS,
       SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
-      SCOPES.SEARCH_DEATH,
-      'search[event=death,access=all]',
+      SCOPES.USER_READ_MY_JURISDICTION,
+      SCOPES.ORGANISATION_READ_LOCATIONS_MY_JURISDICTION,
+      SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES,
+      SCOPES.PERFORMANCE_READ_DASHBOARDS,
+      'type=record.search&event=death',
       'workqueue[id=assigned-to-you|recent|requires-completion|requires-updates-office|in-review|encoded]',
-      'record.create[event=death]',
-      'record.read[event=death]',
-      'record.declare[event=death]',
-      'record.declared.reject[event=death]',
-      'record.declared.archive[event=death]',
-      'record.declared.review-duplicates[event=death]',
-      'record.registered.correct[event=death]',
-      'record.unassign-others[event=death]',
+      'type=record.create&event=death&placeOfEvent=administrativeArea',
+      'type=record.read&event=death',
+      'type=record.declare&event=death',
+      'type=record.edit&event=death',
+      'type=record.reject&event=death',
+      'type=record.archive&event=death',
+      'type=record.print-certified-copies&event=death',
+      'type=record.request-correction&event=death',
+      'type=record.custom-action&event=death',
       'dashboard.view[id=statistics]'
     ]
   },
@@ -48,6 +44,7 @@ export const roles: Role[] = [
       id: 'userRole.nationalSystemAdmin'
     },
     scopes: [
+      SCOPES.CONFIG_UPDATE_ALL,
       SCOPES.USER_CREATE,
       'user.create[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]',
       'user.edit[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]',
@@ -55,10 +52,9 @@ export const roles: Role[] = [
       SCOPES.USER_UPDATE,
       SCOPES.ORGANISATION_READ_LOCATIONS,
       SCOPES.PERFORMANCE_READ,
-      SCOPES.PERFORMANCE_READ_DASHBOARDS,
-      SCOPES.PERFORMANCE_EXPORT_VITAL_STATISTICS,
       SCOPES.RECORD_REINDEX,
-      SCOPES.CONFIG_UPDATE_ALL
+      SCOPES.INTEGRATION_CREATE,
+      SCOPES.PERFORMANCE_READ_DASHBOARDS
     ]
   },
   {
@@ -69,41 +65,26 @@ export const roles: Role[] = [
       id: 'userRole.regionalCodingOfficer'
     },
     scopes: [
-      SCOPES.RECORD_READ,
-      SCOPES.RECORD_DECLARE_BIRTH,
-      SCOPES.RECORD_DECLARE_DEATH,
-      SCOPES.RECORD_DECLARE_MARRIAGE,
-      SCOPES.RECORD_SUBMIT_FOR_UPDATES,
-      SCOPES.RECORD_REVIEW_DUPLICATES,
-      SCOPES.RECORD_DECLARATION_ARCHIVE,
-      SCOPES.RECORD_DECLARATION_REINSTATE,
-      SCOPES.RECORD_REGISTER,
-      SCOPES.RECORD_REGISTRATION_CORRECT,
-      SCOPES.RECORD_UNASSIGN_OTHERS,
-      SCOPES.RECORD_CONFIRM_REGISTRATION,
-      SCOPES.RECORD_REJECT_REGISTRATION,
       SCOPES.PERFORMANCE_READ,
+      SCOPES.ORGANISATION_READ_LOCATIONS,
       SCOPES.PERFORMANCE_READ_DASHBOARDS,
-      SCOPES.PERFORMANCE_EXPORT_VITAL_STATISTICS,
       SCOPES.USER_READ_ONLY_MY_AUDIT,
-      SCOPES.ORGANISATION_READ_LOCATIONS_MY_OFFICE,
-      SCOPES.USER_READ_MY_OFFICE,
-      SCOPES.SEARCH_BIRTH,
-      SCOPES.SEARCH_DEATH,
-      SCOPES.SEARCH_MARRIAGE,
-      'search[event=death,access=all]',
+      SCOPES.ORGANISATION_READ_LOCATIONS,
+      SCOPES.USER_READ,
+      'type=record.search&event=death',
       'workqueue[id=assigned-to-you|recent|requires-updates-office|in-review-all|encoded]',
-      'record.create[event=death]',
-      'record.read[event=death]',
-      'record.declare[event=death]',
-      'record.declared.reject[event=death]',
-      'record.declared.archive[event=death]',
-      'record.declared.review-duplicates[event=death]',
-      'record.register[event=death]',
-      'record.registered.correct[event=death]',
-      'dashboard.view[id=uploader|export|statistics]',
-      'record.unassign-others[event=death]',
-      'record.declared.edit[event=death]'
+      'type=record.create&event=death',
+      'type=record.read&event=death',
+      'type=record.declare&event=death',
+      'type=record.edit&event=death',
+      'type=record.reject&event=death',
+      'type=record.archive&event=death',
+      'type=record.review-duplicates&event=death',
+      'type=record.register&event=death',
+      'type=record.print-certified-copies&event=death',
+      'type=record.correct&event=death',
+      'type=record.unassign-others&event=death',
+      'dashboard.view[id=uploader|export|statistics]'
     ]
   }
 ]
