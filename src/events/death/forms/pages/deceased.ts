@@ -23,21 +23,8 @@ import {
   ConditionalType
 } from '@opencrvs/toolkit/events'
 
+import { createSelectOptions, emptyMessage } from '@countryconfig/events/utils'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
-import {
-  IdType,
-  idTypeOptions,
-  maritalStatusOptions,
-  createSelectOptions,
-  emptyMessage,
-  defaultStreetAddressConfiguration,
-  getNestedFieldValidators
-} from '@countryconfig/events/utils'
-import {
-  farajalandNameConfig,
-  invalidNameValidator,
-  nationalIdValidator
-} from '@countryconfig/events/birth/validators'
 
 const GenderTypes = {
   MALE: '1',
@@ -223,7 +210,7 @@ export const deceased = defineFormPage({
       required: true,
       analytics: true,
       label: {
-        defaultMessage: 'Age of deceased (at the time of event)',
+        defaultMessage: `Age of deceased (at the time of event)`,
         description: 'This is the label for the field',
         id: 'event.birth.action.declare.form.section.deceased.field.age.label'
       },

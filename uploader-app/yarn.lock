@@ -700,10 +700,10 @@
     "@emnapi/runtime" "^1.7.1"
     "@tybys/wasm-util" "^0.10.1"
 
-"@opencrvs/toolkit@1.9.11-rc.6f660ae":
-  version "1.9.11-rc.6f660ae"
-  resolved "https://registry.yarnpkg.com/@opencrvs/toolkit/-/toolkit-1.9.11-rc.6f660ae.tgz#1d7f68c10632d05292717ca35df29530f461f05e"
-  integrity sha512-m/1urgC/vPFfwrPDcpGpNXKKOus5EGT6p04U1G3DcJEcMz28f60qbNfUYj5VcePjrdbI4FOfEwlM05NZdMSpvg==
+"@opencrvs/toolkit@1.9.11-rc.5ee5281":
+  version "1.9.11-rc.5ee5281"
+  resolved "https://registry.yarnpkg.com/@opencrvs/toolkit/-/toolkit-1.9.11-rc.5ee5281.tgz#d3daaef830031a4f3935c5bcfd3af1524ce80b2c"
+  integrity sha512-GOHmjWqh3cTCybgUz4sTeTMwA+EKGlAFSN9wz2YBPYv9HzOxDVU1gAUp2Yl/DdXMzvpc2YnyeXxBdYsavAV+ig==
   dependencies:
     "@trpc/client" "11.4.3"
     "@trpc/server" "11.4.3"

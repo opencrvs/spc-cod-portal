@@ -18,7 +18,6 @@ import {
   not,
   PageTypes
 } from '@opencrvs/toolkit/events'
-import { applicationConfig } from '@countryconfig/api/application/application-config'
 
 import { printCertificateCollectors } from './collectors'
 import { printCertificateCollectorOther } from './collector-other'
