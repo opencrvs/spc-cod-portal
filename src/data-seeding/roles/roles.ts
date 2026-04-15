@@ -18,22 +18,32 @@ export const roles: Role[] = [
     },
     scopes: defineScopes([
       { type: 'performance.read' },
-      { type: 'organisation.read-locations'},
+      { type: 'organisation.read-locations' },
       { type: 'user.read', options: { accessLevel: 'location' } },
       { type: 'record.print-certified-copies' },
       { type: 'performance.read-dashboards' },
-      { type: 'workqueue', options: { ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded' ] } },
-      { type: 'record.create', options: { event: 'death', placeOfEvent: 'administrativeArea' } },
-      { type: 'record.search', options: { event: 'death' } },
-      { type: 'record.read', options: { event: 'death' } },
-      { type: 'record.declare', options: { event: 'death' } },
-      { type: 'record.edit', options: { event: 'death' } },
-      { type: 'record.reject', options: { event: 'death' } },
-      { type: 'record.archive', options: { event: 'death' } },
-      { type: 'record.print-certified-copies', options: { event: 'death' } },
-      { type: 'record.request-correction', options: { event: 'death' } }
-      /* 'type=record.custom-action&event=death',
-      'dashboard.view[id=statistics]' */
+      {
+        type: 'workqueue',
+        options: {
+          ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded']
+        }
+      },
+      {
+        type: 'record.create',
+        options: { event: ['death'], placeOfEvent: 'administrativeArea' }
+      },
+      { type: 'record.search', options: { event: ['death'] } },
+      { type: 'record.read', options: { event: ['death'] } },
+      { type: 'record.declare', options: { event: ['death'] } },
+      { type: 'record.edit', options: { event: ['death'] } },
+      { type: 'record.reject', options: { event: ['death'] } },
+      { type: 'record.archive', options: { event: ['death'] } },
+      { type: 'record.print-certified-copies', options: { event: ['death'] } },
+      { type: 'record.request-correction', options: { event: ['death'] } },
+      {
+        type: 'dashboard.view',
+        options: { ids: ['statistics'] }
+      }
     ])
   },
   {
@@ -48,7 +58,7 @@ export const roles: Role[] = [
         { type: 'config.update-all' },
         { type: 'user.create' },
         { type: 'user.read' },
-        { type: 'user.update-all' },
+        { type: 'user.edit' },
         { type: 'organisation.read-locations' },
         { type: 'performance.read' },
         { type: 'record.reindex' },
@@ -66,26 +76,34 @@ export const roles: Role[] = [
       description: 'Name for user role Regional Coding Officer',
       id: 'userRole.regionalCodingOfficer'
     },
-    scopes: [
+    scopes: defineScopes([
       { type: 'performance.read' },
       { type: 'organisation.read-locations' },
-      { type: 'performance.read-dashboards' }
+      { type: 'performance.read-dashboards' },
       { type: 'user.read-only-my-audit' },
       { type: 'user.read' },
-      { type: 'record.search', options: { event: 'death' } },
-      { type: 'workqueue', options: { ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded' ] } },
-      { type: 'record.create', options: { event: 'death'} },
-      { type: 'record.read', options: { event: 'death' } },
-      { type: 'record.declare', options: { event: 'death' } },
-      { type: 'record.edit', options: { event: 'death' } },
-      { type: 'record.reject', options: { event: 'death' } },
-      { type: 'record.archive', options: { event: 'death' } },
-      { type: 'record.review-duplicates', options: { event: 'death' } },
-      { type: 'record.register', options: { event: 'death' } },
-      { type: 'record.print-certified-copies', options: { event: 'death' } },
-      { type: 'record.correct', options: { event: 'death' } },
-      { type: 'record.unassign-others', options: { event: 'death' } }
-      /* 'dashboard.view[id=uploader|export|statistics]' */
-    ]
+      { type: 'record.search', options: { event: ['death'] } },
+      {
+        type: 'workqueue',
+        options: {
+          ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded']
+        }
+      },
+      { type: 'record.create', options: { event: ['death'] } },
+      { type: 'record.read', options: { event: ['death'] } },
+      { type: 'record.declare', options: { event: ['death'] } },
+      { type: 'record.edit', options: { event: ['death'] } },
+      { type: 'record.reject', options: { event: ['death'] } },
+      { type: 'record.archive', options: { event: ['death'] } },
+      { type: 'record.review-duplicates', options: { event: ['death'] } },
+      { type: 'record.register', options: { event: ['death'] } },
+      { type: 'record.print-certified-copies', options: { event: ['death'] } },
+      { type: 'record.correct', options: { event: ['death'] } },
+      { type: 'record.unassign-others', options: { event: ['death'] } },
+      {
+        type: 'dashboard.view',
+        options: { ids: ['uploader', 'export', 'statistics'] }
+      }
+    ])
   }
 ]
