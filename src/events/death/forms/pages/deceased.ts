@@ -232,7 +232,7 @@ export const deceased = defineFormPage({
     {
       id: 'deceased.eventDate',
       type: FieldType.DATE,
-      required: true,
+      required: false,
       analytics: true,
       validation: [
         {

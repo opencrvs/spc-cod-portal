@@ -17,36 +17,20 @@ import {
   never,
   not,
   or,
-  PageTypes,
-  TranslationConfig
+  PageTypes
 } from '@opencrvs/toolkit/events'
-import { createSelectOptions } from '@countryconfig/events/utils'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
 import { emptyMessage } from '@countryconfig/events/utils'
 
-export const SymptomType = {
-  SYMPTOM_1: 'SYMPTOM_1',
-  OTHER: 'OTHER'
-} as const
-
-const spcSymptomMessageDescriptors = {
-  SYMPTOM_1: {
-    defaultMessage: 'An example CoD symptom',
-    description: '',
-    id: 'spcRegionalGroup.SYMPTOM_1'
-  },
-  OTHER: {
-    defaultMessage: 'Other',
-    description: '',
-    id: 'form.field.label.otherOption'
-  }
-} satisfies Record<keyof typeof SymptomType, TranslationConfig>
-
-const spcSymptomOptions = createSelectOptions(
-  SymptomType,
-  spcSymptomMessageDescriptors
-)
 const durationOptions = [
+  {
+    value: 'Seconds',
+    label: {
+      id: 'unit.seconds',
+      defaultMessage: 'Seconds',
+      description: 'Seconds'
+    }
+  },
   {
     value: 'Minutes',
     label: {
@@ -124,7 +108,7 @@ function getLabelForCause(
       }
     case 'Other':
       return {
-        defaultMessage: `${index + 1}. Antecedent cause`,
+        defaultMessage: `${index + 1}. Other significant cause`,
         description: 'This is the label for the field',
         id: `${basePath}.label`
       }
@@ -175,7 +159,7 @@ function createSymptomFields(letter: CauseLetter) {
     const otherField = {
       id: `${basePath}.other`,
       type: FieldType.TEXTAREA,
-      required: false,
+      required: true,
       analytics: true,
       label: {
         defaultMessage:
