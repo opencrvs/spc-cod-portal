@@ -14,6 +14,7 @@ export interface DeathRecord {
   dateOfEvent?: string
   placeOfEvent?: string
   createdBy?: string
+  assignedTo?: string
   createdByUserType?: string
   updatedByUserRole?: string
   createdAtLocation?: string
