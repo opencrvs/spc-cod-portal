@@ -3,6 +3,8 @@ export const REQUIRED_HEADERS = [
   'SelectedCodes',
   'MultipleCodes',
   'CertificateKey',
+  'Status',
+  'FreeText', // IRIS output
   'Comments' // IRIS output
 ]
 

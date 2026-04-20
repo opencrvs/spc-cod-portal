@@ -145,7 +145,6 @@ export const processCSVRow = async (
     const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
 
     if (rowStatus === 'Rejected') {
-      const rejectReason = row.RejectReason
 
       return {
         rowIndex,
