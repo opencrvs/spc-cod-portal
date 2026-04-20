@@ -24,6 +24,14 @@ import { emptyMessage } from '@countryconfig/events/utils'
 
 const durationOptions = [
   {
+    value: 'Seconds',
+    label: {
+      id: 'unit.seconds',
+      defaultMessage: 'Seconds',
+      description: 'Seconds'
+    }
+  },
+  {
     value: 'Minutes',
     label: {
       id: 'unit.minutes',
