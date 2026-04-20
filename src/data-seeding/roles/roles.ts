@@ -25,7 +25,14 @@ export const roles: Role[] = [
       {
         type: 'workqueue',
         options: {
-          ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded']
+          ids: [
+            'assigned-to-you',
+            'recent',
+            'requires-completion',
+            'requires-updates-office',
+            'in-review',
+            'encoded'
+          ]
         }
       },
       {
@@ -86,7 +93,13 @@ export const roles: Role[] = [
       {
         type: 'workqueue',
         options: {
-          ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded']
+          ids: [
+            'assigned-to-you',
+            'recent',
+            'requires-updates-office',
+            'in-review-all',
+            'encoded'
+          ]
         }
       },
       { type: 'record.create', options: { event: ['death'] } },

@@ -14,6 +14,7 @@ export interface DeathRecord {
   dateOfEvent?: string
   placeOfEvent?: string
   createdBy?: string
+  assignedTo?: string
   createdByUserType?: string
   updatedByUserRole?: string
   createdAtLocation?: string
@@ -153,7 +154,7 @@ export async function updateRecordWithCauseOfDeath(
         transactionId: uuidv4(),
         declaration: updatedDeclaration,
         eventId,
-        content: { reason: row.Reject || '' },
+        content: { reason: row.FreeText || '' },
         keepAssignment: true
       })
 
@@ -163,7 +164,7 @@ export async function updateRecordWithCauseOfDeath(
           declaration: updatedDeclaration,
           annotation: {
             status: row.Status || '',
-            reason: row.Reject || '',
+            reason: row.FreeText || '',
             'review.comments': row.Comments || ''
           },
           eventId,
@@ -177,7 +178,7 @@ export async function updateRecordWithCauseOfDeath(
           declaration: updatedDeclaration,
           annotation: {
             status: row.Status || '',
-            reason: row.Reject || '',
+            reason: row.FreeText || '',
             'review.comments': row.Comments || ''
           },
           eventId,
@@ -191,11 +192,11 @@ export async function updateRecordWithCauseOfDeath(
         declaration: updatedDeclaration,
         annotation: {
           status: row.Status || '',
-          reason: row.Reject || '',
+          reason: row.FreeText || '',
           'review.comments': row.Comments || ''
         },
         eventId,
-        content: { reason: row.Reject || '' }
+        content: { reason: row.FreeText || '' }
       })
     }
 
