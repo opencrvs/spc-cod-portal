@@ -101,7 +101,7 @@ buttons.copy,Copy button text,Copy
 buttons.correctRecord,Rectord correction button text,Correct record
 buttons.create,Label for submit button of client integration creation form,Create
 buttons.delete,Delete button,Delete
-buttons.deleteDeclaration,Delete declaration button text,Delete declaration
+buttons.deleteDeclaration,Delete declaration button text,Delete draft
 buttons.edit,Edit button text,Edit
 buttons.editRecord,Correct record button text on review certificate,"No, make correction"
 buttons.editRegistration,Edit registration button text,Edit registration
