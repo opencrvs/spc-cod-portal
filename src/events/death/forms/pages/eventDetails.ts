@@ -159,7 +159,7 @@ function createSymptomFields(letter: CauseLetter) {
     const otherField = {
       id: `${basePath}.other`,
       type: FieldType.TEXTAREA,
-      required: false,
+      required: true,
       analytics: true,
       label: {
         defaultMessage:
