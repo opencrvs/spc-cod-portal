@@ -108,7 +108,7 @@ function getLabelForCause(
       }
     case 'Other':
       return {
-        defaultMessage: `${index + 1}. Antecedent cause`,
+        defaultMessage: `${index + 1}. Other significant cause`,
         description: 'This is the label for the field',
         id: `${basePath}.label`
       }
