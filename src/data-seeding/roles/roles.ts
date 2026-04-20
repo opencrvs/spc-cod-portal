@@ -77,6 +77,15 @@ export const roles: Role[] = [
     ]
   },
   {
+    id: 'LOCAL_SYSTEM_ADMIN',
+    label: {
+      defaultMessage: 'Local System Admin',
+      description: 'Name for user role Local System Admin',
+      id: 'userRole.localSystemAdmin'
+    },
+    scopes: ['user.create[role=MR_OFFICER]', 'user.edit[role=MR_OFFICER]']
+  },
+  {
     id: 'CODING_OFFICER', // Equivalent to NATIONAL_REGISTRAR
     label: {
       defaultMessage: 'Regional Coding Officer',
