@@ -224,9 +224,9 @@ export async function getUserById(
     if (userOrSystem.type === 'user') {
       return {
         id: userOrSystem.id || userId,
-        email: userOrSystem.email || '',
-        firstName: userOrSystem.name?.[0]?.given?.[0] || '',
-        lastName: userOrSystem.name?.[0]?.family || ''
+        email: userOrSystem.email,
+        firstName: userOrSystem.name.firstname,
+        lastName: userOrSystem.name.surname
       }
     }
     return null
@@ -271,15 +271,7 @@ export async function sendProcessingNotificationEmail(
   console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
   console.log('[IDENT-UPLOADER] Record IDs:', records)
   console.log('[IDENT-UPLOADER] URL:', url)
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+  const emailBody = JSON.stringify({
         recipient: {
           name: {
             firstname: userInfo.firstName,
@@ -289,6 +281,15 @@ export async function sendProcessingNotificationEmail(
         },
         records
       })
+  console.log('[IDENT-UPLOADER] Email body:', emailBody)
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: emailBody
     })
 
     console.log('[IDENT-UPLOADER] Response status:', response.status)
