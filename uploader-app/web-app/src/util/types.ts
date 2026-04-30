@@ -17,6 +17,8 @@ export interface ProcessingResult {
   trackingId?: string
   /** The cert key of the record for display in emails */
   certKey?: string
+  /** The uc code of the record for display in emails */
+  ucCode?: string
 }
 
 export interface RecordsToEmail {
@@ -25,6 +27,8 @@ export interface RecordsToEmail {
   trackingId?: string
   /** The cert key of the record for display in emails */
   certKey?: string
+  /** The uc code of the record for display in emails */
+  ucCode?: string
 }
 
 export interface ProcessingSummary {

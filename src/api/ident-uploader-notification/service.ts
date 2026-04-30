@@ -19,7 +19,7 @@ const renderSection = (
       ${records
         .map(
           (record) =>
-            `<li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}</li>`
+            `<li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}${record.ucCode ? ` / UC Code: ${record.ucCode}` : ''}</li>`
         )
         .join('')}
     </ul>
@@ -87,6 +87,7 @@ export async function sendCoDEmail(
 `
 
   try {
+    console.log('EMAIL BODY :>> ', emailBody)
     if (process.env.NODE_ENV === 'development') {
       logger.info(
         `Would send email to ${maskEmail(payload.recipient.email)} with subject: Death Records Processed - Cause of Death Codes Updated`

@@ -854,7 +854,7 @@ event.birth.action.declare.form.section.person.field.nationality.label,This is t
 event.birth.action.declare.form.section.person.field.nid.label,This is the label for the field,ID Number
 event.birth.action.declare.form.section.person.field.occupation.label,This is the label for the field,Occupation
 event.birth.action.declare.form.section.person.field.passport.label,This is the label for the field,ID Number
-event.birth.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Encode
+event.birth.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for encoding
 event.birth.action.delete.label,Label for delete button in dropdown menu,Delete
 event.birth.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name
 event.birth.action.mark-as-duplicate.label,Label for review potential duplicate button in dropdown menu,Review
@@ -1006,7 +1006,7 @@ event.death.action.declare.form.section.spouse.field.nationality.label,This is t
 event.death.action.declare.form.section.spouse.field.nid.label,This is the label for the field,ID Number
 event.death.action.declare.form.section.spouse.field.passport.label,This is the label for the field,ID Number
 event.death.action.declare.form.section.spouse.field.reason.label,This is the label for the field,Reason
-event.death.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Encode
+event.death.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for encoding
 event.death.action.form.section.alienNumberDetails.label,Field for entering Alien Number details,Alien Number
 event.death.action.form.section.brn.label,Field for entering Birth Registration Number,Birth Registration Number
 event.death.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name

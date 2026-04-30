@@ -259,12 +259,7 @@ export const deathEvent = defineConfig({
           'Manually encoding means not processing this record through Iris and selecting UCCodes yourself. Please ensure all details are correct before proceeding.'
       },
       flags: [{ id: 'pending-first-certificate-issuance', operation: 'add' }],
-      conditionals: [
-        {
-          type: ConditionalType.SHOW,
-          conditional: never()
-        }
-      ],
+      conditionals: [],
       deduplication: {
         id: 'death-deduplication',
         label: {
