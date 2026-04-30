@@ -1,11 +1,10 @@
 import { MessageDescriptor } from 'react-intl'
-import { defineScopes } from '@opencrvs/toolkit/scopes'
+import { defineScopes, EncodedScope } from '@opencrvs/toolkit/scopes'
 
 type Role = {
   id: string
   label: MessageDescriptor
-  // @TODO: After the last v1 scopes (user.create and user.edit) are replaced by v2 scopes, change this to EncodedScope
-  scopes: string[]
+  scopes: EncodedScope[]
 }
 
 export const roles: Role[] = [
@@ -55,17 +54,19 @@ export const roles: Role[] = [
     scopes: [
       ...defineScopes([
         { type: 'config.update-all' },
-        { type: 'user.create' },
-        { type: 'user.read' },
-        { type: 'user.edit' },
         { type: 'organisation.read-locations' },
+        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.read' },
         { type: 'performance.read' },
         { type: 'record.reindex' },
         { type: 'integration.create' },
-        { type: 'performance.read-dashboards' }
-      ]),
-      'user.create[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]',
-      'user.edit[role=MR_OFFICER|CODING_OFFICER|NATIONAL_SYSTEM_ADMIN]'
+        { type: 'performance.read-dashboards' },
+        {
+          type: 'dashboard.view',
+          options: { ids: ['registrations', 'completeness', 'registry'] }
+        }
+      ])
     ]
   },
   {
@@ -75,7 +76,14 @@ export const roles: Role[] = [
       description: 'Name for user role Local System Admin',
       id: 'userRole.localSystemAdmin'
     },
-    scopes: ['user.create[role=MR_OFFICER]', 'user.edit[role=MR_OFFICER]']
+    scopes: [
+      ...defineScopes([
+        { type: 'organisation.read-locations', options: { accessLevel: 'administrativeArea' } },
+        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.read', options: { accessLevel: 'administrativeArea' } }
+      ])
+    ]
   },
   {
     id: 'CODING_OFFICER', // Equivalent to NATIONAL_REGISTRAR
