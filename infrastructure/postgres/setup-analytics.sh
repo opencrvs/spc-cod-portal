@@ -96,6 +96,8 @@ CREATE TABLE IF NOT EXISTS analytics.event_actions (
 -- Fast lookup by deceased_certificateKey in declaration
 CREATE INDEX IF NOT EXISTS event_actions_deceased_cert_key_idx
 ON analytics.event_actions ((declaration ->> 'deceased_certificateKey'));
+CREATE INDEX CONCURRENTLY IF NOT EXISTS analytics_idx_event_actions_event_id
+ON analytics.event_actions (event_id);
 
 ALTER TABLE analytics.event_actions ADD COLUMN IF NOT EXISTS custom_action_type TEXT;
 ALTER TABLE analytics.event_actions ALTER COLUMN created_by_role DROP NOT NULL;
