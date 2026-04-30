@@ -266,6 +266,7 @@ async function sendEmailNotifications(
   for (const [userId, records] of recordsByUser) {
     try {
       const userInfo = await getUserById(token, userId)
+      
       if (!userInfo) {
         continue
       }
