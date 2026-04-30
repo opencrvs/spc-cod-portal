@@ -268,9 +268,7 @@ export async function sendProcessingNotificationEmail(
     COUNTRY_CONFIG_HOST
   ).toString()
 
-  console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
-  console.log('[IDENT-UPLOADER] Record IDs:', records)
-  console.log('[IDENT-UPLOADER] URL:', url)
+  
   const emailBody = JSON.stringify({
         recipient: {
           name: {
@@ -281,7 +279,7 @@ export async function sendProcessingNotificationEmail(
         },
         records
       })
-  console.log('[IDENT-UPLOADER] Email body:', emailBody)
+ 
   try {
     const response = await fetch(url, {
       method: 'POST',
