@@ -25,14 +25,7 @@ export const roles: Role[] = [
       {
         type: 'workqueue',
         options: {
-          ids: [
-            'assigned-to-you',
-            'recent',
-            'requires-completion',
-            'requires-updates-office',
-            'in-review',
-            'encoded'
-          ]
+          ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded']
         }
       },
       {
@@ -43,7 +36,6 @@ export const roles: Role[] = [
       { type: 'record.read', options: { event: ['death'] } },
       { type: 'record.declare', options: { event: ['death'] } },
       { type: 'record.edit', options: { event: ['death'] } },
-      { type: 'record.reject', options: { event: ['death'] } },
       { type: 'record.archive', options: { event: ['death'] } },
       { type: 'record.print-certified-copies', options: { event: ['death'] } },
       { type: 'record.request-correction', options: { event: ['death'] } },
@@ -102,19 +94,12 @@ export const roles: Role[] = [
       {
         type: 'workqueue',
         options: {
-          ids: [
-            'assigned-to-you',
-            'recent',
-            'requires-updates-office',
-            'in-review-all',
-            'encoded'
-          ]
+          ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded']
         }
       },
       { type: 'record.create', options: { event: ['death'] } },
       { type: 'record.read', options: { event: ['death'] } },
       { type: 'record.declare', options: { event: ['death'] } },
-      { type: 'record.edit', options: { event: ['death'] } },
       { type: 'record.reject', options: { event: ['death'] } },
       { type: 'record.archive', options: { event: ['death'] } },
       { type: 'record.review-duplicates', options: { event: ['death'] } },

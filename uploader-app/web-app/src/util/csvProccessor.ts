@@ -170,7 +170,8 @@ export const processCSVRow = async (
       message: 'Successfully updated with IRIS output data',
       createdBy: createdBy || undefined,
       trackingId,
-      certKey
+      certKey,
+      ucCode: row.UCCode
     }
   } catch (error) {
     if(error instanceof Error && error.message==="CONFLICT"){
@@ -256,7 +257,7 @@ async function sendEmailNotifications(
   for (const result of successfulOrRejectedResults) {
     if (result.createdBy) {
       const existing = recordsByUser.get(result.createdBy) || []
-      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id })
+      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id, "ucCode": result.ucCode || "" })
       recordsByUser.set(result.createdBy, existing)
     }
   }
