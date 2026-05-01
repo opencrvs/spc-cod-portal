@@ -11,12 +11,12 @@ action.review.declaration,Label for review declaration button in dropdown menu,"
 action.update,Label for reinstate update button in dropdown menu,Update declaration
 action.view,Label for view button in dropdown menu,View {recordOrDeclaration}
 action.view.record,Label for view record,View
-actionModal.PrimaryAction,The label for primary action button of action modal,"{action, select, declare{Encode} other{{action}}}"
+actionModal.PrimaryAction,The label for primary action button of action modal,"{action, select, declare{Code} other{{action}}}"
 actionModal.cancel,The label for cancel button of action modal,Cancel
 actionModal.confirm,The label for confirm button of action modal,Confirm
 actionModal.description,The description for action modal,The informant will be notified of this decision and a record of this decision will be recorded
 actionModal.description.incomplete,Description shown in the action modal when a declaration is incomplete,This incomplete declaration will be submitted for review.
-actionModal.title,The title for action modal,"{action, select, declare{Encode} other{{action}}} the member?"
+actionModal.title,The title for action modal,"{action, select, declare{Code} other{{action}}} the member?"
 advancedSearch.accordion.hide,Label for hide button when accordion is closed,Hide
 advancedSearch.accordion.show,Label for show button when accordion is closed,Show
 advancedSearch.form.childDetails,The title of Child details accordion,Child details
@@ -37,7 +37,7 @@ advancedSearch.form.recordStatusDeclared,Option for form field: status of record
 advancedSearch.form.recordStatusInReview,Option for form field: status of record,In review
 advancedSearch.form.recordStatusInprogress,Option for form field: status of record,In progress
 advancedSearch.form.recordStatusNotified,Option for form field: status of record,Notified
-advancedSearch.form.recordStatusRegistered,Option for form field: status of record,Encoded
+advancedSearch.form.recordStatusRegistered,Option for form field: status of record,Coded
 advancedSearch.form.recordStatusRequireUpdate,Option for form field: status of record,Requires updates
 advancedSearch.form.recordStatusValidated,Option for form field: status of record,Validated
 advancedSearch.form.registrationDetails,The title of Registration details accordion,Coding details
@@ -252,7 +252,7 @@ constants.deaths,A label from the deaths event,Deaths
 constants.declaration,A label for declaration,declaration
 constants.declarationCollectedOn,Label for the workflow timestamp when the status is collected,Certificate collected on
 constants.declarationFailedOn,Label for the workflow timestamp when the status is failed,Failed to send on
-constants.declarationRegisteredOn,Label for the workflow timestamp when the status is registered,Encoded on
+constants.declarationRegisteredOn,Label for the workflow timestamp when the status is registered,Coded on
 constants.declarationRejectedOn,Label for the workflow timestamp when the status is rejected,Declaration rejected on
 constants.declarationRequestedCorrectionOn,Label for the workflow timestamp when the status is requested correction,Declaration requested correction on
 constants.declarationSentForExternalValidationOn,Label for the workflow timestamp when the status is waiting_validation,Declaration sent for external validation on
@@ -352,12 +352,12 @@ constants.policeOfficer,The description for Police Officer type,Police Officer
 constants.reason,Label for Reason the declaration was rejected,Reason
 constants.record,Label for header table header Record,Record
 constants.refresh,label for refresh,refresh
-constants.registered,A label for registered,Encoded
-constants.registered.status,A label for registered,Encoded
-constants.registeredAt,Label for comparison row registeredAt type,Encoded at
-constants.registeredBy,Label for comparison row registeredBy type,Encoded by
-constants.registeredInTargetd,A label for Registered in {registrationTargetDays} days,Encoded in {registrationTargetDays} days
-constants.registeredWithinTargetd,A label for Registered {registrationTargetDays} within  days of event,Encoded within{lineBreak}{registrationTargetDays} days of event
+constants.registered,A label for registered,Coded
+constants.registered.status,A label for registered,Coded
+constants.registeredAt,Label for comparison row registeredAt type,Coded at
+constants.registeredBy,Label for comparison row registeredBy type,Coded by
+constants.registeredInTargetd,A label for Registered in {registrationTargetDays} days,Coded in {registrationTargetDays} days
+constants.registeredWithinTargetd,A label for Registered {registrationTargetDays} within  days of event,Coded within{lineBreak}{registrationTargetDays} days of event
 constants.registrationAgent,The description for REGISTRATION_AGENT role,Registration Agent
 constants.registrationNumber,Label for registered number,Reg no.
 constants.rejected,A label for rejected,rejected
@@ -755,7 +755,7 @@ countries.ZAF,,South Africa
 countries.ZMB,,Zambia
 countries.ZWE,,Zimbabwe
 dashboard.completenessTitle,Completeness title,Completeness Dashboard
-dashboard.exportTitle,Export title,Download for encoding
+dashboard.exportTitle,Export title,Download for coding
 dashboard.registrationsTitle,Registrations title,Registrations Dashboard
 dashboard.registryTitle,Registry title,Registry
 dashboard.statisticsTitle,Statistics title,Statistics
@@ -768,8 +768,8 @@ duplicates.content.header,Declaration details header of two duplicate ones,Decla
 duplicates.content.markAsDuplicate,Mark as duplicate content confirmation title message,Mark {trackingId} as duplicate?
 duplicates.content.markAsDuplicateReason,Review page header for duplicates declarations,Please describe your reason
 duplicates.content.notDuplicateConfirmationTitle,Not a duplicate content confirmation title message,Are you sure {name} ({trackingId}) is not duplicate?
-duplicates.content.registeredAt,Encoded at label for duplicates comparison,Encoded at
-duplicates.content.registeredBy,Encoded by label for duplicates comparison,Encoded by
+duplicates.content.registeredAt,Coded at label for duplicates comparison,Coded at
+duplicates.content.registeredBy,Coded by label for duplicates comparison,Coded by
 duplicates.content.subtitle,Duplicates content subtitle message,"This record was flagged as a potential duplicate of: {trackingIds}. Please review these by clicking on each tracking ID in the tab section to view a side-by-side comparison below, and confirm if this record is a duplicate"
 duplicates.content.title,Duplicates content title message,Is {name} ({trackingId}) a duplicate?
 duplicates.review.header,Review page header for duplicates declarations,Potential {event} duplicate review
@@ -854,11 +854,11 @@ event.birth.action.declare.form.section.person.field.nationality.label,This is t
 event.birth.action.declare.form.section.person.field.nid.label,This is the label for the field,ID Number
 event.birth.action.declare.form.section.person.field.occupation.label,This is the label for the field,Occupation
 event.birth.action.declare.form.section.person.field.passport.label,This is the label for the field,ID Number
-event.birth.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for encoding
+event.birth.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for coding
 event.birth.action.delete.label,Label for delete button in dropdown menu,Delete
 event.birth.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name
 event.birth.action.mark-as-duplicate.label,Label for review potential duplicate button in dropdown menu,Review
-event.birth.action.register.label,Label for review record button in dropdown menu,Manually Encode
+event.birth.action.register.label,Label for review record button in dropdown menu,Manually Code (without Iris)
 event.birth.action.request-correction.label,This is shown as the action name anywhere the user can trigger the action from,Correct record
 event.birth.action.validate.label,This is shown as the action name anywhere the user can trigger the action from,Review
 event.birth.label,This is what this event is referred as in the system,Birth
@@ -1006,7 +1006,7 @@ event.death.action.declare.form.section.spouse.field.nationality.label,This is t
 event.death.action.declare.form.section.spouse.field.nid.label,This is the label for the field,ID Number
 event.death.action.declare.form.section.spouse.field.passport.label,This is the label for the field,ID Number
 event.death.action.declare.form.section.spouse.field.reason.label,This is the label for the field,Reason
-event.death.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for encoding
+event.death.action.declare.label,This is shown as the action name anywhere the user can trigger the action from,Send for coding
 event.death.action.form.section.alienNumberDetails.label,Field for entering Alien Number details,Alien Number
 event.death.action.form.section.brn.label,Field for entering Birth Registration Number,Birth Registration Number
 event.death.action.form.section.collector.other.field.name.label,This is the label for the name field of OTHER collector,Collector's name
@@ -1055,11 +1055,11 @@ event.summary.assignedTo.value,Assigned to value,{event.assignedTo}
 event.summary.event.label,Label for the event field,Event
 event.summary.flags.label,Flags of the event,Flags
 event.summary.flags.placeholder,Message when no flags are present,No flags
-event.summary.registrationNumber.empty,No registration number message,Awaiting encoding
-event.summary.registrationNumber.label,Label for the registration number field,Encoded record number
+event.summary.registrationNumber.empty,No registration number message,Awaiting coding
+event.summary.registrationNumber.label,Label for the registration number field,Coded record number
 event.summary.registrationNumber.value,Value for the registration number field,{event.registrationNumber}
 event.summary.status.label,Label for the status field,Status
-event.summary.status.value,Value for the status field,"{event.status, select, CREATED {Draft} NOTIFIED {Notified} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Encoded} CERTIFIED {Certified} REJECTED {Requires update} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} other {Unknown}}"
+event.summary.status.value,Value for the status field,"{event.status, select, CREATED {Draft} NOTIFIED {Notified} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Coded} CERTIFIED {Certified} REJECTED {Requires update} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} other {Unknown}}"
 event.summary.trackingId.empty,Message when tracking ID is empty,No tracking ID
 event.summary.trackingId.label,Label for the tracking ID field,Tracking ID
 event.summary.trackingId.value,Value for the tracking ID field,{event.trackingId}
@@ -1116,7 +1116,7 @@ event.tennis-club-membership.summary.field.recommender.id.label,Label for the re
 events.history.status,Events status history,"{status, select, Requested {Waiting for external validation} other {{action, select, CREATE {Declaration started} NOTIFY {Sent incomplete} VALIDATE {Sent for approval} DRAFT {Draft} DECLARE {Sent for review} REGISTER {Registered} PRINT_CERTIFICATE {Certified} REJECT {Rejected} EDIT {Edited} ARCHIVE {Archived} DUPLICATE_DETECTED {Flagged as potential duplicate} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} CORRECTED {Record corrected} REQUEST_CORRECTION {Correction requested} APPROVE_CORRECTION {Correction approved} REJECT_CORRECTION {Correction rejected} READ {Viewed} ASSIGN {Assigned} UNASSIGN {Unassigned} UPDATE {Updated} other {Unknown}}}}"
 events.outbox.processingAction,Message in outbox when processing action,"{action, select, DECLARE {Sending} REGISTER {Registering} VALIDATE {Sending for approval} NOTIFY {Sending} REJECT {Sending for updates} ARCHIVE {Archiving} PRINT_CERTIFICATE {Certifying} REQUEST_CORRECTION {Requesting correction} APPROVE_CORRECTION {Approving correction} REJECT_CORRECTION {Rejecting correction} ASSIGN {Assigning} UNASSIGN {Unassigning} other {processing action}}"
 events.outbox.waitingForAction,Message in outbox when waiting for action,"Waiting to {action, select, DECLARE {send} CREATE {send} REGISTER {register} VALIDATE {send for approval} NOTIFY {send} REJECT {send for updates} ARCHIVE {archive} PRINT_CERTIFICATE {certify} REQUEST_CORRECTION {request correction} APPROVE_CORRECTION {approve correction} REJECT_CORRECTION {reject correction} ASSIGN {assign} UNASSIGN {unassign} other {action}}"
-events.status,Dynamic event status,"{status, select, OUTBOX {Syncing..} CREATED {Draft} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Encoded} CERTIFIED {Certified} REJECTED {Rejected} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} NOTIFIED {In progress} other {Unknown}}"
+events.status,Dynamic event status,"{status, select, OUTBOX {Syncing..} CREATED {Draft} VALIDATED {Validated} DRAFT {Draft} DECLARED {Sent for coding} REGISTERED {Coded} CERTIFIED {Certified} REJECTED {Rejected} ARCHIVED {Archived} MARKED_AS_DUPLICATE {Marked as a duplicate} MARK_AS_NOT_DUPLICATE {Marked not a duplicate} NOTIFIED {In progress} other {Unknown}}"
 exitModal.cancel,Modal cancel button,Cancel
 exitModal.exitWithoutSaving,exitmodal without saving label,Exit without saving changes?
 exitModal.exitWithoutSavingDescription,exitmodal without saving  description,You have unsaved changes on your declaration form. Are you sure you want to exit without saving?
@@ -1788,7 +1788,7 @@ recordAudit.regStatus.correctionRequested,Label for when someone requested corre
 recordAudit.regStatus.declared,,Sent for coding
 recordAudit.regStatus.declared.sentNotification,Field agent sent notification,Sent notification for review
 recordAudit.regStatus.issued,,Issued
-recordAudit.regStatus.registered,,Encoded
+recordAudit.regStatus.registered,,Coded
 recordAudit.regStatus.rejected,,Rejected
 recordAudit.regStatus.updatedDeclaration,,Updated
 recordAudit.regStatus.waitingValidation,,Waiting for validation
@@ -1835,7 +1835,7 @@ regHome.sentForUpdates,The title of sent for updates tab,Sent for updates
 regHome.table.label,Results label at the top of the data table component,Results
 regHome.table.label.action,Label for action in work queue list item,Action
 regHome.table.label.declarationDate,Label for declaration date in work queue list item,Declaration sent
-regHome.table.label.registeredDate,Label for date of registration in work queue list item,Encoded
+regHome.table.label.registeredDate,Label for date of registration in work queue list item,Coded
 regHome.val.regAgent.tooltip,Text to display for validated declaration as tooltip,Declaration has been validated and waiting for approval
 regHome.validated.registrar.tooltip,Text to display for validated declaration as tooltip,Declaration has been validated by a registration agent
 regHome.waitingForExternalValidation,The title of waiting for external validation,Waiting for external validation
@@ -2125,7 +2125,7 @@ user.profile.audit.description.certified,Description for certified declaration,C
 user.profile.audit.description.declared,Description for complete declaration,Sent for coding
 user.profile.audit.description.inProgress,Description for incomplete declaration,Sent incomplete
 user.profile.audit.description.issued,Description for Issued declaration,Issued
-user.profile.audit.description.registered,Description for registered declaration,Encoded
+user.profile.audit.description.registered,Description for registered declaration,Coded
 user.profile.audit.description.rejected,Description for rejected declaration,Rejected
 user.profile.audit.description.updated,Description for updated declaration,Updated
 user.profile.audit.description.validated,Description for validated declaration,Sent for approval
