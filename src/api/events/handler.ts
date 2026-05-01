@@ -60,8 +60,8 @@ export async function getUserById(
       return {
         id: userOrSystem.id || userId,
         email: userOrSystem.email || '',
-        firstName: userOrSystem.name?.[0]?.given?.[0] || '',
-        lastName: userOrSystem.name?.[0]?.family || ''
+        firstName: userOrSystem.name.firstname,
+        lastName: userOrSystem.name.surname
       }
     }
     return null

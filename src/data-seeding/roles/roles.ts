@@ -108,6 +108,7 @@ export const roles: Role[] = [
       { type: 'record.create', options: { event: ['death'] } },
       { type: 'record.read', options: { event: ['death'] } },
       { type: 'record.declare', options: { event: ['death'] } },
+      { type: 'record.edit', options: { event: ['death'] } },
       { type: 'record.reject', options: { event: ['death'] } },
       { type: 'record.archive', options: { event: ['death'] } },
       { type: 'record.review-duplicates', options: { event: ['death'] } },

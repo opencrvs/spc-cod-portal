@@ -318,6 +318,33 @@ export const deceased = defineFormPage({
         administrativeArea: user('primaryOfficeId').locationLevel('province')
       },
       configuration: {
+        fields: [
+          {
+            id: 'country',
+            type: FieldType.COUNTRY,
+            conditionals: [
+              {
+                type: ConditionalType.ENABLE,
+                conditional: never()
+              }
+            ]
+          },
+          {
+            id: 'province',
+            type: FieldType.ADMINISTRATIVE_AREA,
+            conditionals: [
+              {
+                type: ConditionalType.ENABLE,
+                conditional: user.hasRole('CODING_OFFICER')
+              }
+            ]
+          },
+          {
+            id: 'district',
+            type: FieldType.ADMINISTRATIVE_AREA,
+            conditionals: []
+          }
+        ],
         streetAddressForm: []
       }
     }
