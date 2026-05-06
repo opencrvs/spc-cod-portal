@@ -14,6 +14,7 @@ export interface DeathRecord {
   dateOfEvent?: string
   placeOfEvent?: string
   createdBy?: string
+  assignedTo?: string
   createdByUserType?: string
   updatedByUserRole?: string
   createdAtLocation?: string
@@ -153,7 +154,7 @@ export async function updateRecordWithCauseOfDeath(
         transactionId: uuidv4(),
         declaration: updatedDeclaration,
         eventId,
-        content: { reason: row.Reject || '' },
+        content: { reason: row.FreeText || '' },
         keepAssignment: true
       })
 
@@ -163,7 +164,7 @@ export async function updateRecordWithCauseOfDeath(
           declaration: updatedDeclaration,
           annotation: {
             status: row.Status || '',
-            reason: row.Reject || '',
+            reason: row.FreeText || '',
             'review.comments': row.Comments || ''
           },
           eventId,
@@ -177,7 +178,7 @@ export async function updateRecordWithCauseOfDeath(
           declaration: updatedDeclaration,
           annotation: {
             status: row.Status || '',
-            reason: row.Reject || '',
+            reason: row.FreeText || '',
             'review.comments': row.Comments || ''
           },
           eventId,
@@ -191,11 +192,11 @@ export async function updateRecordWithCauseOfDeath(
         declaration: updatedDeclaration,
         annotation: {
           status: row.Status || '',
-          reason: row.Reject || '',
+          reason: row.FreeText || '',
           'review.comments': row.Comments || ''
         },
         eventId,
-        content: { reason: row.Reject || '' }
+        content: { reason: row.FreeText || '' }
       })
     }
 
@@ -223,9 +224,9 @@ export async function getUserById(
     if (userOrSystem.type === 'user') {
       return {
         id: userOrSystem.id || userId,
-        email: userOrSystem.email || '',
-        firstName: userOrSystem.name?.[0]?.given?.[0] || '',
-        lastName: userOrSystem.name?.[0]?.family || ''
+        email: userOrSystem.email,
+        firstName: userOrSystem.name.firstname,
+        lastName: userOrSystem.name.surname
       }
     }
     return null
@@ -267,18 +268,8 @@ export async function sendProcessingNotificationEmail(
     COUNTRY_CONFIG_HOST
   ).toString()
 
-  console.log('[IDENT-UPLOADER] Sending notification to:', userInfo.email)
-  console.log('[IDENT-UPLOADER] Record IDs:', records)
-  console.log('[IDENT-UPLOADER] URL:', url)
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+  
+  const emailBody = JSON.stringify({
         recipient: {
           name: {
             firstname: userInfo.firstName,
@@ -288,6 +279,15 @@ export async function sendProcessingNotificationEmail(
         },
         records
       })
+ 
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: emailBody
     })
 
     console.log('[IDENT-UPLOADER] Response status:', response.status)

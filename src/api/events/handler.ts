@@ -11,6 +11,7 @@
 import { deathEvent } from '@countryconfig/events/death'
 import * as Hapi from '@hapi/hapi'
 import { ActionConfirmationRequest } from '../registration'
+import { eventConfigs } from '@countryconfig/events'
 import { createClient } from '@opencrvs/toolkit/api'
 import { GATEWAY_URL } from '@countryconfig/constants'
 import {
@@ -23,9 +24,10 @@ import {
   deepMerge,
   getPendingAction
 } from '@opencrvs/toolkit/events'
+import { sendInformantNotification } from '../notification/informantNotification'
 
 export function getEventsHandler(_: Hapi.Request, h: Hapi.ResponseToolkit) {
-  return h.response([deathEvent]).code(200)
+  return h.response(eventConfigs).code(200)
 }
 
 export async function onCustomActionHandler(
@@ -58,8 +60,8 @@ export async function getUserById(
       return {
         id: userOrSystem.id || userId,
         email: userOrSystem.email || '',
-        firstName: userOrSystem.name?.[0]?.given?.[0] || '',
-        lastName: userOrSystem.name?.[0]?.family || ''
+        firstName: userOrSystem.name.firstname,
+        lastName: userOrSystem.name.surname
       }
     }
     return null

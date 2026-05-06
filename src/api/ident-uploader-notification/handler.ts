@@ -30,7 +30,8 @@ export const identUploaderNotificationSchema = Joi.object({
           .valid('success', 'rejected', 'corrected')
           .required(),
         trackingId: Joi.string().required(),
-        certKey: Joi.string().required()
+        certKey: Joi.string().required(),
+        ucCode: Joi.string()
       })
     )
     .min(1)
@@ -43,6 +44,8 @@ export interface RecordsToEmail {
   trackingId?: string
   /** The cert key of the record for display in emails */
   certKey?: string
+  /** The uc code of the record for display in emails */
+  ucCode?: string
 }
 
 export interface IdentUploaderNotificationPayload {

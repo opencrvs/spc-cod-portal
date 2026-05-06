@@ -23,21 +23,8 @@ import {
   ConditionalType
 } from '@opencrvs/toolkit/events'
 
+import { createSelectOptions, emptyMessage } from '@countryconfig/events/utils'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
-import {
-  IdType,
-  idTypeOptions,
-  maritalStatusOptions,
-  createSelectOptions,
-  emptyMessage,
-  defaultStreetAddressConfiguration,
-  getNestedFieldValidators
-} from '@countryconfig/events/utils'
-import {
-  farajalandNameConfig,
-  invalidNameValidator,
-  nationalIdValidator
-} from '@countryconfig/events/birth/validators'
 
 const GenderTypes = {
   MALE: '1',
@@ -223,7 +210,7 @@ export const deceased = defineFormPage({
       required: true,
       analytics: true,
       label: {
-        defaultMessage: 'Age of deceased (at the time of event)',
+        defaultMessage: `Age of deceased (at the time of event)`,
         description: 'This is the label for the field',
         id: 'event.birth.action.declare.form.section.deceased.field.age.label'
       },
@@ -245,7 +232,7 @@ export const deceased = defineFormPage({
     {
       id: 'deceased.eventDate',
       type: FieldType.DATE,
-      required: true,
+      required: false,
       analytics: true,
       validation: [
         {
@@ -331,6 +318,33 @@ export const deceased = defineFormPage({
         administrativeArea: user('primaryOfficeId').locationLevel('province')
       },
       configuration: {
+        fields: [
+          {
+            id: 'country',
+            type: FieldType.COUNTRY,
+            conditionals: [
+              {
+                type: ConditionalType.ENABLE,
+                conditional: never()
+              }
+            ]
+          },
+          {
+            id: 'province',
+            type: FieldType.ADMINISTRATIVE_AREA,
+            conditionals: [
+              {
+                type: ConditionalType.ENABLE,
+                conditional: user.hasRole('CODING_OFFICER')
+              }
+            ]
+          },
+          {
+            id: 'district',
+            type: FieldType.ADMINISTRATIVE_AREA,
+            conditionals: []
+          }
+        ],
         streetAddressForm: []
       }
     }

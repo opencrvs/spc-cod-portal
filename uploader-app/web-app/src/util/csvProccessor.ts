@@ -77,6 +77,8 @@ export const processCSVRow = async (
     }
   }
 
+  let assignedTo=""
+
   try {
 
     // If 
@@ -120,6 +122,7 @@ export const processCSVRow = async (
 
     // Else continue
     const record = await findRecordByCertificateKey(token, id)
+   
 
     if (!record) {
       return {
@@ -129,7 +132,7 @@ export const processCSVRow = async (
         message: `Record with ID "${id}" not found in database`
       }
     }
-
+    assignedTo=record?.assignedTo || ""
     const markedAsRegisteredInOcrvs = record.status === 'REGISTERED'
     const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
 
@@ -186,7 +189,6 @@ export const processCSVRow = async (
     const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
 
     if (rowStatus === 'Rejected') {
-      const rejectReason = row.RejectReason
 
       return {
         rowIndex,
@@ -209,14 +211,35 @@ export const processCSVRow = async (
       message: 'Successfully updated with IRIS output data',
       createdBy: createdBy || undefined,
       trackingId,
-      certKey
+      certKey,
+      ucCode: row.UCCode
     }
   } catch (error) {
-    return {
-      rowIndex,
-      id,
-      status: 'error',
-      message: error instanceof Error ? error.message : 'Unknown error occurred'
+    if(error instanceof Error && error.message==="CONFLICT"){
+      const userInfo = await getUserById(token, assignedTo)
+      if (userInfo) {
+        return {
+          rowIndex,
+          id,
+          status: 'error',
+          message: `Unable to process this record because it is currently assigned to ${userInfo.firstName} ${userInfo.lastName}. Please ask ${userInfo.firstName} ${userInfo.lastName} to unassign the record first, then re-upload the CSV to process this record again.`
+        }
+      } else {
+        // should not happen as assignedTo should have a value now
+        return {
+          rowIndex,
+          id,
+          status: 'error',
+          message: `Unable to process this record because it is currently assigned to another unknown user. Please ask them to unassign the record first, then re-upload the CSV to process this record again.`
+        }
+      }
+    }else{
+      return {
+        rowIndex,
+        id,
+        status: 'error',
+        message: error instanceof Error ? error.message : 'Unknown error occurred'
+      }
     }
   }
 }
@@ -275,7 +298,7 @@ async function sendEmailNotifications(
   for (const result of successfulOrRejectedResults) {
     if (result.createdBy) {
       const existing = recordsByUser.get(result.createdBy) || []
-      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id })
+      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id, "ucCode": result.ucCode || "" })
       recordsByUser.set(result.createdBy, existing)
     }
   }
@@ -284,6 +307,7 @@ async function sendEmailNotifications(
   for (const [userId, records] of recordsByUser) {
     try {
       const userInfo = await getUserById(token, userId)
+      
       if (!userInfo) {
         continue
       }

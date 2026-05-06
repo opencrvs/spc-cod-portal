@@ -9,12 +9,9 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import fetch from 'node-fetch'
-import { APPLICATION_CONFIG_URL } from '@countryconfig/constants'
 import csv2json from 'csv2json'
 import { createReadStream } from 'fs'
 import fs from 'fs'
-import { URL } from 'url'
 import { build } from 'esbuild'
 import { memoize } from 'lodash'
 import { join } from 'path'
@@ -69,18 +66,6 @@ export async function readCSVToJSON<T>(filename: string) {
         resolve(JSON.parse(chunks.join('')))
       })
   })
-}
-
-export async function getApplicationConfig() {
-  const configURL = new URL('publicConfig', APPLICATION_CONFIG_URL).toString()
-  const res = await fetch(configURL, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  const configData = (await res.json()) as IApplicationConfigResponse
-  return configData.config
 }
 
 export const buildTypeScriptToJavaScript = memoize(async (path: string) => {

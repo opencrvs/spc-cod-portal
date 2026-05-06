@@ -17,36 +17,20 @@ import {
   never,
   not,
   or,
-  PageTypes,
-  TranslationConfig
+  PageTypes
 } from '@opencrvs/toolkit/events'
-import { createSelectOptions } from '@countryconfig/events/utils'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
 import { emptyMessage } from '@countryconfig/events/utils'
 
-export const SymptomType = {
-  SYMPTOM_1: 'SYMPTOM_1',
-  OTHER: 'OTHER'
-} as const
-
-const spcSymptomMessageDescriptors = {
-  SYMPTOM_1: {
-    defaultMessage: 'An example CoD symptom',
-    description: '',
-    id: 'spcRegionalGroup.SYMPTOM_1'
-  },
-  OTHER: {
-    defaultMessage: 'Other',
-    description: '',
-    id: 'form.field.label.otherOption'
-  }
-} satisfies Record<keyof typeof SymptomType, TranslationConfig>
-
-const spcSymptomOptions = createSelectOptions(
-  SymptomType,
-  spcSymptomMessageDescriptors
-)
 const durationOptions = [
+  {
+    value: 'Seconds',
+    label: {
+      id: 'unit.seconds',
+      defaultMessage: 'Seconds',
+      description: 'Seconds'
+    }
+  },
   {
     value: 'Minutes',
     label: {
@@ -124,7 +108,7 @@ function getLabelForCause(
       }
     case 'Other':
       return {
-        defaultMessage: `${index + 1}. Antecedent cause`,
+        defaultMessage: `${index + 1}. Other significant cause`,
         description: 'This is the label for the field',
         id: `${basePath}.label`
       }
@@ -175,7 +159,7 @@ function createSymptomFields(letter: CauseLetter) {
     const otherField = {
       id: `${basePath}.other`,
       type: FieldType.TEXTAREA,
-      required: false,
+      required: true,
       analytics: true,
       label: {
         defaultMessage:
@@ -205,8 +189,30 @@ function createSymptomFields(letter: CauseLetter) {
   })
 }
 
+export function hasCompletedCause(path: string) {
+  return or(
+    and(
+      not(field(path).get('value').isFalsy()),
+      not(field(path).get('value').isEqualTo('OTHER'))
+    ),
+    and(
+      field(path).get('value').isEqualTo('OTHER'),
+      not(field(`${path}.other`).isFalsy())
+    )
+  )
+}
+
+function isAddButtonCount(addButton: string, count: number) {
+  if (count === 0) {
+    return or(field(addButton).isFalsy(), field(addButton).isEqualTo(0))
+  }
+
+  return field(addButton).isEqualTo(count)
+}
+
 export function createCauseOfDeathFields(letter: CauseLetter) {
   const base = `eventDetails.causeOfDeath${letter}`
+  const addButton = `${base}.add.symptom.button`
 
   return [
     {
@@ -248,35 +254,35 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
         {
           type: ConditionalType.ENABLE,
           conditional: and(
-            not(field(`${base}.add.symptom.button`).isEqualTo(7)),
+            not(field(addButton).isEqualTo(7)),
             or(
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(0),
-                not(field(`${base}.symptom.one`).get('value').isFalsy())
+                isAddButtonCount(addButton, 0),
+                hasCompletedCause(`${base}.symptom.one`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(1),
-                not(field(`${base}.symptom.two`).get('value').isFalsy())
+                isAddButtonCount(addButton, 1),
+                hasCompletedCause(`${base}.symptom.two`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(2),
-                not(field(`${base}.symptom.three`).get('value').isFalsy())
+                isAddButtonCount(addButton, 2),
+                hasCompletedCause(`${base}.symptom.three`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(3),
-                not(field(`${base}.symptom.four`).get('value').isFalsy())
+                isAddButtonCount(addButton, 3),
+                hasCompletedCause(`${base}.symptom.four`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(4),
-                not(field(`${base}.symptom.five`).get('value').isFalsy())
+                isAddButtonCount(addButton, 4),
+                hasCompletedCause(`${base}.symptom.five`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(5),
-                not(field(`${base}.symptom.six`).get('value').isFalsy())
+                isAddButtonCount(addButton, 5),
+                hasCompletedCause(`${base}.symptom.six`)
               ),
               and(
-                field(`${base}.add.symptom.button`).isEqualTo(6),
-                not(field(`${base}.symptom.seven`).get('value').isFalsy())
+                isAddButtonCount(addButton, 6),
+                hasCompletedCause(`${base}.symptom.seven`)
               )
             )
           )
