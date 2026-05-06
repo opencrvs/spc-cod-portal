@@ -26,8 +26,7 @@ import { createClient } from '@opencrvs/toolkit/api'
 import { InformantType as BirthInformantType } from '@countryconfig/events/birth/forms/pages/informant'
 import { InformantTemplateType } from './sms-service'
 import { generateFailureLog, NotificationParams, notify } from './handler'
-import { birthEvent } from '@countryconfig/events/birth'
-import { deathEvent } from '@countryconfig/events/death'
+import { InformantType as DeathInformantType } from '@countryconfig/events/death/forms/pages/informant'
 import { Event } from '@countryconfig/events/utils'
 
 const resolveName = (name: FieldUpdateValue) => {
@@ -77,18 +76,6 @@ function getInformant(eventType: string, declaration: Record<string, any>) {
   return declaration['informant.name']
 
   // throw new Error('Invalid event type')
-}
-
-function getEventConfig(eventType: string) {
-  if (eventType === Event.Birth) {
-    return birthEvent
-  }
-
-  if (eventType === Event.Death) {
-    return deathEvent
-  }
-
-  throw new Error('Invalid event type')
 }
 
 async function getNotificationParams(
