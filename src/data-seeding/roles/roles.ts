@@ -19,6 +19,7 @@ export const roles: Role[] = [
       { type: 'performance.read' },
       { type: 'organisation.read-locations' },
       { type: 'user.read', options: { accessLevel: 'location' } },
+      { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
       { type: 'record.print-certified-copies' },
       { type: 'performance.read-dashboards' },
       {
@@ -58,6 +59,7 @@ export const roles: Role[] = [
         { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
         { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
         { type: 'user.read' },
+        { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
         { type: 'performance.read' },
         { type: 'record.reindex' },
         { type: 'integration.create' },
@@ -70,18 +72,19 @@ export const roles: Role[] = [
     ]
   },
   {
-    id: 'LOCAL_SYSTEM_ADMIN',
+    id: 'SENIOR_MR_OFFICER',
     label: {
-      defaultMessage: 'Local System Admin',
-      description: 'Name for user role Local System Admin',
-      id: 'userRole.localSystemAdmin'
+      defaultMessage: 'Senior Medical Records Officer',
+      description: 'Name for user role Senior Medical Records Officer',
+      id: 'userRole.seniorMedicalRecordsOfficer'
     },
     scopes: [
       ...defineScopes([
         { type: 'organisation.read-locations', options: { accessLevel: 'administrativeArea' } },
-        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
-        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
-        { type: 'user.read', options: { accessLevel: 'administrativeArea' } }
+        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
+        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
+        { type: 'user.read', options: { accessLevel: 'administrativeArea' } },
+        { type: 'user.search', options: { accessLevel: 'administrativeArea' } }
       ])
     ]
   },
@@ -98,6 +101,7 @@ export const roles: Role[] = [
       { type: 'performance.read-dashboards' },
       { type: 'user.read-only-my-audit' },
       { type: 'user.read' },
+      { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
       { type: 'record.search', options: { event: ['death'] } },
       {
         type: 'workqueue',
