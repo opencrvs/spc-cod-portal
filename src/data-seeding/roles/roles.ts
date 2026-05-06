@@ -80,11 +80,35 @@ export const roles: Role[] = [
     },
     scopes: [
       ...defineScopes([
-        { type: 'organisation.read-locations', options: { accessLevel: 'administrativeArea' } },
+        { type: 'performance.read' },
+        { type: 'organisation.read-locations' },
         { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
         { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
-        { type: 'user.read', options: { accessLevel: 'administrativeArea' } },
-        { type: 'user.search', options: { accessLevel: 'administrativeArea' } }
+        { type: 'user.read', options: { accessLevel: 'location' } },
+        { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
+        { type: 'record.print-certified-copies' },
+        { type: 'performance.read-dashboards' },
+        {
+          type: 'workqueue',
+          options: {
+            ids: ['assigned-to-you', 'recent', 'requires-completion', 'requires-updates-office', 'in-review', 'encoded']
+          }
+        },
+        {
+          type: 'record.create',
+          options: { event: ['death'], placeOfEvent: 'administrativeArea' }
+        },
+        { type: 'record.search', options: { event: ['death'] } },
+        { type: 'record.read', options: { event: ['death'] } },
+        { type: 'record.declare', options: { event: ['death'] } },
+        { type: 'record.edit', options: { event: ['death'] } },
+        { type: 'record.archive', options: { event: ['death'] } },
+        { type: 'record.print-certified-copies', options: { event: ['death'] } },
+        { type: 'record.request-correction', options: { event: ['death'] } },
+        {
+          type: 'dashboard.view',
+          options: { ids: ['statistics'] }
+        }
       ])
     ]
   },
