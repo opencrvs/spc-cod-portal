@@ -72,17 +72,17 @@ export const roles: Role[] = [
     ]
   },
   {
-    id: 'LOCAL_SYSTEM_ADMIN',
+    id: 'SENIOR_MR_OFFICER',
     label: {
-      defaultMessage: 'Local System Admin',
-      description: 'Name for user role Local System Admin',
-      id: 'userRole.localSystemAdmin'
+      defaultMessage: 'Senior Medical Records Officer',
+      description: 'Name for user role Senior Medical Records Officer',
+      id: 'userRole.seniorMedicalRecordsOfficer'
     },
     scopes: [
       ...defineScopes([
         { type: 'organisation.read-locations', options: { accessLevel: 'administrativeArea' } },
-        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
-        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
+        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
         { type: 'user.read', options: { accessLevel: 'administrativeArea' } },
         { type: 'user.search', options: { accessLevel: 'administrativeArea' } }
       ])
