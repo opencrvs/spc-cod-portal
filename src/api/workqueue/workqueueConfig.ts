@@ -80,9 +80,7 @@ export const Workqueues = defineWorkqueues([
       defaultMessage: 'Assigned to you',
       description: 'Title of assigned to you workqueue'
     },
-    query: {
-      assignedTo: { type: 'exact', term: user('id') }
-    },
+    query: { assignedTo: { type: 'exact', term: user('id') } },
     action: { type: ActionType.READ }
   },
   {
