@@ -27,7 +27,7 @@ export const applicationConfig = defineApplicationConfig({
       }
     }
   ],
-  PHONE_NUMBER_PATTERN: '^0(7|9)[0-9]{8}$',
+  PHONE_NUMBER_PATTERN: '^(\\+260|0)(7|9)[0-9]{8}$',
   USER_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'email', // or 'sms', or '' ... You can use 'sms' for WhatsApp
   SEARCH_DEFAULT_CRITERIA: 'TRACKING_ID'
