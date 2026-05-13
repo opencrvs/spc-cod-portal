@@ -22,4 +22,4 @@ FROM nginx:alpine
 COPY --from=builder /app/web-app/dist /usr/share/nginx/html
 COPY web-app/nginx.conf.template /etc/nginx/templates/default.conf.template
 
-ENTRYPOINT sh -c "/usr/share/nginx/html/vite-envs.sh && /docker-entrypoint.sh nginx -g 'daemon off;'"
+ENTRYPOINT sh -c "/usr/share/nginx/html/vite-envs.sh && /docker-entrypoint.sh && nginx -g 'daemon off;'"
