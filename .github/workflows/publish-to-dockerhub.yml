@@ -15,12 +15,6 @@ on:
         description: Branch to build from
         default: develop
         required: true
-      
-      DOMAIN:
-        description: DOMAIN
-        default: spc-cod-qa.opencrvs.org
-        required: true
-
       build_arm:
         description: Build ARM images
         type: boolean
@@ -101,10 +95,9 @@ jobs:
           context: ./uploader-app
           file: ./uploader-app/web-app/Dockerfile
           build-args: |
-            VITE_EXTERNAL_CLIENT_URL=https://register.${{ inputs.DOMAIN }}
-            VITE_GATEWAY_URL=https://gateway.${{ inputs.DOMAIN }}
-            VITE_COUNTRY_CONFIG_URL=https://countryconfig.${{ inputs.DOMAIN }}
-            DOMAIN=${{ inputs.DOMAIN }}
+            VITE_EXTERNAL_CLIENT_URL=https://register.spc-cod-qa.opencrvs.org
+            VITE_GATEWAY_URL=https://gateway.spc-cod-qa.opencrvs.org
+            VITE_COUNTRY_CONFIG_URL=https://countryconfig.spc-cod-qa.opencrvs.org
           tags: |
             ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader:${{ steps.country_config.outputs.version }}
 
