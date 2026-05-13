@@ -80,6 +80,47 @@ export const processCSVRow = async (
   let assignedTo=""
 
   try {
+
+    // If 
+
+    // id is of the format: `EXTERNAL_OPENCRVS_RECORD_$(countryCode)_$(trackingId)`
+    // Then instead of processing it here, we send it back to the country via an API
+
+    // authenticate with the country API using environment variables in this portal
+    // Each country needs to create a system client and share e.g.:
+    // PANKAJLAND_CLIENT_ID, PANKAJLAND_CLIENT_SECRET, PANKAJLAND_ENCODE_URL
+    // COOKS_CLIENT_ID, COOKS_CLIENT_SECRET, COOKS_ENCODE_URL
+
+    /* 
+
+    if a 200 is received from the country API
+    
+    // we must update the row in the analytics table with REGISTERED status so that it is removed from the IDENT & MEDCOD download queue
+    // Then it can not be mistakenly processed again in the future
+
+    return {
+      rowIndex,
+      id,
+      status: 'success',
+      message: 'Successfully returned',
+      createdBy: createdBy || undefined,
+      trackingId
+    }
+
+    else if a 400 is received from the country API
+
+    // we must log this error and send an email alert to the admin containing any log information
+
+    return {
+        rowIndex,
+        id,
+        status: 'error',
+        message: 'Country could not receive the updated record due to a network error'
+      }
+      
+    */
+
+    // Else continue
     const record = await findRecordByCertificateKey(token, id)
    
 

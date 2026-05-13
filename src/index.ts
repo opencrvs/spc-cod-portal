@@ -50,6 +50,7 @@ import { certificateHandler } from './api/certificates/handler'
 import { rolesHandler } from './data-seeding/roles/handler'
 import { usersHandler } from './data-seeding/employees/handler'
 import { applicationConfigHandler } from './api/application/handler'
+import { externalRecordToEncodeHandler } from './api/dashboards/handler'
 import { handlebarsHandler } from './certificate/handlebars/handler'
 import { fontsHandler } from './api/fonts/handler'
 import {
@@ -562,6 +563,16 @@ export async function createServer() {
     method: 'POST',
     path: `/trigger/events/{event}/actions/${ActionType.CUSTOM}`,
     handler: onCustomActionHandler,
+    options: {
+      tags: ['api', 'events'],
+      description: 'Receives notifications on event custom action'
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: `/insert-external-record-to-encode/{countryCode}`,
+    handler: externalRecordToEncodeHandler,
     options: {
       tags: ['api', 'events'],
       description: 'Receives notifications on event custom action'

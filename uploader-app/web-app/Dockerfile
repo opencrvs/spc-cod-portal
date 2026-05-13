@@ -18,7 +18,15 @@ RUN yarn build
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
+
+ARG DOMAIN
+ENV DOMAIN=$DOMAIN
+
 COPY --from=builder /app/web-app/dist /usr/share/nginx/html
-COPY web-app/nginx.conf /etc/nginx/conf.d/default.conf
+COPY web-app/nginx.conf.template /tmp/nginx.conf.template
+
+RUN envsubst '$DOMAIN' \
+  < /tmp/nginx.conf.template \
+  > /etc/nginx/conf.d/default.conf
 
 ENTRYPOINT sh -c "/usr/share/nginx/html/vite-envs.sh && nginx -g 'daemon off;'"
