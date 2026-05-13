@@ -11,6 +11,16 @@ on:
       - '*'
   workflow_dispatch:
     inputs:
+      environment:
+        type: choice
+        description: Environment to reset
+        required: true
+        default: 'development'
+        options:
+          - spc-qa
+          - staging
+          - qa
+          - production
       branch_name:
         description: Branch to build from
         default: develop
@@ -33,6 +43,7 @@ jobs:
     outputs:
       version: ${{ steps.country_config.outputs.version }}
       version_common: ${{ steps.country_config.outputs.version_common }}
+    environment: ${{ inputs.environment || 'qa'}}
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v5
@@ -90,14 +101,15 @@ jobs:
 
       - name: Build and push uploader app
         uses: docker/build-push-action@v6
+
         with:
           push: true
           context: ./uploader-app
           file: ./uploader-app/web-app/Dockerfile
           build-args: |
-            VITE_EXTERNAL_CLIENT_URL=https://register.spc-cod-qa.opencrvs.org
-            VITE_GATEWAY_URL=https://gateway.spc-cod-qa.opencrvs.org
-            VITE_COUNTRY_CONFIG_URL=https://countryconfig.spc-cod-qa.opencrvs.org
+            VITE_EXTERNAL_CLIENT_URL=https://register.${{ vars.DOMAIN }}
+            VITE_GATEWAY_URL=https://gateway.${{ vars.DOMAIN }}
+            VITE_COUNTRY_CONFIG_URL=https://countryconfig.${{ vars.DOMAIN }}
           tags: |
             ${{ secrets.DOCKERHUB_ACCOUNT}}/${{ secrets.DOCKERHUB_REPO }}-uploader:${{ steps.country_config.outputs.version }}
 
