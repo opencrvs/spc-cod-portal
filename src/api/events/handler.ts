@@ -8,7 +8,7 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { deathEvent } from '@countryconfig/events/death'
+
 import * as Hapi from '@hapi/hapi'
 import { ActionConfirmationRequest } from '../registration'
 import { eventConfigs } from '@countryconfig/events'
