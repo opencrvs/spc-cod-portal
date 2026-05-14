@@ -49,7 +49,7 @@ add_header X-Permitted-Cross-Domain-Policies master-only;
 # more: http://www.html5rocks.com/en/tutorials/security/content-security-policy/#inline-code-considered-harmful
 
 # TODO this is commented because of vite-envs. We should enable in prod and get env vars the way client does
-# add_header Content-Security-Policy "default-src 'self' {{CONTENT_SECURITY_POLICY_WILDCARD}} *.sentry.io/ sentry.io/; font-src fonts.gstatic.com {{CONTENT_SECURITY_POLICY_WILDCARD}}; object-src 'none'; script-src 'self' 'unsafe-eval' blob: https: http: storage.googleapis.com/workbox-cdn/ sentry.io/api/embed/error-page/; style-src 'self' fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: http: https: ";
+# add_header Content-Security-Policy "default-src 'self' ${CONTENT_SECURITY_POLICY_WILDCARD} *.sentry.io/ sentry.io/; font-src fonts.gstatic.com ${CONTENT_SECURITY_POLICY_WILDCARD}; object-src 'none'; script-src 'self' 'unsafe-eval' blob: https: http: storage.googleapis.com/workbox-cdn/ sentry.io/api/embed/error-page/; style-src 'self' fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: http: https: ";
 
 server {
     listen 80;
