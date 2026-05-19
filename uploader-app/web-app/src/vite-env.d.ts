@@ -7,9 +7,12 @@ type ImportMetaEnv = {
   MODE: string
   DEV: boolean
   PROD: boolean
-  SERVER_URL: string
+  COUNTRY_CONFIG_URL: string
+  GATEWAY_URL: string
   EXTERNAL_LOGIN_URL: string
+  EXTERNAL_CLIENT_URL: string
   LOGIN_REDIRECT_URL: string
+  SERVER_URL: string
   // @user-defined-start
   /*
    *  You can use this section to explicitly extend the type definition of `import.meta.env`
