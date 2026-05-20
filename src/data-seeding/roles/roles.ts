@@ -38,7 +38,6 @@ export const roles: Role[] = [
       { type: 'record.edit', options: { event: ['death'] } },
       { type: 'record.archive', options: { event: ['death'] } },
       { type: 'record.print-certified-copies', options: { event: ['death'] } },
-      { type: 'record.request-correction', options: { event: ['death'] } },
       {
         type: 'dashboard.view',
         options: { ids: ['statistics'] }

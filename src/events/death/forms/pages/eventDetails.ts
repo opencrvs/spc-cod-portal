@@ -21,6 +21,7 @@ import {
 } from '@opencrvs/toolkit/events'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
 import { emptyMessage } from '@countryconfig/events/utils'
+import { pl } from 'date-fns/locale'
 
 const durationOptions = [
   {
@@ -130,6 +131,11 @@ function createSymptomFields(letter: CauseLetter) {
       type: FieldType.AUTOCOMPLETE,
       analytics: true,
       label: getLabelForCause(letter, index, basePath),
+      placeholder: {
+        defaultMessage: 'Search for condition..',
+        description: 'This is the placeholder for the field',
+        id: 'condition.placeholder'
+      },
       configuration: {
         url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`,
         defaultOptions: [{ label: 'Other', value: 'OTHER' }]
