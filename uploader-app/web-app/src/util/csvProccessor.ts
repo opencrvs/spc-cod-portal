@@ -144,7 +144,7 @@ export const processCSVRow = async (
     assignedTo=record?.assignedTo || ""
     const markedAsRegisteredInOcrvs = record.status === 'REGISTERED'
     const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
-    console.log("RECORD :>> ", JSON.stringify(record))
+    
     if (markedAsRegisteredInOcrvs) {
       return {
         rowIndex,

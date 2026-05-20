@@ -21,7 +21,6 @@ import {
 } from '@opencrvs/toolkit/events'
 import { COUNTRY_CONFIG_URL } from '@countryconfig/constants'
 import { emptyMessage } from '@countryconfig/events/utils'
-import { pl } from 'date-fns/locale'
 
 const durationOptions = [
   {
