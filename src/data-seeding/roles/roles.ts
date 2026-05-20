@@ -55,8 +55,8 @@ export const roles: Role[] = [
       ...defineScopes([
         { type: 'config.update-all' },
         { type: 'organisation.read-locations' },
-        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
-        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN'] } },
+        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER'] } },
+        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER'] } },
         { type: 'user.read' },
         { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
         { type: 'performance.read' },
@@ -103,7 +103,6 @@ export const roles: Role[] = [
         { type: 'record.edit', options: { event: ['death'] } },
         { type: 'record.archive', options: { event: ['death'] } },
         { type: 'record.print-certified-copies', options: { event: ['death'] } },
-        { type: 'record.request-correction', options: { event: ['death'] } },
         {
           type: 'dashboard.view',
           options: { ids: ['statistics'] }
