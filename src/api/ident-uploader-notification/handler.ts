@@ -31,7 +31,7 @@ export const identUploaderNotificationSchema = Joi.object({
           .required(),
         trackingId: Joi.string().required(),
         certKey: Joi.string().required(),
-        ucCode: Joi.string()
+        ucCode: Joi.string().allow('')
       })
     )
     .min(1)
