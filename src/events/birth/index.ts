@@ -358,7 +358,7 @@ export const birthEvent = defineConfig({
         declare: {
           id: 'event.birth.action.edit.declare.copy',
           defaultMessage:
-            'Are you sure you want to edit this declaration? By confirming you are redeclaring this event and override past changes.',
+            'This record will be updated with your changes and resubmitted for coding. Add a comment below to explain what was changed.',
           description: 'Confirmation text for the declare with edits action'
         },
         register: {

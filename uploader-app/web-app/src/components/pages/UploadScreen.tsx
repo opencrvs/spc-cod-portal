@@ -117,6 +117,9 @@ export function UploadScreen({
               - <strong>MultipleCodes</strong>: Multiple cause codes (if
               applicable)
             </li>
+            <li className="ml-4">
+              - <strong>Status</strong>: Final or Rejected
+            </li>
             <li>
               • Codes in SelectedCodes and MultipleCodes can be comma or
               semicolon separated
