@@ -55,8 +55,8 @@ export const roles: Role[] = [
       ...defineScopes([
         { type: 'config.update-all' },
         { type: 'organisation.read-locations' },
-        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER'] } },
-        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER'] } },
+        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
+        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
         { type: 'user.read' },
         { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
         { type: 'performance.read' },
@@ -80,9 +80,9 @@ export const roles: Role[] = [
     scopes: [
       ...defineScopes([
         { type: 'performance.read' },
-        { type: 'organisation.read-locations' },
-        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
-        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER'] } },
+        { type: 'organisation.read-locations', options: { accessLevel: 'administrativeArea' } },
+        { type: 'user.create', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
+        { type: 'user.edit', options: { accessLevel: 'administrativeArea', role: ['MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
         { type: 'user.read', options: { accessLevel: 'location' } },
         { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
         { type: 'record.print-certified-copies' },
@@ -145,6 +145,24 @@ export const roles: Role[] = [
       {
         type: 'dashboard.view',
         options: { ids: ['uploader', 'export', 'statistics'] }
+      }
+    ])
+  },
+  {
+    id: 'CHIEF_MEDICAL_OFFICER',
+    label: {
+      defaultMessage: 'Chief Medical Officer',
+      description: 'Name for user role Chief Medical Officer',
+      id: 'userRole.chiefMedicalOfficer'
+    },
+    scopes: defineScopes([
+      { type: 'performance.read' },
+      { type: 'organisation.read-locations' },
+      { type: 'user.search' },
+      { type: 'performance.read-dashboards' },
+      {
+        type: 'dashboard.view',
+        options: { ids: ['statistics'] }
       }
     ])
   }
