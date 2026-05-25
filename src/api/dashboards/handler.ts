@@ -36,6 +36,11 @@ export async function externalRecordToEncodeHandler(
   const { countryCode } = request.params
   const { trackingId } = event
 
+  console.log(
+    'Payload received by externalRecordToEncodeHandler :>> ',
+    JSON.stringify(event)
+  )
+
   // TODO: Hardcode an incoming country action to a MR_OFFICER user in this system that represents their country
 
   // Set deceased.certificateKey = = `EXTERNAL_OPENCRVS_RECORD_$(countryCode)_$(trackingId)`
@@ -62,6 +67,8 @@ export async function externalRecordToEncodeHandler(
       return action
     })
   }
+
+  console.log('inserting into analytics :>> ', JSON.stringify(updatedObject))
 
   const client = getClient()
   try {
