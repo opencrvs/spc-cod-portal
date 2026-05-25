@@ -641,7 +641,8 @@ export async function createServer() {
         )
         return h.response().code(400)
       }
-      const id = req.payload as string
+      const id = req.params.id
+      console.log('Clearing external records for id: ', id)
       try {
         await removeExternalRecords(id)
 

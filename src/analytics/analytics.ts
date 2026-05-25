@@ -460,10 +460,11 @@ export async function checkDeceasedKeys(id: string, trx: Kysely<any>) {
 
 export async function removeExternalRecords(id: string) {
   const client = getClient()
+
   const declaration = await client
-    .selectFrom('analytics.event_actions') // replace with your table name
-    .select('event_id')
-    .where('action_type', '=', 'DECLARE')
+    .selectFrom('event_actions')
+    .select('eventId')
+    .where('actionType', '=', 'DECLARE')
     .where(sql`declaration->>'deceased_certificateKey'`, '=', id)
     .executeTakeFirst()
 
@@ -472,9 +473,9 @@ export async function removeExternalRecords(id: string) {
   }
 
   await client
-    .deleteFrom('analytics.event_actions') // replace with your table name
-    .where('event_id', '=', declaration.event_id)
+    .deleteFrom('event_actions')
+    .where('eventId', '=', declaration.eventId)
     .execute()
 
-  console.log(`Deleted rows for event_id ${declaration.event_id}`)
+  console.log(`Deleted rows for event_id ${declaration.eventId}`)
 }

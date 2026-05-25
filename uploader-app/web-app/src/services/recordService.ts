@@ -318,6 +318,8 @@ export async function clearExternalRecords(
     COUNTRY_CONFIG_HOST
   ).toString()
 
+  console.log("clearExternalRecords: ", url)
+
   try {
     const response = await fetch(url, {
       method: 'GET',
