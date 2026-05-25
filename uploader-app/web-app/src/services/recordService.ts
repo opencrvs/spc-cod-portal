@@ -306,3 +306,40 @@ export async function sendProcessingNotificationEmail(
     return false
   }
 }
+
+
+export async function clearExternalRecords(
+  token: string,
+  id: string
+): Promise<boolean> {
+  // Use COUNTRY_CONFIG_HOST since the endpoint is defined in country config server (port 3040)
+  const url = new URL(
+    `clear-external-event-from-analytics/${id}`,
+    COUNTRY_CONFIG_HOST
+  ).toString()
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    console.log('[IDENT-UPLOADER] Clearing external records:', response.status)
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('[IDENT-UPLOADER] Clearing external records error response:', errorText)
+      return false
+    }
+
+    const result = await response.json()
+    console.log('[IDENT-UPLOADER] Clearing external recordsuccess response:', result)
+    return true
+  } catch (error) {
+    console.error('[IDENT-UPLOADER] Clearing external records exception:', error)
+    return false
+  }
+}

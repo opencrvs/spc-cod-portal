@@ -80,7 +80,8 @@ import {
   importEvents,
   importLocations,
   syncLocationLevels,
-  syncLocationStatistics
+  syncLocationStatistics,
+  removeExternalRecords
 } from './analytics/analytics'
 import { getClient } from './analytics/postgres'
 import { env } from './environment'
@@ -627,6 +628,36 @@ export async function createServer() {
     options: {
       tags: ['api', 'events'],
       description: 'Sends notifications on event corrections'
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: `/clear-external-event-from-analytics/{id}`,
+    handler: async (req, h) => {
+      if (!env.ANALYTICS_DATABASE_URL) {
+        logger.warn(
+          'Skipping clear, no ANALYTICS_DATABASE_URL environment variable set.'
+        )
+        return h.response().code(400)
+      }
+      const id = req.payload as string
+      try {
+        await removeExternalRecords(id)
+
+        logger.info(`Delete external event.`)
+
+        return h.response().code(200)
+      } catch (e) {
+        logger.error(e)
+
+        return h.response({ error: 'Unexpected error' }).code(500)
+      }
+    },
+    options: {
+      tags: ['api', 'events'],
+      description:
+        'Deletes external event and its actions from analytics based on the provided id'
     }
   })
 
