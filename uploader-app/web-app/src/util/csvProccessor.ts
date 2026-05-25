@@ -135,9 +135,6 @@ export const processCSVRow = async (
       if (id.includes(prefix) && hasIrisData) {
         // External record
         const [, , , countryCode, trackingId] = id.split("_");
-
-        console.log(countryCode); // TUV
-        console.log(trackingId);  // KUGKHGK
         if(countryCode === "TUV"){
           /*const countryAuthBase = "https://auth.pankaj-qa.opencrvs.dev";
           const token = await getAccessToken(
