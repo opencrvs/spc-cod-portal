@@ -5,7 +5,8 @@ import {
   updateRecordWithCauseOfDeath,
   getCreatedByFromLegalStatuses,
   getUserById,
-  sendProcessingNotificationEmail
+  sendProcessingNotificationEmail,
+  clearExternalRecords
 } from '../services/recordService'
 import { REQUIRED_HEADERS } from './constants'
 
@@ -171,7 +172,8 @@ export const processCSVRow = async (
             }
           }
 
-          const result = await response.json()
+          await clearExternalRecords(token, id) // Remove the external records from IDENT & MEDCOD as they have been processed
+          
           return {
             rowIndex,
             id,
