@@ -60,6 +60,44 @@ export const parseCSV = (file: File): Promise<CSVRow[]> => {
   })
 }
 
+type TokenResponse = { access_token: string; token_type: string };
+
+async function getAccessToken(clientId: string, clientSecret: string, countryAuthBase: string): Promise<string> {
+  if (!clientId || !clientSecret) {
+    throw new Error("CLIENT_ID or CLIENT_SECRET not set in environment");
+  }
+
+  const url = new URL("/token", countryAuthBase);
+  url.searchParams.set("client_id", clientId);
+  url.searchParams.set("client_secret", clientSecret);
+  url.searchParams.set("grant_type", "client_credentials");
+
+  console.log("Requesting access token from:", url.toString());
+  const res = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok)
+    throw new Error(`Token request failed: ${res.status} ${await res.text()}`);
+
+  const data = (await res.json()) as TokenResponse;
+  if (!data.access_token)
+    throw new Error("Token response missing access_token");
+  return data.access_token;
+}
+
+type ExternalSpcCodingDatabaseRecord = {
+  trackingId: string
+  status: string
+  ucCode: string
+  selectedCodes: string
+  multipleCodes: string
+  freeText: string
+  comments: string
+}
+
 export const processCSVRow = async (
   row: CSVRow,
   rowIndex: number,
@@ -87,47 +125,73 @@ export const processCSVRow = async (
   }
 
   let assignedTo=""
+  // Check if there are any IRIS output fields to update
+  const hasIrisData =
+    row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
 
   try {
+    try {
+      const prefix = "EXTERNAL_OPENCRVS_RECORD_"
+      if (id.includes(prefix) && hasIrisData) {
+        // External record
+        const [, , , countryCode, trackingId] = id.split("_");
+        if(countryCode === "TUV"){
+          /*const countryAuthBase = "https://auth.pankaj-qa.opencrvs.dev";
+          const token = await getAccessToken(
+            TUVALU_CLIENT_ID || "",
+            TUVALU_CLIENT_SECRET || "",
+            countryAuthBase
+          );*/
+          // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
+          const externalRecord: ExternalSpcCodingDatabaseRecord = {
+            trackingId,
+            status: rowStatus,
+            ucCode: row.UCCode || "",
+            selectedCodes: row.SelectedCodes || "",
+            multipleCodes: row.MultipleCodes || "",
+            freeText: row.FreeText || "",
+            comments: row.Comments || ""
+          }
+          const response = await fetch("https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding", {
+            method: 'POST',
+            headers: {
+              // Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(externalRecord)
+          })
 
-    // If 
+          if (!response.ok) {
+            const errorText = await response.text()
+            return {
+              rowIndex,
+              id,
+              status: 'error',
+              message: `Country could not process the updated record an error: ${errorText}`
+            }
+          }
 
-    // id is of the format: `EXTERNAL_OPENCRVS_RECORD_$(countryCode)_$(trackingId)`
-    // Then instead of processing it here, we send it back to the country via an API
-
-    // authenticate with the country API using environment variables in this portal
-    // Each country needs to create a system client and share e.g.:
-    // PANKAJLAND_CLIENT_ID, PANKAJLAND_CLIENT_SECRET, PANKAJLAND_ENCODE_URL
-    // COOKS_CLIENT_ID, COOKS_CLIENT_SECRET, COOKS_ENCODE_URL
-
-    /* 
-
-    if a 200 is received from the country API
-    
-    // we must update the row in the analytics table with REGISTERED status so that it is removed from the IDENT & MEDCOD download queue
-    // Then it can not be mistakenly processed again in the future
-
-    return {
-      rowIndex,
-      id,
-      status: 'success',
-      message: 'Successfully returned',
-      createdBy: createdBy || undefined,
-      trackingId
-    }
-
-    else if a 400 is received from the country API
-
-    // we must log this error and send an email alert to the admin containing any log information
-
-    return {
+          const result = await response.json()
+          return {
+            rowIndex,
+            id,
+            status: 'success',
+            message: 'Successfully updated with IRIS output data',
+            createdBy: undefined,  // TODO: decide how to set when sending a notification
+            trackingId: "", // TODO: decide how to set when sending a notification
+            certKey: "", // TODO: decide how to set when sending a notification
+            ucCode: row.UCCode
+          }
+        }
+      }
+    } catch (error) {
+      return {
         rowIndex,
         id,
         status: 'error',
-        message: 'Country could not receive the updated record due to a network error'
+        message: `Country could not receive the updated record an error: ${JSON.stringify(error)}`
       }
-      
-    */
+    }
 
     // Else continue
     const record = await findRecordByCertificateKey(token, id)
@@ -163,9 +227,7 @@ export const processCSVRow = async (
       }
     }
 
-    // Check if there are any IRIS output fields to update
-    const hasIrisData =
-      row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
+    
 
     if (!hasIrisData) {
       return {
