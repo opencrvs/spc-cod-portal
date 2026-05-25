@@ -153,6 +153,9 @@ export const processCSVRow = async (
             freeText: row.FreeText || "",
             comments: row.Comments || ""
           }
+
+          console.log("Sending to Tuvalu: ",JSON.stringify(externalRecord))
+
           const response = await fetch("https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding", {
             method: 'POST',
             headers: {
