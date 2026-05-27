@@ -78,7 +78,9 @@ async function getAccessToken(clientId: string, clientSecret: string, countryAut
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": UPLOADER_APP_URL
+      "Access-Control-Allow-Origin": UPLOADER_APP_URL,
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "POST"
     },
   });
   if (!res.ok)
