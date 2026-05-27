@@ -36,5 +36,11 @@ export const env = cleanEnv(process.env, {
   COD_URL: url({
     devDefault: 'http://localhost:3040/causes-of-death?terms=',
     desc: 'The URL for the COD service.'
+  }),
+  TUVALU_CLIENT_ID: str({ devDefault: undefined }),
+  TUVALU_CLIENT_SECRET: str({ devDefault: undefined }),
+  TUVALU_AUTH_URL: url({ devDefault: 'https://auth.pankaj-qa.opencrvs.dev' }),
+  TUVALU_SPC_CODING_URL: url({
+    devDefault: 'https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding'
   })
 })

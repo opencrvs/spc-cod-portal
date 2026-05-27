@@ -13,10 +13,6 @@ type ImportMetaEnv = {
   EXTERNAL_CLIENT_URL: string
   LOGIN_REDIRECT_URL: string
   SERVER_URL: string
-  TUVALU_CLIENT_ID: string
-  TUVALU_CLIENT_SECRET: string
-  TUVALU_AUTH_URL: string
-  TUVALU_SPC_CODING_URL: string
   // @user-defined-start
   /*
    *  You can use this section to explicitly extend the type definition of `import.meta.env`

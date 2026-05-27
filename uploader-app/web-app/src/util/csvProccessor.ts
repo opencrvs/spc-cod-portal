@@ -8,7 +8,7 @@ import {
   sendProcessingNotificationEmail,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_AUTH_URL, TUVALU_SPC_CODING_URL, UPLOADER_APP_URL } from './constants'
+import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -61,37 +61,6 @@ export const parseCSV = (file: File): Promise<CSVRow[]> => {
   })
 }
 
-type TokenResponse = { access_token: string; token_type: string };
-
-async function getAccessToken(clientId: string, clientSecret: string, countryAuthBase: string): Promise<string> {
-  if (!clientId || !clientSecret) {
-    throw new Error("CLIENT_ID or CLIENT_SECRET not set in environment");
-  }
-
-  const url = new URL("/token", countryAuthBase);
-  url.searchParams.set("client_id", clientId);
-  url.searchParams.set("client_secret", clientSecret);
-  url.searchParams.set("grant_type", "client_credentials");
-
-  console.log("Requesting access token from:", url.toString());
-  const res = await fetch(url.toString(), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": UPLOADER_APP_URL,
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Methods": "POST"
-    },
-  });
-  if (!res.ok)
-    throw new Error(`Token request failed: ${res.status} ${await res.text()}`);
-
-  const data = (await res.json()) as TokenResponse;
-  if (!data.access_token)
-    throw new Error("Token response missing access_token");
-  return data.access_token;
-}
-
 type ExternalSpcCodingDatabaseRecord = {
   trackingId: string
   status: string
@@ -140,12 +109,6 @@ export const processCSVRow = async (
         // External record
         const [, countryCode, trackingId] = id.split("_");
         if(countryCode === "TUV"){
-          const token = await getAccessToken(
-            TUVALU_CLIENT_ID || "",
-            TUVALU_CLIENT_SECRET || "",
-            TUVALU_AUTH_URL
-          );
-          // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
           const externalRecord: ExternalSpcCodingDatabaseRecord = {
             trackingId,
             status: rowStatus,
@@ -158,7 +121,12 @@ export const processCSVRow = async (
 
           console.log("Sending to Tuvalu: ",JSON.stringify(externalRecord))
 
-          const response = await fetch(TUVALU_SPC_CODING_URL, {
+          const url = new URL(
+              'submit-coded-record-externally',
+              COUNTRY_CONFIG_HOST
+            ).toString()
+
+           const response = await fetch(url, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,

@@ -86,6 +86,7 @@ import {
 import { getClient } from './analytics/postgres'
 import { env } from './environment'
 import { createClient } from '@opencrvs/toolkit/api'
+import { submitCodedRecordExternally } from './api/ident-uploader-notification/handler'
 import { onSearchHandler } from './data-seeding/reference-data/handler'
 import { syncReferenceData } from './data-seeding/reference-data/reference-data'
 import { Event } from './events/utils/types'
@@ -567,6 +568,16 @@ export async function createServer() {
     options: {
       tags: ['api', 'events'],
       description: 'Receives notifications on event custom action'
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/submit-coded-record-externally',
+    handler: submitCodedRecordExternally,
+    options: {
+      tags: ['api', 'search'],
+      description: 'Sends completed CoD record to country'
     }
   })
 
