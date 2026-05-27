@@ -8,6 +8,9 @@ export const REQUIRED_HEADERS = [
   'Comments' // IRIS output
 ]
 
+export const UPLOADER_APP_URL =
+  import.meta.env.VITE_UPLOADER_APP_URL || import.meta.env.UPLOADER_APP_URL || 'https://uploader.spc-cod-qa.opencrvs.org'
+
 export const GATEWAY_HOST =
   import.meta.env.VITE_GATEWAY_URL || import.meta.env.GATEWAY_URL || 'http://localhost:7070'
 
