@@ -137,7 +137,6 @@ export const processCSVRow = async (
         // External record
         const [, countryCode, trackingId] = id.split("_");
         if(countryCode === "TUV"){
-          const countryAuthBase = "https://auth.pankaj-qa.opencrvs.dev";
           const token = await getAccessToken(
             TUVALU_CLIENT_ID || "",
             TUVALU_CLIENT_SECRET || "",
