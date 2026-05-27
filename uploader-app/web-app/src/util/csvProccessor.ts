@@ -8,7 +8,7 @@ import {
   sendProcessingNotificationEmail,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_AUTH_URL, TUVALU_SPC_CODING_URL } from './constants'
+import { REQUIRED_HEADERS, TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_AUTH_URL, TUVALU_SPC_CODING_URL, UPLOADER_APP_URL } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -78,6 +78,7 @@ async function getAccessToken(clientId: string, clientSecret: string, countryAut
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": UPLOADER_APP_URL
     },
   });
   if (!res.ok)
