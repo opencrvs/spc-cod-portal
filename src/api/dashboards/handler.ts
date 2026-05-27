@@ -43,9 +43,9 @@ export async function externalRecordToEncodeHandler(
 
   // TODO: Hardcode an incoming country action to a MR_OFFICER user in this system that represents their country
 
-  // Set deceased.certificateKey = = `EXTERNAL_OPENCRVS_RECORD_$(countryCode)_$(trackingId)`
+  // Set deceased.certificateKey = = `EXT_$(countryCode)_$(trackingId)`
   // We want to save a row in analytics like this.  Note that it is a DECLARE row:
-  const externalCertKey = `EXTERNAL_OPENCRVS_RECORD_${countryCode}_${trackingId}`
+  const externalCertKey = `EXT_${countryCode}_${trackingId}`
 
   const updatedObject = {
     ...event,

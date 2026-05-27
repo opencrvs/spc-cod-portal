@@ -648,7 +648,7 @@ export async function createServer() {
 
         logger.info(`Delete external event.`)
 
-        return h.response().code(200)
+        return h.response({ success: true }).code(200)
       } catch (e) {
         logger.error(e)
 
