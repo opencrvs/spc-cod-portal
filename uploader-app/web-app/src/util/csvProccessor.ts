@@ -8,7 +8,7 @@ import {
   sendProcessingNotificationEmail,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS } from './constants'
+import { REQUIRED_HEADERS, TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_AUTH_URL, TUVALU_SPC_CODING_URL } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -137,12 +137,12 @@ export const processCSVRow = async (
         // External record
         const [, countryCode, trackingId] = id.split("_");
         if(countryCode === "TUV"){
-          /*const countryAuthBase = "https://auth.pankaj-qa.opencrvs.dev";
+          const countryAuthBase = "https://auth.pankaj-qa.opencrvs.dev";
           const token = await getAccessToken(
             TUVALU_CLIENT_ID || "",
             TUVALU_CLIENT_SECRET || "",
-            countryAuthBase
-          );*/
+            TUVALU_AUTH_URL
+          );
           // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
           const externalRecord: ExternalSpcCodingDatabaseRecord = {
             trackingId,
@@ -156,7 +156,7 @@ export const processCSVRow = async (
 
           console.log("Sending to Tuvalu: ",JSON.stringify(externalRecord))
 
-          const response = await fetch("https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding", {
+          const response = await fetch(TUVALU_SPC_CODING_URL, {
             method: 'POST',
             headers: {
               // Authorization: `Bearer ${token}`,
