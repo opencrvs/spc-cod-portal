@@ -575,7 +575,6 @@ export async function createServer() {
     path: `/insert-external-record-to-encode/{countryCode}`,
     handler: externalRecordToEncodeHandler,
     options: {
-      auth: false,
       tags: ['api', 'events'],
       description: 'Receives notifications on event custom action'
     }
