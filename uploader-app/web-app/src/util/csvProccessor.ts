@@ -158,7 +158,7 @@ export const processCSVRow = async (
           const response = await fetch(TUVALU_SPC_CODING_URL, {
             method: 'POST',
             headers: {
-              // Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(externalRecord)
