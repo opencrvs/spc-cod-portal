@@ -11,6 +11,12 @@
 import * as Hapi from '@hapi/hapi'
 import * as Joi from 'joi'
 import { sendCoDEmail } from './service'
+import {
+  TUVALU_SPC_CODING_URL,
+  TUVALU_CLIENT_SECRET,
+  TUVALU_CLIENT_ID,
+  TUVALU_AUTH_URL
+} from '@countryconfig/constants'
 
 /**
  * Payload schema for ident uploader notification
@@ -70,4 +76,76 @@ export async function identUploaderNotificationHandler(
   const payload = request.payload as IdentUploaderNotificationPayload
 
   return await sendCoDEmail(payload, h)
+}
+
+export const externalSpcCodingDatabaseRecordSchema = Joi.object({
+  trackingId: Joi.string().required(),
+  status: Joi.string().required(),
+  ucCode: Joi.string().required(),
+  selectedCodes: Joi.string().required(),
+  multipleCodes: Joi.string().required(),
+  freeText: Joi.string().required(),
+  comments: Joi.string().required()
+})
+
+type ExternalSpcCodingDatabaseRecord = {
+  trackingId: string
+  status: string
+  ucCode: string
+  selectedCodes: string
+  multipleCodes: string
+  freeText: string
+  comments: string
+}
+
+type TokenResponse = { access_token: string; token_type: string }
+
+async function getAccessToken(
+  clientId: string,
+  clientSecret: string,
+  countryAuthBase: string
+): Promise<string> {
+  if (!clientId || !clientSecret) {
+    throw new Error('CLIENT_ID or CLIENT_SECRET not set in environment')
+  }
+
+  const url = new URL('/token', countryAuthBase)
+  url.searchParams.set('client_id', clientId)
+  url.searchParams.set('client_secret', clientSecret)
+  url.searchParams.set('grant_type', 'client_credentials')
+
+  console.log('Requesting access token from:', url.toString())
+  const res = await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  if (!res.ok)
+    throw new Error(`Token request failed: ${res.status} ${await res.text()}`)
+
+  const data = (await res.json()) as TokenResponse
+  if (!data.access_token) throw new Error('Token response missing access_token')
+  return data.access_token
+}
+
+export async function submitCodedRecordExternally(request: Hapi.Request) {
+  const token = await getAccessToken(
+    TUVALU_CLIENT_ID || '',
+    TUVALU_CLIENT_SECRET || '',
+    TUVALU_AUTH_URL
+  )
+  // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
+  const externalRecord = request.payload as ExternalSpcCodingDatabaseRecord
+
+  console.log('Sending to Tuvalu: ', JSON.stringify(externalRecord))
+
+  return await fetch(TUVALU_SPC_CODING_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(externalRecord)
+  })
 }

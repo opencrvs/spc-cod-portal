@@ -457,3 +457,25 @@ export async function checkDeceasedKeys(id: string, trx: Kysely<any>) {
 
   return Boolean(exists)
 }
+
+export async function removeExternalRecords(id: string) {
+  const client = getClient()
+
+  const declaration = await client
+    .selectFrom('event_actions')
+    .select('eventId')
+    .where('actionType', '=', 'DECLARE')
+    .where(sql`declaration->>'deceased_certificateKey'`, '=', id)
+    .executeTakeFirst()
+
+  if (!declaration) {
+    throw new Error(`No DECLARE record found for property id ${id}`)
+  }
+
+  await client
+    .deleteFrom('event_actions')
+    .where('eventId', '=', declaration.eventId)
+    .execute()
+
+  console.log(`Deleted rows for event_id ${declaration.eventId}`)
+}

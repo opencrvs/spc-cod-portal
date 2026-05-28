@@ -5,9 +5,10 @@ import {
   updateRecordWithCauseOfDeath,
   getCreatedByFromLegalStatuses,
   getUserById,
-  sendProcessingNotificationEmail
+  sendProcessingNotificationEmail,
+  clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS } from './constants'
+import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -60,6 +61,16 @@ export const parseCSV = (file: File): Promise<CSVRow[]> => {
   })
 }
 
+type ExternalSpcCodingDatabaseRecord = {
+  trackingId: string
+  status: string
+  ucCode: string
+  selectedCodes: string
+  multipleCodes: string
+  freeText: string
+  comments: string
+}
+
 export const processCSVRow = async (
   row: CSVRow,
   rowIndex: number,
@@ -87,47 +98,75 @@ export const processCSVRow = async (
   }
 
   let assignedTo=""
+  // Check if there are any IRIS output fields to update
+  const hasIrisData =
+    row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
 
   try {
+    try {
+      const prefix = "EXT_"
+      if (id.includes(prefix) && hasIrisData) {
+        // External record
+        const [, countryCode, trackingId] = id.split("_");
+        if(countryCode === "TUV"){
+          const externalRecord: ExternalSpcCodingDatabaseRecord = {
+            trackingId,
+            status: rowStatus,
+            ucCode: row.UCCode || "",
+            selectedCodes: row.SelectedCodes || "",
+            multipleCodes: row.MultipleCodes || "",
+            freeText: row.FreeText || "",
+            comments: row.Comments || ""
+          }
 
-    // If 
+          console.log("Sending to Tuvalu: ",JSON.stringify(externalRecord))
 
-    // id is of the format: `EXTERNAL_OPENCRVS_RECORD_$(countryCode)_$(trackingId)`
-    // Then instead of processing it here, we send it back to the country via an API
+          const url = new URL(
+              'submit-coded-record-externally',
+              COUNTRY_CONFIG_HOST
+            ).toString()
 
-    // authenticate with the country API using environment variables in this portal
-    // Each country needs to create a system client and share e.g.:
-    // PANKAJLAND_CLIENT_ID, PANKAJLAND_CLIENT_SECRET, PANKAJLAND_ENCODE_URL
-    // COOKS_CLIENT_ID, COOKS_CLIENT_SECRET, COOKS_ENCODE_URL
+           const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(externalRecord)
+          })
 
-    /* 
+          if (!response.ok) {
+            const errorText = await response.text()
+            return {
+              rowIndex,
+              id,
+              status: 'error',
+              message: `Country could not process the updated record an error: ${errorText}`
+            }
+          }
 
-    if a 200 is received from the country API
-    
-    // we must update the row in the analytics table with REGISTERED status so that it is removed from the IDENT & MEDCOD download queue
-    // Then it can not be mistakenly processed again in the future
-
-    return {
-      rowIndex,
-      id,
-      status: 'success',
-      message: 'Successfully returned',
-      createdBy: createdBy || undefined,
-      trackingId
-    }
-
-    else if a 400 is received from the country API
-
-    // we must log this error and send an email alert to the admin containing any log information
-
-    return {
+          await clearExternalRecords(token, id) // Remove the external records from IDENT & MEDCOD as they have been processed
+          
+          return {
+            rowIndex,
+            id,
+            status: 'success',
+            message: 'Successfully updated with IRIS output data',
+            createdBy: undefined,  // TODO: decide how to set when sending a notification
+            trackingId: "", // TODO: decide how to set when sending a notification
+            certKey: "", // TODO: decide how to set when sending a notification
+            ucCode: row.UCCode
+          }
+        }
+      }
+    } catch (error) {
+      return {
         rowIndex,
         id,
         status: 'error',
-        message: 'Country could not receive the updated record due to a network error'
+        message: `Country could not receive the updated record an error: ${JSON.stringify(error)}`
       }
-      
-    */
+    }
 
     // Else continue
     const record = await findRecordByCertificateKey(token, id)
@@ -163,9 +202,7 @@ export const processCSVRow = async (
       }
     }
 
-    // Check if there are any IRIS output fields to update
-    const hasIrisData =
-      row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
+    
 
     if (!hasIrisData) {
       return {

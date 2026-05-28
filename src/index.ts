@@ -80,11 +80,13 @@ import {
   importEvents,
   importLocations,
   syncLocationLevels,
-  syncLocationStatistics
+  syncLocationStatistics,
+  removeExternalRecords
 } from './analytics/analytics'
 import { getClient } from './analytics/postgres'
 import { env } from './environment'
 import { createClient } from '@opencrvs/toolkit/api'
+import { submitCodedRecordExternally } from './api/ident-uploader-notification/handler'
 import { onSearchHandler } from './data-seeding/reference-data/handler'
 import { syncReferenceData } from './data-seeding/reference-data/reference-data'
 import { Event } from './events/utils/types'
@@ -571,6 +573,16 @@ export async function createServer() {
 
   server.route({
     method: 'POST',
+    path: '/submit-coded-record-externally',
+    handler: submitCodedRecordExternally,
+    options: {
+      tags: ['api', 'search'],
+      description: 'Sends completed CoD record to country'
+    }
+  })
+
+  server.route({
+    method: 'POST',
     path: `/insert-external-record-to-encode/{countryCode}`,
     handler: externalRecordToEncodeHandler,
     options: {
@@ -626,6 +638,37 @@ export async function createServer() {
     options: {
       tags: ['api', 'events'],
       description: 'Sends notifications on event corrections'
+    }
+  })
+
+  server.route({
+    method: 'GET',
+    path: `/clear-external-event-from-analytics/{id}`,
+    handler: async (req, h) => {
+      if (!env.ANALYTICS_DATABASE_URL) {
+        logger.warn(
+          'Skipping clear, no ANALYTICS_DATABASE_URL environment variable set.'
+        )
+        return h.response().code(400)
+      }
+      const id = req.params.id
+      console.log('Clearing external records for id: ', id)
+      try {
+        await removeExternalRecords(id)
+
+        logger.info(`Delete external event.`)
+
+        return h.response({ success: true }).code(200)
+      } catch (e) {
+        logger.error(e)
+
+        return h.response({ error: 'Unexpected error' }).code(500)
+      }
+    },
+    options: {
+      tags: ['api', 'events'],
+      description:
+        'Deletes external event and its actions from analytics based on the provided id'
     }
   })
 
