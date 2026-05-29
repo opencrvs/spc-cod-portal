@@ -63,6 +63,13 @@ CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
   code text NOT NULL,
+  chapter_no text NOT NULL,
+  chapter_range text NOT NULL,
+  chapter_name text NOT NULL,
+  subchapter_code text NOT NULL,
+  subchapter_name text NOT NULL,
+  ncd_cd_injuries text,
+  ill_defined text NOT NULL,
   created_at timestamp with time zone DEFAULT now() NOT NULL,
   updated_at timestamp with time zone DEFAULT now() NOT NULL,
   valid_until timestamp with time zone
