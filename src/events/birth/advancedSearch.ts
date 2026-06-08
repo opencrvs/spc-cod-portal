@@ -95,7 +95,10 @@ export const advancedSearchBirth = [
         options: placeOfBirthOptions
       }).exact(),
       field('child.birthLocation', {
-        searchCriteriaLabelPrefix: childPrefix
+        searchCriteriaLabelPrefix: childPrefix,
+        allowedLocations: user.jurisdiction(
+          user.scope('record.search').attribute('placeOfEvent')
+        )
       }).exact(),
       field('child.birthLocation.privateHome').exact(),
       field('child.birthLocation.other').exact()
