@@ -26,11 +26,17 @@ function getCountryPlaceOfBirthResolved(
 /**
  * Extract the disease label from the selected codes based on the UC code.
  *
+ * The selectedCodes string can contain multiple codes per section, e.g.:
+ *   "Ia: I509; S681; X599; M109; F439; E149; K088; R634/Ib: E669/Ic: R42"
+ *
+ * Each section (Ia, Ib, Ic, Id, Ie, II) maps to a cause letter (A, B, C, D, E, Other).
+ * Within each section, multiple semicolon-separated codes map to symptom fields
+ * (one, two, three, ... eight).
+ *
  * Steps:
- * 1. Parse selectedCodes string (e.g. "Ia: J969/Ib: I2199/Ic: I469")
- *    into a map of { Ia: "J969", Ib: "I2199", Ic: "I469" }.
- * 2. Find the best matching prefix key for ucCode by comparing characters.
- * 3. Map the key (Ia, Ib, etc.) to the corresponding declaration field path.
+ * 1. Parse the selectedCodes into a flat list of entries with prefix and 1-based index.
+ * 2. Find the entry whose code shares the longest prefix with ucCode.
+ * 3. Map the entry to the corresponding declaration field path.
  * 4. Return the label from the declaration for that field, or 'None'.
  */
 function extractDiseaseFromSelectedCodes(
@@ -42,31 +48,62 @@ function extractDiseaseFromSelectedCodes(
     return 'None'
   }
 
-  const mapping: Record<string, string> = {
-    Ia: 'eventDetails.causeOfDeathA.symptom.one',
-    Ib: 'eventDetails.causeOfDeathB.symptom.one',
-    Ic: 'eventDetails.causeOfDeathC.symptom.one',
-    Id: 'eventDetails.causeOfDeathD.symptom.one',
-    Ie: 'eventDetails.causeOfDeathE.symptom.one',
-    II: 'eventDetails.causeOfDeathOther.symptom.one'
+  const symptomNumbers = [
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight'
+  ]
+
+  const prefixToLetter: Record<string, string> = {
+    Ia: 'A',
+    Ib: 'B',
+    Ic: 'C',
+    Id: 'D',
+    Ie: 'E',
+    II: 'Other'
   }
 
-  const codeMap: Record<string, string> = {}
-  const parts = selectedCodes.split('/')
-  for (const part of parts) {
-    const [key, value] = part.split(':').map((s) => s.trim())
-    if (key && value) {
-      codeMap[key] = value
-    }
+  // --- Parse selectedCodes into a list of { prefix, index, code } ---
+  interface CodeEntry {
+    prefix: string
+    index: number
+    code: string
   }
 
-  let bestMatchKey: string | null = null
+  const entries: CodeEntry[] = []
+  const sections = selectedCodes.split('/')
+
+  for (const section of sections) {
+    const colonIndex = section.indexOf(':')
+    if (colonIndex === -1) continue
+
+    const prefix = section.slice(0, colonIndex).trim()
+    const codesPart = section.slice(colonIndex + 1).trim()
+
+    const codes = codesPart
+      .split(';')
+      .map((c) => c.trim())
+      .filter(Boolean)
+
+    codes.forEach((code, index) => {
+      entries.push({ prefix, index: index + 1, code })
+    })
+  }
+
+  // --- Find the best matching code entry for ucCode ---
+  let bestEntry: CodeEntry | null = null
   let bestMatchLength = -1
 
-  for (const key of Object.keys(codeMap)) {
-    const candidate = codeMap[key]
+  for (const entry of entries) {
+    const candidate = entry.code
     let matchLength = 0
     const minLen = Math.min(ucCode.length, candidate.length)
+
     for (let i = 0; i < minLen; i++) {
       if (ucCode[i].toUpperCase() === candidate[i].toUpperCase()) {
         matchLength++
@@ -74,20 +111,29 @@ function extractDiseaseFromSelectedCodes(
         break
       }
     }
+
     if (matchLength > bestMatchLength) {
       bestMatchLength = matchLength
-      bestMatchKey = key
+      bestEntry = entry
     }
   }
 
-  if (!bestMatchKey) {
+  if (!bestEntry) {
     return 'None'
   }
 
-  const fieldPath = mapping[bestMatchKey]
-  if (!fieldPath) {
+  // --- Map the best entry to a declaration field path ---
+  const letter = prefixToLetter[bestEntry.prefix]
+  if (!letter) {
     return 'None'
   }
+
+  const symptomNumber = symptomNumbers[bestEntry.index - 1]
+  if (!symptomNumber) {
+    return 'None'
+  }
+
+  const fieldPath = `eventDetails.causeOfDeath${letter}.symptom.${symptomNumber}`
 
   const fieldValue = declaration?.[fieldPath as keyof typeof declaration]
   if (
@@ -96,7 +142,7 @@ function extractDiseaseFromSelectedCodes(
     'label' in fieldValue &&
     fieldValue.label
   ) {
-    return fieldValue.label as string
+    return (fieldValue.label as string) || 'None'
   }
 
   return 'None'
