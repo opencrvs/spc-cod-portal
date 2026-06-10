@@ -16,8 +16,7 @@ import {
   user,
   event,
   ActionType,
-  or,
-  never
+  or
 } from '@opencrvs/toolkit/events'
 
 export const irisOutput = defineFormPage({
