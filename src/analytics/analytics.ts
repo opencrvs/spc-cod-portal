@@ -30,7 +30,10 @@ import { chunk, pickBy } from 'lodash'
 import { getClient } from './postgres'
 import { getStatistics } from '@countryconfig/utils'
 import { eventConfigs } from '@countryconfig/events'
-import { precalculateBirthEvent } from '@countryconfig/analytics/analytics-precalculations'
+import {
+  precalculateBirthEvent,
+  precalculateDeathEvent
+} from '@countryconfig/analytics/analytics-precalculations'
 import { Event } from '@countryconfig/events/utils/types'
 
 /**
@@ -109,6 +112,9 @@ function precalculateAdditionalAnalytics(
    */
   if (eventConfig.id === Event.Birth) {
     return precalculateBirthEvent(action, declaration)
+  }
+  if (eventConfig.id === Event.Death) {
+    return precalculateDeathEvent(action, declaration)
   }
 
   return declaration
