@@ -58,16 +58,31 @@ export const sendEmail = async (params: {
   }
 
   logger.info(`Sending email to ${maskEmail(formattedParams.to)}`)
-
-  const emailTransport = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    secure: SMTP_SECURE,
-    auth: {
-      user: SMTP_USERNAME,
-      pass: SMTP_PASSWORD
-    }
-  })
+  const mailConfig =
+    SMTP_USERNAME === 'crvs@spccloud.onmicrosoft.com'
+      ? {
+          host: SMTP_HOST,
+          port: SMTP_PORT,
+          secure: false,
+          requireTLS: true,
+          auth: {
+            user: SMTP_USERNAME,
+            pass: SMTP_PASSWORD
+          }
+        }
+      : {
+          host: SMTP_HOST,
+          port: SMTP_PORT,
+          secure: SMTP_SECURE,
+          auth: {
+            user: SMTP_USERNAME,
+            pass: SMTP_PASSWORD
+          }
+        }
+  logger.info(
+    `mail config secure: ${mailConfig.secure}, host: ${SMTP_HOST}, port: ${SMTP_PORT}, requireTLS: ${mailConfig.requireTLS} `
+  )
+  const emailTransport = nodemailer.createTransport(mailConfig)
   const mailOptions = params.bcc
     ? { ...formattedParams, bcc: params.bcc }
     : formattedParams
