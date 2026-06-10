@@ -118,13 +118,10 @@ function extractDiseaseFromSelectedCodes(
     }
   }
 
-  // Creating a Fallback: if ucCode didn't match any code at all (bestMatchLength === 0),
-  // use the first entry from the selected codes as the default.
-  if (bestEntry && bestMatchLength === 0 && entries.length > 0) {
-    bestEntry = entries[0]
-  }
-
-  if (!bestEntry) {
+  if (
+    !bestEntry ||
+    (bestEntry && bestMatchLength === 0 && entries.length > 0)
+  ) {
     return 'None'
   }
 
