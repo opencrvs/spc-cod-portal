@@ -54,6 +54,16 @@ export async function externalRecordToEncodeHandler(
         return action
       }
 
+      if (action.type === 'NOTIFY' && action.status === 'Requested') {
+        return {
+          ...action,
+          declaration: {
+            ...action.declaration,
+            'deceased.certificateKey': externalCertKey
+          }
+        }
+      }
+
       if (action.type === 'DECLARE' && action.status === 'Requested') {
         return {
           ...action,
