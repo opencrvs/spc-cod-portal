@@ -36,6 +36,12 @@ export async function externalRecordToEncodeHandler(
   const { countryCode } = request.params
   const { trackingId } = event
 
+  const mappingLocation = {
+    TUV: 'Tuvalu Office',
+    NIU: 'Niue Office',
+    TON: 'Tonga Office'
+  }
+
   console.log(
     'Payload received by externalRecordToEncodeHandler :>> ',
     JSON.stringify(event)
@@ -47,6 +53,25 @@ export async function externalRecordToEncodeHandler(
   // We want to save a row in analytics like this.  Note that it is a DECLARE row:
   const externalCertKey = `EXT_${countryCode}_${trackingId}`
 
+  const officeName =
+    mappingLocation[countryCode as keyof typeof mappingLocation] ||
+    'Unknown Office'
+
+  const dbClient = getClient()
+
+  const spcLocation = await dbClient
+    .selectFrom('analytics.locations')
+    .selectAll()
+    .where('name', '=', officeName)
+    .execute()
+
+  if (!spcLocation) {
+    const errorMessage = `unable to find this location in analytics database.`
+    // eslint-disable-next-line no-console
+    console.error(errorMessage)
+    logger.error(errorMessage)
+  }
+
   const updatedObject = {
     ...event,
     actions: event.actions.map((action) => {
@@ -57,6 +82,7 @@ export async function externalRecordToEncodeHandler(
       if (action.type === 'NOTIFY' && action.status === 'Requested') {
         return {
           ...action,
+          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
           declaration: {
             ...action.declaration,
             'deceased.certificateKey': externalCertKey
@@ -67,6 +93,7 @@ export async function externalRecordToEncodeHandler(
       if (action.type === 'DECLARE' && action.status === 'Requested') {
         return {
           ...action,
+          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
           declaration: {
             ...action.declaration,
             'deceased.certificateKey': externalCertKey
