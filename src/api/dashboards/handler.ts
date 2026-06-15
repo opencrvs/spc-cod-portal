@@ -82,6 +82,7 @@ export async function externalRecordToEncodeHandler(
       if (action.type === 'NOTIFY' && action.status === 'Requested') {
         return {
           ...action,
+          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
           declaration: {
             ...action.declaration,
             'deceased.certificateKey': externalCertKey
