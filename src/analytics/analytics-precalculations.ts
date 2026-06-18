@@ -1,6 +1,8 @@
 import { differenceInDays } from 'date-fns'
 import { ActionDocument, AddressFieldValue } from '@opencrvs/toolkit/events'
 import { COUNTRY_NAMES_BY_CODE } from './countries'
+import { getClient } from './postgres'
+import { UUID } from 'crypto'
 
 function getCountryPlaceOfBirthResolved(
   declaration: ActionDocument['declaration']
@@ -151,9 +153,10 @@ function extractDiseaseFromSelectedCodes(
   return 'None'
 }
 
-export function precalculateDeathEvent(
+export async function precalculateDeathEvent(
   _action: ActionDocument,
-  declaration: ActionDocument['declaration']
+  declaration: ActionDocument['declaration'],
+  declaredAtLocation?: UUID
 ) {
   const ucCode = declaration['irisOutput.ucCode']
   const selectedCodes = declaration['irisOutput.selectedCodes']
@@ -168,13 +171,39 @@ export function precalculateDeathEvent(
     declaration
   )
 
+  const dbClient = getClient()
+  // const dbResponse = declaredAtLocation
+  // ? (
+  //     await dbClient
+  //       .selectFrom('locations')
+  //       .select('name')
+  //       .where('id', '=', declaredAtLocation)
+  //       .execute()
+  //   )[0]?.name
+  // : ''
+
+  const dbResponse = await dbClient
+    .selectFrom('locations')
+    .select('name')
+    .where('id', '=', declaredAtLocation)
+    .execute()
+
+  console.log('dbResponse :>> ', dbResponse)
+  const declaredAtLocationName = dbResponse[0]?.name || ''
+
+  if (!declaredAtLocationName) {
+    console.log('declaredAtLocation :>> ', declaredAtLocation)
+    console.log('declaredAtLocationName :>> ', declaredAtLocationName)
+  }
+
   return {
     ...declaration,
-    'irisOutput.ucCodeLabel': ucCodeLabel
+    'irisOutput.ucCodeLabel': ucCodeLabel,
+    declaredAtLocationName
   }
 }
 
-export function precalculateBirthEvent(
+export async function precalculateBirthEvent(
   action: ActionDocument,
   declaration: ActionDocument['declaration']
 ) {
