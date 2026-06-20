@@ -172,15 +172,6 @@ export async function precalculateDeathEvent(
   )
 
   const dbClient = getClient()
-  // const dbResponse = declaredAtLocation
-  // ? (
-  //     await dbClient
-  //       .selectFrom('locations')
-  //       .select('name')
-  //       .where('id', '=', declaredAtLocation)
-  //       .execute()
-  //   )[0]?.name
-  // : ''
 
   const dbResponse = await dbClient
     .selectFrom('locations')
@@ -188,13 +179,7 @@ export async function precalculateDeathEvent(
     .where('id', '=', declaredAtLocation)
     .execute()
 
-  console.log('dbResponse :>> ', dbResponse)
   const declaredAtLocationName = dbResponse[0]?.name || ''
-
-  if (!declaredAtLocationName) {
-    console.log('declaredAtLocation :>> ', declaredAtLocation)
-    console.log('declaredAtLocationName :>> ', declaredAtLocationName)
-  }
 
   return {
     ...declaration,

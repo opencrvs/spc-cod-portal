@@ -136,130 +136,6 @@ function convertDotKeysToUnderscore(
 }
 
 type ActionDocWithId = Record<string, unknown>
-// async function upsertAnalyticsEventActions(
-//   events: EventDocument[],
-//   trx: Kysely<any>
-// ) {
-//   await trx
-//     .deleteFrom('analytics.event_actions')
-//     .where(
-//       'event_id',
-//       'in',
-//       events.map((e) => e.id)
-//     )
-//     .execute()
-
-//   const allEventActions: ActionDocWithId[] = []
-//   for (const event of events) {
-//     const eventConfig = getEventConfig(event.type)
-//     for (let i = 0; i < event.actions.length; i++) {
-//       const actionsFromStartToCurrentPoint = event.actions
-//         .sort((a, b) => {
-//           // CREATE type always comes first
-//           if (a.type === ActionType.CREATE && b.type !== ActionType.CREATE)
-//             return -1
-//           if (b.type === ActionType.CREATE && a.type !== ActionType.CREATE)
-//             return 1
-//           // Otherwise sort by createdAt
-//           return a.createdAt.localeCompare(b.createdAt)
-//         })
-//         .slice(0, i + 1)
-
-//       const action = event.actions[i]
-
-//       if (
-//         action.status === ActionStatus.Requested ||
-//         action.status === ActionStatus.Rejected
-//       ) {
-//         continue
-//       }
-
-//       const actionAtCurrentPoint = getCurrentEventState(
-//         {
-//           ...event,
-//           actions: actionsFromStartToCurrentPoint
-//         },
-//         eventConfig
-//       )
-
-//       const { type, ...act } = action
-
-//       const actionConfig = eventConfig.actions.find((a) => a.type === type)
-
-//       const annotation = actionConfig
-//         ? pickAnnotationAnalyticsFields(
-//             getAnnotation(action, event.actions),
-//             actionConfig
-//           )
-//         : {}
-
-//       const actions = event.actions
-//       /*
-//        * Add date of declaration and date of registration to all events for each access
-//        */
-//       const declareAction = actions.find((a) => a.type === ActionType.DECLARE)
-//       const registerAction = actions.find((a) => a.type === ActionType.REGISTER)
-
-//       const actionWithFilteredDeclaration = {
-//         ...act,
-//         eventId: event.id,
-//         actionType: type,
-//         eventType: event.type,
-//         declaredAt: declareAction ? declareAction.createdAt : null,
-//         registeredAt: registerAction ? registerAction.createdAt : null,
-//         annotation: convertDotKeysToUnderscore(annotation),
-//         declaration: convertDotKeysToUnderscore(
-//           await precalculateAdditionalAnalytics(
-//             action,
-//             pickDeclarationAnalyticsFields(
-//               actionAtCurrentPoint.declaration,
-//               eventConfig
-//             ),
-//             eventConfig,
-//             declareAction?.createdAtLocation
-//           )
-//         )
-//       }
-
-//       allEventActions.push(actionWithFilteredDeclaration)
-//     }
-//   }
-
-//   console.log(
-//     'allEventActions :>> ',
-//     allEventActions
-//       .filter((a) => a.actionType === ActionType.DECLARE)
-//       .map((act: any) => act.declaration.declaredAtLocationName as any)
-//   ) // Only log DECLARE actions as they are the most important ones for analytics and usually the most enriched ones
-
-//   if (allEventActions.length === 0) {
-//     return []
-//   }
-
-//   /*
-//    * This must be chunked not to cause an error if one event happens to have
-//    * 10k actions
-//    */
-//   const chunks = chunk(allEventActions, 3000)
-
-//   for (const batch of chunks) {
-//     await trx
-//       .insertInto('analytics.event_actions')
-//       .values(batch)
-//       .onConflict((oc) =>
-//         oc.column('id').doUpdateSet((eb) =>
-//           Object.fromEntries(
-//             Object.keys(allEventActions[0])
-//               .filter((key) => key !== 'id')
-//               .map((key) => [key, eb.ref(`excluded.${key}`)])
-//           )
-//         )
-//       )
-//       .execute()
-//   }
-//   return
-// }
-
 async function upsertAnalyticsEventActions(
   events: EventDocument[],
   trx: Kysely<any>
@@ -274,10 +150,8 @@ async function upsertAnalyticsEventActions(
     .execute()
 
   const allEventActions: ActionDocWithId[] = []
-
   for (const event of events) {
     const eventConfig = getEventConfig(event.type)
-
     for (let i = 0; i < event.actions.length; i++) {
       const actionsFromStartToCurrentPoint = event.actions
         .sort((a, b) => {
@@ -286,7 +160,6 @@ async function upsertAnalyticsEventActions(
             return -1
           if (b.type === ActionType.CREATE && a.type !== ActionType.CREATE)
             return 1
-
           // Otherwise sort by createdAt
           return a.createdAt.localeCompare(b.createdAt)
         })
@@ -321,35 +194,11 @@ async function upsertAnalyticsEventActions(
         : {}
 
       const actions = event.actions
-
       /*
        * Add date of declaration and date of registration to all events for each access
        */
       const declareAction = actions.find((a) => a.type === ActionType.DECLARE)
       const registerAction = actions.find((a) => a.type === ActionType.REGISTER)
-
-      const declarationAnalytics = await precalculateAdditionalAnalytics(
-        action,
-        pickDeclarationAnalyticsFields(
-          actionAtCurrentPoint.declaration,
-          eventConfig
-        ),
-        eventConfig,
-        declareAction?.createdAtLocation
-      )
-
-      if (type === ActionType.DECLARE) {
-        console.log(
-          'declarationAnalytics :>>>>>> ',
-          (declarationAnalytics as any).declaredAtLocationName
-        )
-
-        console.log(
-          'BEFOREconvertDotKeysToUnderscore---declarationAnalytics :>>>>>> ',
-          (convertDotKeysToUnderscore(declarationAnalytics) as any)
-            .declaredAtLocationName
-        )
-      }
 
       const actionWithFilteredDeclaration = {
         ...act,
@@ -359,19 +208,22 @@ async function upsertAnalyticsEventActions(
         declaredAt: declareAction ? declareAction.createdAt : null,
         registeredAt: registerAction ? registerAction.createdAt : null,
         annotation: convertDotKeysToUnderscore(annotation),
-        declaration: convertDotKeysToUnderscore(declarationAnalytics)
+        declaration: convertDotKeysToUnderscore(
+          await precalculateAdditionalAnalytics(
+            action,
+            pickDeclarationAnalyticsFields(
+              actionAtCurrentPoint.declaration,
+              eventConfig
+            ),
+            eventConfig,
+            declareAction?.createdAtLocation
+          )
+        )
       }
 
       allEventActions.push(actionWithFilteredDeclaration)
     }
   }
-
-  console.log(
-    'allEventActions :>> ',
-    allEventActions
-      .filter((ae) => ae.actionType === ActionType.DECLARE)
-      .map((act: any) => act.declaration.declaredAtLocationName as any)
-  ) // Only log DECLARE actions as they are the most important ones for analytics and usually the most enriched ones;
 
   if (allEventActions.length === 0) {
     return []
@@ -398,7 +250,6 @@ async function upsertAnalyticsEventActions(
       )
       .execute()
   }
-
   return
 }
 
