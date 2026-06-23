@@ -22,7 +22,8 @@ import {
   EventState,
   getActionAnnotationFields,
   getCurrentEventState,
-  Location
+  Location,
+  UUID
 } from '@opencrvs/toolkit/events'
 
 import { ExpressionBuilder, Kysely, sql } from 'kysely'
@@ -102,19 +103,20 @@ function getAnnotation(
   }
 }
 
-function precalculateAdditionalAnalytics(
+async function precalculateAdditionalAnalytics(
   action: ActionDocument,
   declaration: ActionDocument['declaration'],
-  eventConfig: EventConfig
+  eventConfig: EventConfig,
+  declaredAtLocation?: UUID
 ) {
   /*
    * Example: precalculate age from action creation date and child's date of birth
    */
   if (eventConfig.id === Event.Birth) {
-    return precalculateBirthEvent(action, declaration)
+    return await precalculateBirthEvent(action, declaration)
   }
   if (eventConfig.id === Event.Death) {
-    return precalculateDeathEvent(action, declaration)
+    return await precalculateDeathEvent(action, declaration, declaredAtLocation)
   }
 
   return declaration
@@ -207,13 +209,14 @@ async function upsertAnalyticsEventActions(
         registeredAt: registerAction ? registerAction.createdAt : null,
         annotation: convertDotKeysToUnderscore(annotation),
         declaration: convertDotKeysToUnderscore(
-          precalculateAdditionalAnalytics(
+          await precalculateAdditionalAnalytics(
             action,
             pickDeclarationAnalyticsFields(
               actionAtCurrentPoint.declaration,
               eventConfig
             ),
-            eventConfig
+            eventConfig,
+            declareAction?.createdAtLocation
           )
         )
       }
