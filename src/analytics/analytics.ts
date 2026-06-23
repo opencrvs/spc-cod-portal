@@ -467,21 +467,21 @@ export async function checkDeceasedKeys(id: string, trx: Kysely<any>) {
 export async function removeExternalRecords(id: string) {
   const client = getClient()
 
-  const declaration = await client
+  const action = await client
     .selectFrom('event_actions')
     .select('eventId')
-    .where('actionType', '=', 'DECLARE')
+    .where('actionType', 'in', ['DECLARE', 'NOTIFY'])
     .where(sql`declaration->>'deceased_certificateKey'`, '=', id)
     .executeTakeFirst()
 
-  if (!declaration) {
-    throw new Error(`No DECLARE record found for property id ${id}`)
+  if (!action) {
+    throw new Error(`No DECLARE or NOTIFY event action found for id ${id}`)
   }
 
   await client
     .deleteFrom('event_actions')
-    .where('eventId', '=', declaration.eventId)
+    .where('eventId', '=', action.eventId)
     .execute()
 
-  console.log(`Deleted rows for event_id ${declaration.eventId}`)
+  console.log(`Deleted rows for event_id ${action.eventId}`)
 }

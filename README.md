@@ -14,7 +14,7 @@
 
 **This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
-## Interop between configuring countries and the SPC portal for countries using OpenCRVS
+**This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
 # What is this module for?
 
