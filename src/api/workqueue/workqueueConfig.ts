@@ -141,7 +141,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileSearch',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Sent for encoding',
+      defaultMessage: 'Sent for coding',
       description: 'Title of sent for approval workqueue'
     },
     query: {
@@ -169,7 +169,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FileSearch',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Ready for encoding',
+      defaultMessage: 'Ready for coding',
       description: 'Title of sent for approval workqueue'
     },
     query: {
@@ -284,7 +284,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'Handshake',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Sent for encoding',
+      defaultMessage: 'Sent for coding',
       description: 'Title of sent for approval workqueue'
     },
     query: {
@@ -310,7 +310,7 @@ export const Workqueues = defineWorkqueues([
       DATE_OF_EVENT_COLUMN,
       {
         label: {
-          defaultMessage: 'Sent for encoding',
+          defaultMessage: 'Sent for coding',
           description: 'This is the label for the workqueue column',
           id: 'workqueue.sent-for-approval.column.sent-for-approval'
         },
@@ -323,7 +323,7 @@ export const Workqueues = defineWorkqueues([
     icon: 'FilePlus',
     name: {
       id: 'workqueues.sentForApproval.title',
-      defaultMessage: 'Encoded',
+      defaultMessage: 'Coded',
       description: 'Title of sent for approval workqueue'
     },
     query: {

@@ -97,6 +97,24 @@ export const processCSVRow = async (
     }
   }
 
+  if(rowStatus === 'Rejected' && (!row.FreeText || row.FreeText.trim() === '')){
+    return {
+      rowIndex,
+      id: '',
+      status: 'error',
+      message: 'Row is missing a Free Text value for a rejected record'
+    }
+  }
+
+  if(rowStatus === 'Final' && (!row.UCCode || row.UCCode.trim() === '')){
+    return {
+      rowIndex,
+      id: '',
+      status: 'error',
+      message: 'Row is missing a UC Code value for a coded record'
+    }
+  }
+
   let assignedTo=""
   // Check if there are any IRIS output fields to update
   const hasIrisData =

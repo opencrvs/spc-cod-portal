@@ -332,6 +332,7 @@ export const deceased = defineFormPage({
           {
             id: 'province',
             type: FieldType.ADMINISTRATIVE_AREA,
+            required: true,
             conditionals: [
               {
                 type: ConditionalType.ENABLE,
