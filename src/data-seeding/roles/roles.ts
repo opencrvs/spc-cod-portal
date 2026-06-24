@@ -55,18 +55,14 @@ export const roles: Role[] = [
       ...defineScopes([
         { type: 'config.update-all' },
         { type: 'organisation.read-locations' },
-        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
-        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER'] } },
+        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
+        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
         { type: 'user.read' },
         { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
         { type: 'performance.read' },
         { type: 'record.reindex' },
         { type: 'integration.create' },
-        { type: 'performance.read-dashboards' },
-        {
-          type: 'dashboard.view',
-          options: { ids: ['registrations', 'completeness', 'registry'] }
-        }
+        { type: 'performance.read-dashboards' }
       ])
     ]
   },
@@ -146,6 +142,51 @@ export const roles: Role[] = [
         type: 'dashboard.view',
         options: { ids: ['uploader', 'export', 'statistics'] }
       }
+    ])
+  },
+  {
+    id: 'SENIOR_CODING_OFFICER',
+    label: {
+      defaultMessage: 'Senior SPC Regional Coding Officer',
+      description: 'Name for user role Senior SPC Regional Coding Officer',
+      id: 'userRole.seniorCodingOfficer'
+    },
+    scopes: defineScopes([
+      { type: 'performance.read' },
+      { type: 'organisation.read-locations' },
+      { type: 'performance.read-dashboards' },
+      { type: 'user.read-only-my-audit' },
+      { type: 'user.read' },
+      { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
+      { type: 'record.search', options: { event: ['death'] } },
+      {
+        type: 'workqueue',
+        options: {
+          ids: ['assigned-to-you', 'recent', 'requires-updates-office', 'in-review-all', 'encoded']
+        }
+      },
+      { type: 'record.create', options: { event: ['death'] } },
+      { type: 'record.read', options: { event: ['death'] } },
+      { type: 'record.declare', options: { event: ['death'] } },
+      { type: 'record.edit', options: { event: ['death'] } },
+      { type: 'record.reject', options: { event: ['death'] } },
+      { type: 'record.archive', options: { event: ['death'] } },
+      { type: 'record.review-duplicates', options: { event: ['death'] } },
+      { type: 'record.register', options: { event: ['death'] } },
+      { type: 'record.print-certified-copies', options: { event: ['death'] } },
+      { type: 'record.correct', options: { event: ['death'] } },
+      { type: 'record.unassign-others', options: { event: ['death'] } },
+      {
+        type: 'dashboard.view',
+        options: { ids: ['uploader', 'export', 'statistics'] }
+      },
+      { type: 'config.update-all' },
+      { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
+      { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
+
+      { type: 'performance.read' },
+      { type: 'record.reindex' },
+      { type: 'integration.create' }
     ])
   },
   {
