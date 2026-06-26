@@ -1,4 +1,4 @@
-export type Role = 'Regional Coding Officer'
+export type Role = 'Regional Coding Officer' |  "Senior SPC Regional Coding Officer"
 
 export interface CSVRow {
   id: string
