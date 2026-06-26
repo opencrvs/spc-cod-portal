@@ -31,7 +31,7 @@ function LoginComponent() {
       const token = event.data.token
       const decoded = getDecodedToken(token)
 
-      if (decoded?.role !== 'CODING_OFFICER') {
+      if (decoded?.role !== 'CODING_OFFICER' && decoded?.role !== 'SENIOR_CODING_OFFICER') {
         window.parent.postMessage(
           { type: 'REQUEST_AUTH_TOKEN' },
           VITE_EXTERNAL_CLIENT_URL
