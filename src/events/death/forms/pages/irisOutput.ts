@@ -28,6 +28,7 @@ export const irisOutput = defineFormPage({
   },
   conditional: or(
     user.hasRole('CODING_OFFICER'),
+    user.hasRole('SENIOR_CODING_OFFICER'),
     event.hasAction(ActionType.REGISTER),
     event.hasAction(ActionType.REJECT)
   ),
@@ -39,6 +40,10 @@ export const irisOutput = defineFormPage({
         {
           type: ConditionalType.ENABLE,
           conditional: user.hasRole('CODING_OFFICER')
+        },
+        {
+          type: ConditionalType.ENABLE,
+          conditional: user.hasRole('SENIOR_CODING_OFFICER')
         }
       ],
       required: false,
@@ -57,6 +62,10 @@ export const irisOutput = defineFormPage({
         {
           type: ConditionalType.ENABLE,
           conditional: user.hasRole('CODING_OFFICER')
+        },
+        {
+          type: ConditionalType.ENABLE,
+          conditional: user.hasRole('SENIOR_CODING_OFFICER')
         }
       ],
       required: false,
@@ -75,6 +84,10 @@ export const irisOutput = defineFormPage({
         {
           type: ConditionalType.ENABLE,
           conditional: user.hasRole('CODING_OFFICER')
+        },
+        {
+          type: ConditionalType.ENABLE,
+          conditional: user.hasRole('SENIOR_CODING_OFFICER')
         }
       ],
       required: false,
@@ -100,6 +113,10 @@ export const irisOutput = defineFormPage({
         {
           type: ConditionalType.ENABLE,
           conditional: user.hasRole('CODING_OFFICER')
+        },
+        {
+          type: ConditionalType.ENABLE,
+          conditional: user.hasRole('SENIOR_CODING_OFFICER')
         }
       ]
     }

@@ -337,6 +337,10 @@ export const deceased = defineFormPage({
               {
                 type: ConditionalType.ENABLE,
                 conditional: user.hasRole('CODING_OFFICER')
+              },
+              {
+                type: ConditionalType.ENABLE,
+                conditional: user.hasRole('SENIOR_CODING_OFFICER')
               }
             ]
           },
