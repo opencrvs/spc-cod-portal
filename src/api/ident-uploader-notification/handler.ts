@@ -65,6 +65,18 @@ export interface IdentUploaderNotificationPayload {
   records: RecordsToEmail[]
 }
 
+interface ProcessingResult {
+  rowIndex: number
+  id: string
+  status: 'success' | 'skipped' | 'error' | 'rejected'
+  message: string
+  causesOfDeath?: string[]
+  createdBy?: string
+  trackingId?: string
+  certKey?: string
+  ucCode?: string
+}
+
 /**
  * Handler for ident uploader notifications.
  * Sends an email to a specific user (registrar) about their processed death records.
@@ -149,5 +161,31 @@ export async function submitCodedRecordExternally(request: Hapi.Request) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(externalRecord)
+  })
+}
+
+export async function notifyEncodingExternally(request: Hapi.Request) {
+  const token = await getAccessToken(
+    TUVALU_CLIENT_ID || '',
+    TUVALU_CLIENT_SECRET || '',
+    TUVALU_AUTH_URL
+  )
+
+  const externalRecords = request.payload as ProcessingResult[]
+
+  console.log(
+    'Notifying Tuvalu about encoded records: ',
+    JSON.stringify(externalRecords)
+  )
+
+  const url = `${TUVALU_SPC_CODING_URL}/notification`
+
+  return await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(externalRecords)
   })
 }

@@ -56,7 +56,8 @@ import { handlebarsHandler } from './certificate/handlebars/handler'
 import { fontsHandler } from './api/fonts/handler'
 import {
   identUploaderNotificationHandler,
-  identUploaderNotificationSchema
+  identUploaderNotificationSchema,
+  notifyEncodingExternally
 } from './api/ident-uploader-notification/handler'
 import {
   getEventsHandler,
@@ -578,6 +579,17 @@ export async function createServer() {
     options: {
       tags: ['api', 'search'],
       description: 'Sends completed CoD record to country'
+    }
+  })
+
+  server.route({
+    method: 'POST',
+    path: '/notify-coded-record-externally',
+    handler: notifyEncodingExternally,
+    options: {
+      tags: ['api', 'search'],
+      description:
+        'Informs external country that record has been encoded with CoD'
     }
   })
 
