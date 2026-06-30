@@ -1,13 +1,9 @@
 <p align="center"> <a href="https://www.opencrvs.org"><img src="https://i.imgur.com/W7ULmox.png" title="source: imgur.com" / style="max-width:100%;"width="72" height="72"></a>
 </p>
-<<<<<<< HEAD
-<h3 align="center">SPC Regional Coding Portal</h3>
-=======
 <h1 align="center">Country configuration template repository</h1>
 <p align="center">An example country configuration for OpenCRVS.
 <br>
 <a href="https://github.com/opencrvs/opencrvs-core/issues">Report an issue</a>  ·  <a href="https://community.opencrvs.org">Join our community</a>  ·  <a href="https://documentation.opencrvs.org">Read our documentation</a>  ·  <a href="https://www.opencrvs.org">www.opencrvs.org</a></p>
->>>>>>> v2.0.0
 
 
 - [What is this module for?](#what-is-this-module-for)
@@ -18,23 +14,13 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <br>
 <br>
-<<<<<<< HEAD
-=======
-
-**This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
->>>>>>> v2.0.0
 
 **This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
-<<<<<<< HEAD
 **This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
 # What is this module for?
 
-=======
-# What is this module for?
-
->>>>>>> v2.0.0
 OpenCRVS requires a country configuration in order to run. This is an example country configuration package for the OpenCRVS core.
 
 OpenCRVS is designed to be highly configurable for your country needs. It achieves this by seeding reference data that it needs from this module and exposing APIs for certain business critical operations.
@@ -45,14 +31,8 @@ This module also provides a logical location where you may wish to store the cod
 
 OpenCRVS Core is not run directly from source in this setup. Instead, Core services are deployed as a Helm chart, and Core Docker images are pulled from the configured image tag.
 
-<<<<<<< HEAD
-
 ## Prerequisites
 
-=======
-## Prerequisites
-
->>>>>>> v2.0.0
 ### Hardware requirements
 
 Recommended minimum:
@@ -63,17 +43,6 @@ Recommended minimum:
 
 ### Software requirements
 
-<<<<<<< HEAD
-| Tool | Description |
-| --- | --- |
-| Kubernetes | Local Kubernetes cluster. Minikube is recommended for Linux. Docker Desktop Kubernetes is recommended for macOS and Windows. |
-| Docker | Required for building the countryconfig image locally. |
-| kubectl | Kubernetes command-line tool. |
-| Helm | Used by Tilt to render and deploy OpenCRVS Helm charts. |
-| Tilt | Used to manage the local development environment. |
-| Git | Used by the Tiltfile to clone OpenCRVS Core charts. |
-
-=======
 | Tool       | Description                                                                                                                  |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | Kubernetes | Local Kubernetes cluster. Minikube is recommended for Linux. Docker Desktop Kubernetes is recommended for macOS and Windows. |
@@ -82,7 +51,6 @@ Recommended minimum:
 | Helm       | Used by Tilt to render and deploy OpenCRVS Helm charts.                                                                      |
 | Tilt       | Used to manage the local development environment.                                                                            |
 | Git        | Used by the Tiltfile to clone OpenCRVS Core charts.                                                                          |
->>>>>>> v2.0.0
 
 ## Development environment setup
 
@@ -101,12 +69,6 @@ minikube start \
 ```
 
 Make sure your kubectl context points to Minikube:
-<<<<<<< HEAD
-```
-kubectl config current-context
-```
-Expected context:
-=======
 
 ```
 kubectl config current-context
@@ -114,7 +76,6 @@ kubectl config current-context
 
 Expected context:
 
->>>>>>> v2.0.0
 ```
 minikube
 ```

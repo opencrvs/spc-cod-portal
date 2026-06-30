@@ -57,8 +57,4 @@ export default defineClientConfig({
     }
   ],
   FEATURES: {}
-<<<<<<< HEAD
 })
-=======
-})
->>>>>>> v2.0.0
