@@ -252,7 +252,8 @@ export const deceased = defineFormPage({
             id: 'event.death.action.declare.form.section.event.field.date.error.beforeBirth'
           },
           validator: or(
-            field('deceased.eventDate').isAfter().date(field('deceased.dob'))
+            field('deceased.eventDate').isAfter().date(field('deceased.dob')),
+            field('deceased.dobUnknown').isEqualTo(true)
           )
         }
       ],
