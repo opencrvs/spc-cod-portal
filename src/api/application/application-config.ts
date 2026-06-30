@@ -27,6 +27,7 @@ export const applicationConfig = defineApplicationConfig({
       }
     },
     {
+      // WHENEVER WE UPDATE TO LATEST RELEASE, VILLAGE GETS DUPLICATED IN THE GIT MERGE!  REMEMBER TO CHECK
       id: 'village',
       label: {
         id: 'field.address.village.label',
