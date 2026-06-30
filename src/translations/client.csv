@@ -426,7 +426,7 @@ correction.certificate.corrector.idCheckVerify,The label for id check component 
 correction.certificate.corrector.idCheckWithoutVerify,The label for id check component action when does not verify details,Identity does not match
 correction.certificate.corrector.otherIdCheck,The title for other id check component,Check proof of ID
 correction.correctRecordDialog.description,The description for the dialog when record correction sent by a registrar,The corrected record will be resubmitted for coding and logged in the audit trail.
-correction.correctRecordDialog.title,The title for the dialog when record correction sent by a registrar,Correct record?
+correction.correctRecordDialog.title,The title for the dialog when record correction sent by a registrar,Send record correction for re-coding?
 correction.correctionForApprovalDialog.actions.cancel,The cancel button for the dialog when record correction sent by registration agent for approval,Cancel
 correction.correctionForApprovalDialog.actions.send,The send button for the dialog when record correction sent by registration agent for approval,Confirm
 correction.correctionForApprovalDialog.description,The description for the dialog when record correction sent by registration agent for approval,The corrected record will be resubmitted for coding and logged in the audit trail.
@@ -1982,7 +1982,7 @@ review.validate.description.incomplete,The description for validate action when 
 review.validate.reject,The label for reject button of review action,Reject
 review.validate.title,The title shown when reviewing a record to validate,Send for approval
 reviewAction.register.description.incomplete,The description for registration action when form is incomplete,Please add mandatory information before registering
-saveAndExit.desc.saveDeclarationConfirm,Description for save declaration confirmation modal,All inputted data will be kept secure for future editing. Are you ready to save any changes to this declaration form?
+saveAndExit.desc.saveDeclarationConfirm,Description for save declaration confirmation modal,All inputted data will be kept secure for future editing. Are you ready to save the data on this form?
 saveAndExit.title.saveDeclarationConfirm,Title for save declaration confirmation modal,Save & exit?
 search.advancedSearch.result.title,Advanced search result title,Search results ({count})
 search.bookmark.error.notification,Error Notification messages for bookmark advanced search result,"Sorry, something went wrong. Please try again"
