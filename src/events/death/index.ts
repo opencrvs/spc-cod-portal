@@ -209,7 +209,10 @@ export const deathEvent = defineConfig({
           conditional: never()
         }
       ],
-      flags: [{ id: 'validated', operation: 'add' }],
+      flags: [
+        { id: 'validated', operation: 'add' },
+        { id: InherentFlags.REJECTED, operation: 'remove' }
+      ],
       form: [
         {
           id: 'comments',

@@ -1,6 +1,13 @@
 <p align="center"> <a href="https://www.opencrvs.org"><img src="https://i.imgur.com/W7ULmox.png" title="source: imgur.com" / style="max-width:100%;"width="72" height="72"></a>
 </p>
+<<<<<<< HEAD
 <h3 align="center">SPC Regional Coding Portal</h3>
+=======
+<h1 align="center">Country configuration template repository</h1>
+<p align="center">An example country configuration for OpenCRVS.
+<br>
+<a href="https://github.com/opencrvs/opencrvs-core/issues">Report an issue</a>  ·  <a href="https://community.opencrvs.org">Join our community</a>  ·  <a href="https://documentation.opencrvs.org">Read our documentation</a>  ·  <a href="https://www.opencrvs.org">www.opencrvs.org</a></p>
+>>>>>>> v2.0.0
 
 
 - [What is this module for?](#what-is-this-module-for)
@@ -11,13 +18,23 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <br>
 <br>
+<<<<<<< HEAD
+=======
+
+**This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
+>>>>>>> v2.0.0
 
 **This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
+<<<<<<< HEAD
 **This repository uses the fictional country "Farajaland" as an example country configuration for [OpenCRVS](https://github.com/opencrvs/opencrvs-core). You should fork this repository to create your own country configuration.**
 
 # What is this module for?
 
+=======
+# What is this module for?
+
+>>>>>>> v2.0.0
 OpenCRVS requires a country configuration in order to run. This is an example country configuration package for the OpenCRVS core.
 
 OpenCRVS is designed to be highly configurable for your country needs. It achieves this by seeding reference data that it needs from this module and exposing APIs for certain business critical operations.
@@ -28,9 +45,14 @@ This module also provides a logical location where you may wish to store the cod
 
 OpenCRVS Core is not run directly from source in this setup. Instead, Core services are deployed as a Helm chart, and Core Docker images are pulled from the configured image tag.
 
+<<<<<<< HEAD
 
 ## Prerequisites
 
+=======
+## Prerequisites
+
+>>>>>>> v2.0.0
 ### Hardware requirements
 
 Recommended minimum:
@@ -41,6 +63,7 @@ Recommended minimum:
 
 ### Software requirements
 
+<<<<<<< HEAD
 | Tool | Description |
 | --- | --- |
 | Kubernetes | Local Kubernetes cluster. Minikube is recommended for Linux. Docker Desktop Kubernetes is recommended for macOS and Windows. |
@@ -50,6 +73,16 @@ Recommended minimum:
 | Tilt | Used to manage the local development environment. |
 | Git | Used by the Tiltfile to clone OpenCRVS Core charts. |
 
+=======
+| Tool       | Description                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Kubernetes | Local Kubernetes cluster. Minikube is recommended for Linux. Docker Desktop Kubernetes is recommended for macOS and Windows. |
+| Docker     | Required for building the countryconfig image locally.                                                                       |
+| kubectl    | Kubernetes command-line tool.                                                                                                |
+| Helm       | Used by Tilt to render and deploy OpenCRVS Helm charts.                                                                      |
+| Tilt       | Used to manage the local development environment.                                                                            |
+| Git        | Used by the Tiltfile to clone OpenCRVS Core charts.                                                                          |
+>>>>>>> v2.0.0
 
 ## Development environment setup
 
@@ -68,16 +101,27 @@ minikube start \
 ```
 
 Make sure your kubectl context points to Minikube:
+<<<<<<< HEAD
 ```
 kubectl config current-context
 ```
 Expected context:
+=======
+
+```
+kubectl config current-context
+```
+
+Expected context:
+
+>>>>>>> v2.0.0
 ```
 minikube
 ```
 
 > [!NOTE]
 > Other local Kubernetes engines may also work, for example:
+>
 > - Docker Desktop
 > - OrbStack
 > - kind
@@ -85,6 +129,7 @@ minikube
 > - MicroK8s
 >
 > If you use a different Kubernetes engine, make sure that:
+>
 > - Docker image builds are available to the cluster
 > - LoadBalancer or NodePort access is configured
 > - opencrvs.localhost can resolve to the local ingress endpoint
@@ -98,16 +143,21 @@ cd opencrvs-countryconfig
 ```
 
 Start the local environment:
+
 ```
 tilt up
 ```
+
 Open the Tilt UI:
+
 ```
 http://localhost:10350
 ```
+
 Wait until the main resources are running.
 
 Then run the data seed task from the Tilt UI:
+
 1. Open http://localhost:10350
 2. Find the `2.Data-tasks` section
 3. Run the `seed-data` or `clean-&-seed` resource
@@ -123,7 +173,6 @@ The Tiltfile supports the following environment variables.
 
 - `OPENCRVS_CORE_IMAGE_TAG`: Defines the OpenCRVS Core Docker image tag used by the Helm chart.
 - `OPENCRVS_CORE_REF`: Defines the OpenCRVS Core Git branch or tag used to fetch Helm charts, use any release/2.0.X branch or tag from https://github.com/opencrvs/opencrvs-core
-
 
 The Tiltfile performs a sparse checkout of the OpenCRVS Core repository and only downloads the charts directory. You still be able to modify changes and create PRs in Core repository.
 
@@ -190,7 +239,6 @@ Remove minikube cluster:
 minikube delete
 ```
 
-
 # What is in the Countryconfig configuration module repository?
 
 One of the key dependencies and enablers for OpenCRVS is country configuration and a reference data source. This source is bespoke for every implementing nation. If you would like to create your own country implementation, we recommend that you duplicate this repository and use it as a template. So what does it contain?
@@ -201,7 +249,7 @@ One of the key dependencies and enablers for OpenCRVS is country configuration a
 
 - The [tilt](tilt) folder and [Tiltfile](Tiltfile) define the local Kubernetes development environment. Tilt is responsible for deploying OpenCRVS dependencies and Core services using Helm charts, building the local countryconfig image, configuring live updates and exposing operational tasks such as database cleanup and data seeding through the Tilt UI.
 
-- Postman collections demonstrate how to interoperate with OpenCRVS.  You can build any custom integration into OpenCRVS in this repository if you need to.
+- Postman collections demonstrate how to interoperate with OpenCRVS. You can build any custom integration into OpenCRVS in this repository if you need to.
 
 - Business critical API and hosted file endpoints (Data seeding)
 
@@ -214,7 +262,7 @@ When the OpenCRVS Core servers start up with un-seeded databases they call the f
 
 2. `GET /users`
 
-   - Configures at a minimum, a default National System Admin user for the application.  More users can be created for demonstration purposes or in a batch.  The passwords entered are required to be changed by the user on first login.
+   - Configures at a minimum, a default National System Admin user for the application. More users can be created for demonstration purposes or in a batch. The passwords entered are required to be changed by the user on first login.
 
 3. `GET /roles`
 
@@ -226,7 +274,7 @@ When the OpenCRVS Core servers start up with un-seeded databases they call the f
 
 5. `GET /statistics`
 
-   - Applies historical population and crude birth rates disaggregated by gender to your administrative structure.  This data ensures that your registration completeness rates are accuratley calculated.
+   - Applies historical population and crude birth rates disaggregated by gender to your administrative structure. This data ensures that your registration completeness rates are accuratley calculated.
 
 6. `GET /certificates`
 
@@ -248,11 +296,11 @@ When the OpenCRVS Core servers start up with un-seeded databases they call the f
 
 4. `GET /crude-death-rate` (Deprecation warning!)
 
-   - OpenCRVS "metrics" microservice receives a global crude death rate constant from this endpoint in order to calculate death registration completeness rates.  Unlike for crude birth rate, most countries do not have a statistic by administrative area disaggregated by gender for death rate.  This API endpoint can be considered as tehcnical debt and will likely be replaced by a config setting in the `GET /application-config` response.
+   - OpenCRVS "metrics" microservice receives a global crude death rate constant from this endpoint in order to calculate death registration completeness rates. Unlike for crude birth rate, most countries do not have a statistic by administrative area disaggregated by gender for death rate. This API endpoint can be considered as tehcnical debt and will likely be replaced by a config setting in the `GET /application-config` response.
 
 5. `POST /event-registration`
 
-   - This synchronous API exists as it is the final step before legal registration of an event.  Some countries desire to create multiple identifiers for citizens at the point of registration using external systems. Some countries wish to integrate with another legacy system just before registration.  A synchronous 3rd party system can be integrated at this point. Some countries wish to customise the registration number format.  The registration number can be created at this point. Some countries use sequential numbering for registration numbers.  While it is possible to create that functionality here, we strongly discourage that approach and advise our unique alphanumeric ID format using the Tracking ID. The reason is, under times of high traffic, it is likely that sequential number generation can slow the performance of the service.  In a such a case a queue could be implemented here.
+   - This synchronous API exists as it is the final step before legal registration of an event. Some countries desire to create multiple identifiers for citizens at the point of registration using external systems. Some countries wish to integrate with another legacy system just before registration. A synchronous 3rd party system can be integrated at this point. Some countries wish to customise the registration number format. The registration number can be created at this point. Some countries use sequential numbering for registration numbers. While it is possible to create that functionality here, we strongly discourage that approach and advise our unique alphanumeric ID format using the Tracking ID. The reason is, under times of high traffic, it is likely that sequential number generation can slow the performance of the service. In a such a case a queue could be implemented here.
 
 6. `GET /validators.js` & `GET /conditionals.js`
 
