@@ -169,7 +169,7 @@ export type InformantNotificationVariables = {
 const templates = {
   [TriggerEvent.USER_CREATED]: {
     type: 'onboarding-invite',
-    subject: 'Welcome to OpenCRVS!',
+    subject: 'Welcome to the SPC Mortality Coding Portal!',
     template:
       readOtherTemplate<TriggerVariable['user-created']>('onboarding-invite')
   },
