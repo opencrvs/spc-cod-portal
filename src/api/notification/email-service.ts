@@ -69,7 +69,8 @@ export const sendEmail = async (params: {
             user: SMTP_USERNAME,
             pass: SMTP_PASSWORD
           },
-          debug: true
+          debug: true,
+          logger: true
         }
       : {
           host: SMTP_HOST,
@@ -81,7 +82,7 @@ export const sendEmail = async (params: {
           }
         }
   logger.info(
-    `mail config secure: ${mailConfig.secure}, host: ${SMTP_HOST}, port: ${SMTP_PORT}, requireTLS: ${mailConfig.requireTLS} `
+    `mail config debug: ${mailConfig.debug}, mail config logger: ${mailConfig.logger}, mail config secure: ${mailConfig.secure}, host: ${SMTP_HOST}, port: ${SMTP_PORT}, requireTLS: ${mailConfig.requireTLS} `
   )
   const emailTransport = nodemailer.createTransport(mailConfig)
   const mailOptions = params.bcc
