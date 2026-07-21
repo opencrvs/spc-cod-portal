@@ -68,7 +68,8 @@ export const sendEmail = async (params: {
           auth: {
             user: SMTP_USERNAME,
             pass: SMTP_PASSWORD
-          }
+          },
+          debug: true
         }
       : {
           host: SMTP_HOST,
