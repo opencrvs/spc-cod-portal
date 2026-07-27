@@ -38,7 +38,7 @@ export default defineClientConfig({
       id: 'uploader',
       title: {
         id: 'dashboard.uploaderTitle',
-        defaultMessage: 'Upload encoded',
+        defaultMessage: 'Upload coded',
         description: 'Menu item for uploader companion app'
       },
       url: `https://uploader.${env.DOMAIN}/login`,
