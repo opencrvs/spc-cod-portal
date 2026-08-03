@@ -121,6 +121,57 @@ function getLabelForCause(
   }
 }
 
+function getHelperTextForCause(
+  letter: CauseLetter,
+  index: number,
+  basePath: string
+) {
+  switch (letter) {
+    case 'A':
+      return {
+        defaultMessage:
+          'Start typing the condition that most directly led to death, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+    case 'Other':
+      return {
+        defaultMessage:
+          'Start typing the condition, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+    default:
+      return {
+        defaultMessage:
+          'Start typing the condition that gave rise to the direct cause, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+  }
+}
+
+function getLabelForDuration(
+  letter: CauseLetter,
+  index: number,
+  basePath: string
+) {
+  switch (letter) {
+    case 'Other':
+      return {
+        defaultMessage: `${index + 1}. Duration`,
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.causeOfDeath${letter}.${basePath}.interval`
+      }
+    default:
+      return {
+        defaultMessage: `${letter}.${index + 1}. Duration`,
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.causeOfDeath${letter}.${basePath}.interval`
+      }
+  }
+}
+
 function createSymptomFields(letter: CauseLetter) {
   return symptomNumber.flatMap((number, index) => {
     const basePath = `eventDetails.causeOfDeath${letter}.symptom.${number}`
@@ -135,18 +186,10 @@ function createSymptomFields(letter: CauseLetter) {
         description: 'This is the placeholder for the field',
         id: 'condition.placeholder'
       },
+      helperText: getHelperTextForCause(letter, index, basePath),
       configuration: {
         url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`,
         defaultOptions: [{ label: 'Other', value: 'OTHER' }]
-      }
-    }
-
-    if (index === 0) {
-      autocompleteField.helperText = {
-        defaultMessage:
-          'Select the condition that most directly led to death, or choose "Other" to enter a diagnosis not listed',
-        description: 'This is the label for the field',
-        id: `eventDetails.causeOfDeath${letter}.symptom.one.helperText`
       }
     }
 
@@ -190,7 +233,32 @@ function createSymptomFields(letter: CauseLetter) {
       ]
     }
 
-    return [autocompleteField, otherField]
+    const durationField: any = {
+      id: `${basePath}.interval`,
+      type: FieldType.NUMBER_WITH_UNIT,
+      required: false,
+      analytics: true,
+      helperText: {
+        defaultMessage: 'Interval between onset and death',
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.causeOfDeath${letter}.interval.helperText`
+      },
+      label: getLabelForDuration(letter, index, basePath),
+      options: durationOptions
+    }
+
+    if (index > 0) {
+      durationField.conditionals = [
+        {
+          type: ConditionalType.SHOW,
+          conditional: field(
+            `eventDetails.causeOfDeath${letter}.add.symptom.button`
+          ).isGreaterThan(index - 1)
+        }
+      ]
+    }
+
+    return [autocompleteField, otherField, durationField]
   })
 }
 
@@ -297,23 +365,6 @@ export function createCauseOfDeathFields(letter: CauseLetter) {
           conditional: never()
         }
       ]
-    },
-    {
-      id: `${base}.interval`,
-      type: FieldType.NUMBER_WITH_UNIT,
-      required: false,
-      analytics: true,
-      helperText: {
-        defaultMessage: 'Interval between onset and death',
-        description: 'This is the label for the field',
-        id: `spcCodingGroup.causeOfDeath${letter}.interval.helperText`
-      },
-      label: {
-        defaultMessage: 'Duration',
-        description: 'This is the label for the field',
-        id: `spcCodingGroup.causeOfDeath${letter}.interval`
-      },
-      options: durationOptions
     }
   ]
 }
