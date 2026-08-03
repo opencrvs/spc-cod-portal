@@ -77,6 +77,11 @@ export const deceased = defineFormPage({
         description: 'This is the label for the field',
         id: 'spcRegionalGroup.certificateKey'
       },
+      helperText: {
+        defaultMessage: 'This must be a unique identifer',
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.certificateKey.helperText`
+      },
       validation: [
         {
           message: {
