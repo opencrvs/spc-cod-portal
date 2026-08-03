@@ -121,6 +121,36 @@ function getLabelForCause(
   }
 }
 
+function getHelperTextForCause(
+  letter: CauseLetter,
+  index: number,
+  basePath: string
+) {
+  switch (letter) {
+    case 'A':
+      return {
+        defaultMessage:
+          'Start typing the condition that most directly led to death, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+    case 'Other':
+      return {
+        defaultMessage:
+          'Start typing the condition, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+    default:
+      return {
+        defaultMessage:
+          'Start typing the condition that gave rise to the direct cause, or select "Other" to enter a diagnosis not listed',
+        description: 'This is the label for the field',
+        id: `${basePath}.helperText`
+      }
+  }
+}
+
 function getLabelForDuration(
   letter: CauseLetter,
   index: number,
@@ -156,18 +186,10 @@ function createSymptomFields(letter: CauseLetter) {
         description: 'This is the placeholder for the field',
         id: 'condition.placeholder'
       },
+      helperText: getHelperTextForCause(letter, index, basePath),
       configuration: {
         url: `${COUNTRY_CONFIG_URL}/causes-of-death?terms=`,
         defaultOptions: [{ label: 'Other', value: 'OTHER' }]
-      }
-    }
-
-    if (index === 0) {
-      autocompleteField.helperText = {
-        defaultMessage:
-          'Start typing the condition that most directly led to death, or select "Other" to enter a diagnosis not listed',
-        description: 'This is the label for the field',
-        id: `eventDetails.causeOfDeath${letter}.symptom.one.helperText`
       }
     }
 
