@@ -759,7 +759,7 @@ dashboard.exportTitle,Export title,Download for coding
 dashboard.registrationsTitle,Registrations title,Registrations Dashboard
 dashboard.registryTitle,Registry title,Registry
 dashboard.statisticsTitle,Statistics title,Statistics
-dashboard.exportEncodedRecordsTitle,Export encoded records title,Export encoded records
+dashboard.exportCodedRecordsTitle,Export coded records title,Export coded records
 duplicates.button.markAsDuplicate,Mark as duplicate button text,Mark as duplicate
 duplicates.button.notDuplicate,Not a duplicate button text,Not a duplicate
 duplicates.compare.supportingDocuments,Supporting documents header for duplicates comparison,Supporting documents
