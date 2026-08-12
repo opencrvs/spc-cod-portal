@@ -11,9 +11,10 @@ import {
   getCreatedByFromLegalStatuses,
   getUserById,
   sendProcessingNotificationEmail,
+  notifyCodedRecordsExternally,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST } from './constants'
+import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST, CountryCode, COUNTRY_CODES } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -74,6 +75,11 @@ type ExternalSpcCodingDatabaseRecord = {
   multipleCodes: string
   freeText: string
   comments: string
+}
+
+type SubmitEncodingExternallyPayload = {
+  countryCode: string
+  record: ExternalSpcCodingDatabaseRecord
 }
 
 export const processCSVRow = async (
@@ -138,8 +144,7 @@ export const processCSVRow = async (
       if (id.includes(prefix) && hasIrisData) {
         // External record
         const [, countryCode, trackingId] = id.split('_')
-        if (countryCode === 'TUV') {
-          const externalRecord: ExternalSpcCodingDatabaseRecord = {
+        const externalRecord: ExternalSpcCodingDatabaseRecord = {
             trackingId,
             status: rowStatus,
             ucCode: row.UCCode || '',
@@ -149,7 +154,12 @@ export const processCSVRow = async (
             comments: row.Comments || ''
           }
 
-          console.log('Sending to Tuvalu: ', JSON.stringify(externalRecord))
+          const externalPayload: SubmitEncodingExternallyPayload = {
+              countryCode,
+              record: externalRecord
+            }
+        
+          console.log('Sending to external system: ', JSON.stringify(externalPayload))
 
           const url = new URL(
             'submit-coded-record-externally',
@@ -162,7 +172,7 @@ export const processCSVRow = async (
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(externalRecord)
+            body: JSON.stringify(externalPayload)
           })
 
           if (!response.ok) {
@@ -181,13 +191,13 @@ export const processCSVRow = async (
             rowIndex,
             id,
             status: 'success',
-            message: 'Successfully updated with IRIS output data',
-            createdBy: undefined, // TODO: decide how to set when sending a notification
-            trackingId: '', // TODO: decide how to set when sending a notification
-            certKey: '', // TODO: decide how to set when sending a notification
+            message: 'Iris response sent to country successfully',
+            createdBy: undefined,
+            trackingId,
+            certKey: id,
             ucCode: row.UCCode
           }
-        }
+        
       }
     } catch (error) {
       return {
@@ -350,42 +360,67 @@ export const processCSV = async (
  * Groups all successful records by createdBy user and sends ONE email per user
  * containing all their processed record IDs.
  */
+
+
+function toRecordToEmail(record: ProcessingResult): RecordsToEmail {
+  return {
+    status: record.status,
+    trackingId: record.trackingId || record.id,
+    certKey: record.certKey || record.id,
+    ucCode: record.ucCode || ''
+  }
+}
+
+function groupByUser(records: ProcessingResult[]) {
+  const grouped = new Map<string, RecordsToEmail[]>()
+
+  for (const record of records) {
+    const userRecords = grouped.get(record.createdBy!) ?? []
+
+    userRecords.push(toRecordToEmail(record))
+
+    grouped.set(record.createdBy!, userRecords)
+  }
+
+  return grouped
+}
+
 async function sendEmailNotifications(
   token: string,
   results: ProcessingResult[]
 ): Promise<void> {
-  const processedResults = results.filter(
-    (r) => (r.status === 'success' || r.status === 'rejected') && r.createdBy
-  )
+  const internalRecords: ProcessingResult[] = []
 
-  if (!processedResults.length) return
+  const externalRecordsByCountry = new Map<
+    CountryCode,
+    RecordsToEmail[]
+  >()
 
-  const groupByUser = (records: ProcessingResult[]) => {
-    const grouped = new Map<string, RecordsToEmail[]>()
-
-    for (const record of records) {
-      const userRecords = grouped.get(record.createdBy!) ?? []
-
-      userRecords.push({
-        status: record.status,
-        trackingId: record.trackingId || record.id,
-        certKey: record.certKey || record.id,
-        ucCode: record.ucCode || ''
-      })
-
-      grouped.set(record.createdBy!, userRecords)
+  for (const record of results) {
+    if (
+      (record.status !== 'success' && record.status !== 'rejected') ||
+      !record.createdBy
+    ) {
+      continue
     }
 
-    return grouped
+    const externalCountry = COUNTRY_CODES.find((countryCode) =>
+      record.certKey?.startsWith(`EXT_${countryCode}`)
+    )
+
+    if (externalCountry) {
+      const countryRecords =
+        externalRecordsByCountry.get(externalCountry) ?? []
+
+      countryRecords.push(toRecordToEmail(record))
+
+      externalRecordsByCountry.set(externalCountry, countryRecords)
+
+      continue
+    }
+
+    internalRecords.push(record)
   }
-
-  const internalRecords = processedResults.filter(
-    (r) => !r.certKey?.startsWith('EXT_TUV')
-  )
-
-  const externalRecords = processedResults.filter((r) =>
-    r.certKey?.startsWith('EXT_TUV')
-  )
 
   // Internal notifications
   for (const [userId, records] of groupByUser(internalRecords)) {
@@ -394,11 +429,10 @@ async function sendEmailNotifications(
 
       if (!user?.email) continue
 
-      const result = await sendProcessingNotificationEmail(token, user, records)
+      await sendProcessingNotificationEmail(token, user, records)
 
       console.log(
-        `[EMAIL-NOTIFICATION] Email sent to ${userId} for ${records.length} records.`,
-        result
+        `[EMAIL-NOTIFICATION] Email sent to ${userId} for ${records.length} records.`
       )
     } catch (error) {
       console.error(
@@ -409,41 +443,22 @@ async function sendEmailNotifications(
   }
 
   // External notifications
-  if (externalRecords.length) {
+  for (const [countryCode, records] of externalRecordsByCountry) {
     try {
-      const result = await forwardEncodedRecordsToTuvalu(token, externalRecords)
+      await notifyCodedRecordsExternally(
+        token,
+        records,
+        countryCode
+      )
 
       console.log(
-        `[EMAIL-NOTIFICATION] ${externalRecords.length} records forwarded to Tuvalu.`,
-        result
+        `[EXTERNAL-NOTIFICATION] Sent ${records.length} records to ${countryCode}.`
       )
     } catch (error) {
       console.error(
-        `[EMAIL-NOTIFICATION] Error forwarding records to Tuvalu:`,
+        `[EXTERNAL-NOTIFICATION] Error sending records to ${countryCode}:`,
         error
       )
     }
   }
-}
-
-/**
- * Forward email notifications to Tuvalu about their encoded records.
- */
-async function forwardEncodedRecordsToTuvalu(
-  token: string,
-  results: ProcessingResult[]
-): Promise<void> {
-  const url = new URL(
-    'notify-coded-record-externally',
-    COUNTRY_CONFIG_HOST
-  ).toString()
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(results)
-  })
 }

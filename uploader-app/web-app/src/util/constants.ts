@@ -16,3 +16,7 @@ export const GATEWAY_HOST =
 
 export const COUNTRY_CONFIG_HOST =
   import.meta.env.VITE_COUNTRY_CONFIG_URL || import.meta.env.COUNTRY_CONFIG_URL || 'http://localhost:3040'
+
+ export type CountryCode = 'TUV' /*| 'NIU' | 'COK' | 'KIR' | 'TON'*/
+  
+ export const COUNTRY_CODES: CountryCode[] = ['TUV'/*, 'NIU', 'COK', 'KIR', 'TON'*/]

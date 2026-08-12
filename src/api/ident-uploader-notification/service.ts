@@ -33,7 +33,8 @@ const renderSection = (
 
 export async function sendCoDEmail(
   payload: IdentUploaderNotificationPayload,
-  h: Hapi.ResponseToolkit
+  h: Hapi.ResponseToolkit,
+  isExternal: boolean = false
 ) {
   logger.info(
     `[IDENT-UPLOADER] Processing notification request for ${maskEmail(payload.recipient.email)} with ${payload.records.length} records`
@@ -69,7 +70,9 @@ export async function sendCoDEmail(
 
   ${renderSection(
     successRecords,
-    'The following death records have been encoded with cause of death codes and are ready to view:'
+    !isExternal
+      ? 'The following death records have been encoded with cause of death codes and are ready to view:'
+      : 'The following death records have been encoded with cause of death codes and are ready for a registrar to import:'
   )}
 
   ${renderSection(
@@ -79,7 +82,9 @@ export async function sendCoDEmail(
 
   ${renderSection(
     correctedRecords,
-    'The following death record has been corrected with new information and is ready to view:',
+    !isExternal
+      ? 'The following death record has been corrected with new information and is ready to view:'
+      : 'The following death record has been corrected with new information and is ready for a registrar to import:',
     false
   )}
 

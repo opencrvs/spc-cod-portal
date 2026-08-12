@@ -32,7 +32,59 @@ export const OPENCRVS_ENVIRONMENT = env.OPENCRVS_ENVIRONMENT
 export const ANALYTICS_DATABASE_URL = env.ANALYTICS_DATABASE_URL
 export const REFERENCE_DATA_DATABASE_URL = env.REFERENCE_DATA_DATABASE_URL
 export const COD_URL = env.COD_URL
-export const TUVALU_SPC_CODING_URL = env.TUVALU_SPC_CODING_URL
-export const TUVALU_CLIENT_SECRET = env.TUVALU_CLIENT_SECRET
-export const TUVALU_CLIENT_ID = env.TUVALU_CLIENT_ID
-export const TUVALU_AUTH_URL = env.TUVALU_AUTH_URL
+
+export type CountryCode = 'TUV' /*| 'NIU' | 'COK' | 'KIR' | 'TON'*/
+
+export interface CountryConfig {
+  clientId: string
+  clientSecret: string
+  authUrl: string
+  codingUrl: string
+  recipient: {
+    name: {
+      firstname: string
+      surname: string
+    }
+    email: string
+  }
+}
+
+export const COUNTRY_CONFIG: Record<CountryCode, CountryConfig> = {
+  TUV: {
+    clientId: env.TUVALU_CLIENT_ID || '',
+    clientSecret: env.TUVALU_CLIENT_SECRET || '',
+    authUrl: env.TUVALU_AUTH_URL,
+    codingUrl: env.TUVALU_SPC_CODING_URL,
+    recipient: {
+      name: {
+        firstname: env.TUVALU_EMAIL_RECIPIENT_FIRSTNAME || '',
+        surname: env.TUVALU_EMAIL_RECIPIENT_SURNAME || ''
+      },
+      email: env.TUVALU_EMAIL_RECIPIENT || ''
+    }
+  } /*,
+  NIU: {
+    clientId: env.NIUE_CLIENT_ID || '',
+    clientSecret: env.NIUE_CLIENT_SECRET || '',
+    authUrl: env.NIUE_AUTH_URL,
+    codingUrl: env.NIUE_SPC_CODING_URL
+  },
+  COK: {
+    clientId: env.COOK_ISLANDS_CLIENT_ID || '',
+    clientSecret: env.COOK_ISLANDS_CLIENT_SECRET || '',
+    authUrl: env.COOK_ISLANDS_AUTH_URL,
+    codingUrl: env.COOK_ISLANDS_SPC_CODING_URL
+  },
+  KIR: {
+    clientId: env.KIRIBATI_CLIENT_ID || '',
+    clientSecret: env.KIRIBATI_CLIENT_SECRET || '',
+    authUrl: env.KIRIBATI_AUTH_URL,
+    codingUrl: env.KIRIBATI_SPC_CODING_URL
+  },
+  TON: {
+    clientId: env.TONGA_CLIENT_ID || '',
+    clientSecret: env.TONGA_CLIENT_SECRET || '',
+    authUrl: env.TONGA_AUTH_URL,
+    codingUrl: env.TONGA_SPC_CODING_URL
+  }*/
+}

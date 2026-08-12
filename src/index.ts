@@ -55,9 +55,11 @@ import { externalRecordToEncodeHandler } from './api/dashboards/handler'
 import { handlebarsHandler } from './certificate/handlebars/handler'
 import { fontsHandler } from './api/fonts/handler'
 import {
+  externalSpcCodingDatabaseRecordSchema,
   identUploaderNotificationHandler,
   identUploaderNotificationSchema,
-  notifyEncodingExternally
+  notifyEncodingExternally,
+  notifyCodedRecordsExternallySchema
 } from './api/ident-uploader-notification/handler'
 import {
   getEventsHandler,
@@ -578,6 +580,9 @@ export async function createServer() {
     handler: submitCodedRecordExternally,
     options: {
       tags: ['api', 'search'],
+      validate: {
+        payload: externalSpcCodingDatabaseRecordSchema
+      },
       description: 'Sends completed CoD record to country'
     }
   })
@@ -588,6 +593,9 @@ export async function createServer() {
     handler: notifyEncodingExternally,
     options: {
       tags: ['api', 'search'],
+      validate: {
+        payload: notifyCodedRecordsExternallySchema
+      },
       description:
         'Informs external country that record has been encoded with CoD'
     }

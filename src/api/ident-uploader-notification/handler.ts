@@ -11,12 +11,7 @@
 import * as Hapi from '@hapi/hapi'
 import * as Joi from 'joi'
 import { sendCoDEmail } from './service'
-import {
-  TUVALU_SPC_CODING_URL,
-  TUVALU_CLIENT_SECRET,
-  TUVALU_CLIENT_ID,
-  TUVALU_AUTH_URL
-} from '@countryconfig/constants'
+import { COUNTRY_CONFIG, CountryCode } from '@countryconfig/constants'
 
 /**
  * Payload schema for ident uploader notification
@@ -65,18 +60,6 @@ export interface IdentUploaderNotificationPayload {
   records: RecordsToEmail[]
 }
 
-interface ProcessingResult {
-  rowIndex: number
-  id: string
-  status: 'success' | 'skipped' | 'error' | 'rejected'
-  message: string
-  causesOfDeath?: string[]
-  createdBy?: string
-  trackingId?: string
-  certKey?: string
-  ucCode?: string
-}
-
 /**
  * Handler for ident uploader notifications.
  * Sends an email to a specific user (registrar) about their processed death records.
@@ -91,13 +74,16 @@ export async function identUploaderNotificationHandler(
 }
 
 export const externalSpcCodingDatabaseRecordSchema = Joi.object({
-  trackingId: Joi.string().required(),
-  status: Joi.string().required(),
-  ucCode: Joi.string().required(),
-  selectedCodes: Joi.string().required(),
-  multipleCodes: Joi.string().required(),
-  freeText: Joi.string().required(),
-  comments: Joi.string().required()
+  countryCode: Joi.string().required(),
+  record: Joi.object({
+    trackingId: Joi.string().required(),
+    status: Joi.string().required(),
+    ucCode: Joi.string().allow('').required(),
+    selectedCodes: Joi.string().allow('').required(),
+    multipleCodes: Joi.string().allow('').required(),
+    freeText: Joi.string().allow('').required(),
+    comments: Joi.string().allow('').required()
+  })
 })
 
 type ExternalSpcCodingDatabaseRecord = {
@@ -108,6 +94,11 @@ type ExternalSpcCodingDatabaseRecord = {
   multipleCodes: string
   freeText: string
   comments: string
+}
+
+type SubmitEncodingExternallyPayload = {
+  countryCode: string
+  record: ExternalSpcCodingDatabaseRecord
 }
 
 type TokenResponse = { access_token: string; token_type: string }
@@ -143,18 +134,24 @@ async function getAccessToken(
   return data.access_token
 }
 
-export async function submitCodedRecordExternally(request: Hapi.Request) {
+export async function submitCodedRecordExternally(
+  request: Hapi.Request,
+  h: Hapi.ResponseToolkit
+) {
+  const { countryCode, record: externalRecord } =
+    request.payload as SubmitEncodingExternallyPayload
+
+  const config = COUNTRY_CONFIG[countryCode as CountryCode]
   const token = await getAccessToken(
-    TUVALU_CLIENT_ID || '',
-    TUVALU_CLIENT_SECRET || '',
-    TUVALU_AUTH_URL
+    config.clientId,
+    config.clientSecret,
+    config.authUrl
   )
-  // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
-  const externalRecord = request.payload as ExternalSpcCodingDatabaseRecord
+  const url = `${config.codingUrl}/notification`
 
   console.log('Sending to Tuvalu: ', JSON.stringify(externalRecord))
 
-  return await fetch(TUVALU_SPC_CODING_URL, {
+  return await fetch(url, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -164,28 +161,41 @@ export async function submitCodedRecordExternally(request: Hapi.Request) {
   })
 }
 
-export async function notifyEncodingExternally(request: Hapi.Request) {
-  const token = await getAccessToken(
-    TUVALU_CLIENT_ID || '',
-    TUVALU_CLIENT_SECRET || '',
-    TUVALU_AUTH_URL
-  )
+export const notifyCodedRecordsExternallySchema = Joi.object({
+  countryCode: Joi.string().required(),
+  records: Joi.array()
+    .items(
+      Joi.object({
+        status: Joi.string()
+          .valid('success', 'rejected', 'corrected')
+          .required(),
+        trackingId: Joi.string().required(),
+        certKey: Joi.string().required(),
+        ucCode: Joi.string().allow('')
+      })
+    )
+    .min(1)
+    .required()
+})
 
-  const externalRecords = request.payload as ProcessingResult[]
+type NotifyCodedRecordsExternallyPayload = {
+  countryCode: string
+  records: RecordsToEmail[]
+}
 
-  console.log(
-    'Notifying Tuvalu about encoded records: ',
-    JSON.stringify(externalRecords)
-  )
+export async function notifyEncodingExternally(
+  request: Hapi.Request,
+  h: Hapi.ResponseToolkit
+) {
+  const { countryCode, records } =
+    request.payload as NotifyCodedRecordsExternallyPayload
 
-  const url = `${TUVALU_SPC_CODING_URL}/notification`
+  const config = COUNTRY_CONFIG[countryCode as CountryCode]
 
-  return await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(externalRecords)
-  })
+  const externalEmails: IdentUploaderNotificationPayload = {
+    recipient: config.recipient,
+    records
+  }
+
+  return await sendCoDEmail(externalEmails, h, true)
 }
