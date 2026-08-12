@@ -118,7 +118,7 @@ export const roles: Role[] = [
       { type: 'record.unassign-others', options: { event: ['death'] } },
       {
         type: 'dashboard.view',
-        options: { ids: ['uploader', 'export', 'statistics', 'export-encoded-records'] }
+        options: { ids: ['uploader', 'export', 'statistics', 'export-coded-records'] }
       }
     ])
   },
@@ -156,7 +156,7 @@ export const roles: Role[] = [
       { type: 'record.unassign-others', options: { event: ['death'] } },
       {
         type: 'dashboard.view',
-        options: { ids: ['uploader', 'export', 'statistics', 'export-encoded-records'] }
+        options: { ids: ['uploader', 'export', 'statistics', 'export-coded-records'] }
       },
       { type: 'config.update-all' },
       { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
