@@ -28,6 +28,35 @@ export async function mapGeojsonHandler(
   return h.response(fileContents).type('text/plain')
 }
 
+function renameCauseOfDeathIntervalProperties(payload: any) {
+  for (const action of payload.actions ?? []) {
+    const declaration = action.declaration
+
+    if (!declaration || typeof declaration !== 'object') {
+      continue
+    }
+
+    for (const key of Object.keys(declaration)) {
+      const match = key.match(
+        /^eventDetails\.causeOfDeath(A|B|C|D|E|Other)\.interval$/
+      )
+
+      if (!match) {
+        continue
+      }
+
+      const cause = match[1]
+
+      const newKey = `eventDetails.causeOfDeath${cause}.symptom.one.interval`
+
+      declaration[newKey] = declaration[key]
+      delete declaration[key]
+    }
+  }
+
+  return payload
+}
+
 export async function externalRecordToEncodeHandler(
   request: ActionConfirmationRequest,
   h: Hapi.ResponseToolkit
@@ -72,36 +101,32 @@ export async function externalRecordToEncodeHandler(
     logger.error(errorMessage)
   }
 
+  if (countryCode == 'TUV') {
+    // Tuvalu has a different structure for causeOfDeath intervals, so we need to rename them to match the expected structure in analytics.
+    // They dont use the add another sypmtom button
+    renameCauseOfDeathIntervalProperties(event)
+  }
+
   const updatedObject = {
     ...event,
     actions: event.actions.map((action) => {
-      if (!('declaration' in action)) {
-        return action
-      }
+      const hasDeclaration =
+        'declaration' in action && ['NOTIFY', 'DECLARE'].includes(action.type)
 
-      if (action.type === 'NOTIFY' && action.status === 'Requested') {
+      if (!hasDeclaration) {
         return {
           ...action,
-          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
-          declaration: {
-            ...action.declaration,
-            'deceased.certificateKey': externalCertKey
-          }
+          createdAtLocation: spcLocation?.[0]?.id ?? action.createdAtLocation
         }
       }
-
-      if (action.type === 'DECLARE' && action.status === 'Requested') {
-        return {
-          ...action,
-          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
-          declaration: {
-            ...action.declaration,
-            'deceased.certificateKey': externalCertKey
-          }
+      return {
+        ...action,
+        createdAtLocation: spcLocation?.[0]?.id ?? action.createdAtLocation,
+        declaration: {
+          ...action.declaration,
+          'deceased.certificateKey': externalCertKey
         }
       }
-
-      return action
     })
   }
 

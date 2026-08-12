@@ -175,7 +175,7 @@ export const deathEvent = defineConfig({
         declare: {
           id: 'event.death.action.edit.declare.copy',
           defaultMessage:
-            'Are you sure you want to edit this declaration? By confirming you are redeclaring this event and override past changes.',
+            'This record will be updated with your changes and resubmitted for coding. Add a comment below to explain what was changed.',
           description: 'Confirmation text for the declare with edits action'
         },
         register: {
@@ -209,7 +209,10 @@ export const deathEvent = defineConfig({
           conditional: never()
         }
       ],
-      flags: [{ id: 'validated', operation: 'add' }],
+      flags: [
+        { id: 'validated', operation: 'add' },
+        { id: InherentFlags.REJECTED, operation: 'remove' }
+      ],
       form: [
         {
           id: 'comments',

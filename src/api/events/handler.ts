@@ -13,17 +13,6 @@ import { ActionConfirmationRequest } from '../registration'
 import { eventConfigs } from '@countryconfig/events'
 import { createClient } from '@opencrvs/toolkit/api'
 import { GATEWAY_URL } from '@countryconfig/constants'
-import {
-  IdentUploaderNotificationPayload,
-  RecordsToEmail
-} from '../ident-uploader-notification/handler'
-import { sendCoDEmail } from '../ident-uploader-notification/service'
-import {
-  aggregateActionDeclarations,
-  deepMerge,
-  getPendingAction
-} from '@opencrvs/toolkit/events'
-import { sendInformantNotification } from '../notification/informantNotification'
 
 export function getEventsHandler(_: Hapi.Request, h: Hapi.ResponseToolkit) {
   return h.response(eventConfigs).code(200)
@@ -53,8 +42,6 @@ export async function getUserById(
   try {
     const userOrSystem = await client.user.get.query(userId)
 
-    console.log('userOrSystem :>> ', userOrSystem)
-
     if (userOrSystem.type === 'user') {
       return {
         id: userOrSystem.id || userId,
@@ -76,8 +63,8 @@ export async function onAnyActionHandler(
   request: ActionConfirmationRequest,
   h: Hapi.ResponseToolkit
 ) {
-  const token = request.auth.artifacts.token as string
-  const event = request.payload
+  /*const token = request.auth.artifacts.token as string
+  const event = request.payload*/
 
   // Disabling usual notifications await sendInformantNotification({ event, token })
 

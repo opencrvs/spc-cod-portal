@@ -29,9 +29,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isLoggedIn = !!token
   const decodedToken = getDecodedToken(token)
 
-  const role =
-    decodedToken?.role === 'CODING_OFFICER' ? 'Regional Coding Officer' : null
+  const roleMap = {
+  CODING_OFFICER: 'Regional Coding Officer',
+  SENIOR_CODING_OFFICER: 'Senior SPC Regional Coding Officer'
+} as const
 
+const role =
+  decodedToken?.role ? roleMap[decodedToken.role as keyof typeof roleMap] ?? null : null
   return (
     <AuthContext.Provider
       value={{

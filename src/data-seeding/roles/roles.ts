@@ -45,28 +45,6 @@ export const roles: Role[] = [
     ])
   },
   {
-    id: 'NATIONAL_SYSTEM_ADMIN',
-    label: {
-      defaultMessage: 'National System Admin',
-      description: 'Name for user role National System Admin',
-      id: 'userRole.nationalSystemAdmin'
-    },
-    scopes: [
-      ...defineScopes([
-        { type: 'config.update-all' },
-        { type: 'organisation.read-locations' },
-        { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
-        { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
-        { type: 'user.read' },
-        { type: 'user.search', options: { accessLevel: 'administrativeArea' } },
-        { type: 'performance.read' },
-        { type: 'record.reindex' },
-        { type: 'integration.create' },
-        { type: 'performance.read-dashboards' }
-      ])
-    ]
-  },
-  {
     id: 'SENIOR_MR_OFFICER',
     label: {
       defaultMessage: 'Senior Medical Records Officer',
@@ -140,7 +118,7 @@ export const roles: Role[] = [
       { type: 'record.unassign-others', options: { event: ['death'] } },
       {
         type: 'dashboard.view',
-        options: { ids: ['uploader', 'export', 'statistics'] }
+        options: { ids: ['uploader', 'export', 'statistics', 'export-encoded-records'] }
       }
     ])
   },
@@ -178,11 +156,11 @@ export const roles: Role[] = [
       { type: 'record.unassign-others', options: { event: ['death'] } },
       {
         type: 'dashboard.view',
-        options: { ids: ['uploader', 'export', 'statistics'] }
+        options: { ids: ['uploader', 'export', 'statistics', 'export-encoded-records'] }
       },
       { type: 'config.update-all' },
-      { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
-      { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'NATIONAL_SYSTEM_ADMIN', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
+      { type: 'user.create', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
+      { type: 'user.edit', options: { role: ['MR_OFFICER', 'CODING_OFFICER', 'SENIOR_MR_OFFICER', 'CHIEF_MEDICAL_OFFICER', 'SENIOR_CODING_OFFICER'] } },
 
       { type: 'performance.read' },
       { type: 'record.reindex' },

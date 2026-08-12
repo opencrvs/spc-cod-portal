@@ -77,6 +77,11 @@ export const deceased = defineFormPage({
         description: 'This is the label for the field',
         id: 'spcRegionalGroup.certificateKey'
       },
+      helperText: {
+        defaultMessage: 'This must be a unique identifer',
+        description: 'This is the label for the field',
+        id: `spcCodingGroup.certificateKey.helperText`
+      },
       validation: [
         {
           message: {
@@ -89,6 +94,16 @@ export const deceased = defineFormPage({
               .get('data.exists')
               .isEqualTo(true)
           )
+        },
+        {
+          message: {
+            id: 'event.death.action.declare.field.certificateKey.reserved.error',
+            defaultMessage:
+              'Certificate key cannot contain the reserved string "EXT_"',
+            description:
+              'Error shown when certificate key contains reserved EXT_ string'
+          },
+          validator: not(field('deceased.certificateKey').matches('.*EXT_.*'))
         }
       ]
     },
@@ -252,7 +267,8 @@ export const deceased = defineFormPage({
             id: 'event.death.action.declare.form.section.event.field.date.error.beforeBirth'
           },
           validator: or(
-            field('deceased.eventDate').isAfter().date(field('deceased.dob'))
+            field('deceased.eventDate').isAfter().date(field('deceased.dob')),
+            field('deceased.dobUnknown').isEqualTo(true)
           )
         }
       ],
@@ -337,6 +353,10 @@ export const deceased = defineFormPage({
               {
                 type: ConditionalType.ENABLE,
                 conditional: user.hasRole('CODING_OFFICER')
+              },
+              {
+                type: ConditionalType.ENABLE,
+                conditional: user.hasRole('SENIOR_CODING_OFFICER')
               }
             ]
           },
