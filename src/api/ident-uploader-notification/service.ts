@@ -9,7 +9,8 @@ import { IdentUploaderNotificationPayload, RecordsToEmail } from './handler'
 const renderSection = (
   records: RecordsToEmail[],
   intro: string,
-  plural: boolean = true
+  plural: boolean = true,
+  isExternal: boolean = false
 ) => {
   if (!records.length) return ''
   const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
@@ -19,7 +20,7 @@ const renderSection = (
       ${records
         .map(
           (record) =>
-            `<li>TrackingID: ${record.trackingId} / Certificate Key: ${record.certKey}${record.ucCode ? ` / UC Code: ${record.ucCode}` : ''}</li>`
+            `<li>TrackingID: ${record.trackingId}${isExternal ? ` / Certificate Key: ${record.certKey}` : ''}${record.ucCode ? ` / UC Code: ${record.ucCode}` : ''}</li>`
         )
         .join('')}
     </ul>
@@ -33,8 +34,11 @@ const renderSection = (
 
 export async function sendCoDEmail(
   payload: IdentUploaderNotificationPayload,
-  h: Hapi.ResponseToolkit
-) {
+  isExternal: boolean = false
+): Promise<'success' | 'failed' | 'skipped'> {
+  if (!payload.recipient.email) {
+    return 'skipped'
+  }
   logger.info(
     `[IDENT-UPLOADER] Processing notification request for ${maskEmail(payload.recipient.email)} with ${payload.records.length} records`
   )
@@ -50,9 +54,7 @@ export async function sendCoDEmail(
     logger.info(
       `Skipping ident uploader notification: USER_NOTIFICATION_DELIVERY_METHOD is not 'email'`
     )
-    return h
-      .response({ success: true, message: 'Notification skipped' })
-      .code(200)
+    return 'skipped'
   }
 
   const successRecords = payload.records.filter((r) => r.status === 'success')
@@ -69,7 +71,9 @@ export async function sendCoDEmail(
 
   ${renderSection(
     successRecords,
-    'The following death records have been encoded with cause of death codes and are ready to view:'
+    !isExternal
+      ? 'The following death records have been encoded with cause of death codes and are ready to view:'
+      : 'The following death records have been encoded with cause of death codes and are ready for a registrar to import:'
   )}
 
   ${renderSection(
@@ -79,7 +83,9 @@ export async function sendCoDEmail(
 
   ${renderSection(
     correctedRecords,
-    'The following death record has been corrected with new information and is ready to view:',
+    !isExternal
+      ? 'The following death record has been corrected with new information and is ready to view:'
+      : 'The following death record has been corrected with new information and is ready for a registrar to import:',
     false
   )}
 
@@ -92,7 +98,7 @@ export async function sendCoDEmail(
       logger.info(
         `Would send email to ${maskEmail(payload.recipient.email)} with subject: Death Records Processed - Cause of Death Codes Updated`
       )
-      return h.response({ success: true }).code(200)
+      return 'success'
     }
 
     await sendEmail({
@@ -106,11 +112,9 @@ export async function sendCoDEmail(
       `Ident uploader notification sent successfully to ${maskEmail(payload.recipient.email)}`
     )
 
-    return h.response().code(200)
+    return 'success'
   } catch (error) {
     logger.error(`Failed to send ident uploader notification: ${error}`)
-    return h
-      .response({ success: false, message: 'Failed to send email' })
-      .code(500)
+    return 'failed'
   }
 }

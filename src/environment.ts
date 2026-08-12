@@ -42,5 +42,8 @@ export const env = cleanEnv(process.env, {
   TUVALU_AUTH_URL: url({ devDefault: 'https://auth.pankaj-qa.opencrvs.dev' }),
   TUVALU_SPC_CODING_URL: url({
     devDefault: 'https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding'
-  })
+  }),
+  TUVALU_EMAIL_RECIPIENT_FIRSTNAME: str({ devDefault: undefined }),
+  TUVALU_EMAIL_RECIPIENT_SURNAME: str({ devDefault: undefined }),
+  TUVALU_EMAIL_RECIPIENT: str({ devDefault: undefined })
 })

@@ -1,4 +1,4 @@
-import { GATEWAY_HOST, COUNTRY_CONFIG_HOST } from '../util/constants'
+import { GATEWAY_HOST, COUNTRY_CONFIG_HOST, CountryCode } from '../util/constants'
 import { createClient } from '@opencrvs/toolkit/api'
 import { v4 as uuidv4 } from 'uuid'
 import { getDecodedToken } from './token'
@@ -305,6 +305,31 @@ export async function sendProcessingNotificationEmail(
     console.error('[IDENT-UPLOADER] Exception:', error)
     return false
   }
+}
+
+export async function notifyCodedRecordsExternally(
+  token: string,
+  records: RecordsToEmail[],
+  countryCode: CountryCode
+): Promise<void> {
+  const url = new URL(
+    'notify-coded-record-externally',
+    COUNTRY_CONFIG_HOST
+  ).toString()
+
+  const notifyPayload = {
+      records,
+      countryCode
+    }
+
+  await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(notifyPayload)
+  })
 }
 
 
