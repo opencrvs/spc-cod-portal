@@ -70,7 +70,20 @@ export async function identUploaderNotificationHandler(
 ) {
   const payload = request.payload as IdentUploaderNotificationPayload
 
-  return await sendCoDEmail(payload, h)
+  const responseCode = await sendCoDEmail(payload)
+  if (responseCode === 'success') {
+    return h.response({ success: true }).code(200)
+  }
+
+  if (responseCode === 'skipped') {
+    return h
+      .response({ success: true, message: 'Notification skipped' })
+      .code(200)
+  }
+
+  return h
+    .response({ success: false, message: 'Failed to send email' })
+    .code(500)
 }
 
 export const externalSpcCodingDatabaseRecordSchema = Joi.object({
@@ -114,7 +127,6 @@ async function getAccessToken(
 
   const url = new URL('token', countryAuthBase)
 
-  console.log('Requesting access token from:', url.toString())
   const res = await fetch(url.toString(), {
     method: 'POST',
     headers: {
@@ -134,10 +146,7 @@ async function getAccessToken(
   return data.access_token
 }
 
-export async function submitCodedRecordExternally(
-  request: Hapi.Request,
-  h: Hapi.ResponseToolkit
-) {
+export async function submitCodedRecordExternally(request: Hapi.Request) {
   const { countryCode, record: externalRecord } =
     request.payload as SubmitEncodingExternallyPayload
 
@@ -148,8 +157,6 @@ export async function submitCodedRecordExternally(
     config.authUrl
   )
   const url = `${config.codingUrl}/notification`
-
-  console.log('Sending to Tuvalu: ', JSON.stringify(externalRecord))
 
   return await fetch(url, {
     method: 'POST',
@@ -197,5 +204,18 @@ export async function notifyEncodingExternally(
     records
   }
 
-  return await sendCoDEmail(externalEmails, h, true)
+  const responseCode = await sendCoDEmail(externalEmails, true)
+  if (responseCode === 'success') {
+    return h.response({ success: true }).code(200)
+  }
+
+  if (responseCode === 'skipped') {
+    return h
+      .response({ success: true, message: 'Notification skipped' })
+      .code(200)
+  }
+
+  return h
+    .response({ success: false, message: 'Failed to send email' })
+    .code(500)
 }

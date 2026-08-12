@@ -14,7 +14,7 @@ import {
   notifyCodedRecordsExternally,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST, CountryCode, COUNTRY_CODES } from './constants'
+import { REQUIRED_HEADERS, CountryCode, COUNTRY_CODES } from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -161,7 +161,7 @@ export const processCSVRow = async (
         
           console.log('Sending to external system: ', JSON.stringify(externalPayload))
 
-          const url = new URL(
+         const url = new URL(
             'submit-coded-record-externally',
             COUNTRY_CONFIG_HOST
           ).toString()
@@ -185,7 +185,7 @@ export const processCSVRow = async (
             }
           }
 
-          await clearExternalRecords(token, id) // Remove the external records from IDENT & MEDCOD as they have been processed
+          await clearExternalRecords(token, id) 
 
           return {
             rowIndex,
@@ -349,6 +349,7 @@ export const processCSV = async (
     results
   }
 
+  console.log(JSON.stringify(results, null, 2))
   // Send email notifications - one email per user with all their processed records
   await sendEmailNotifications(token, results)
 
@@ -397,10 +398,7 @@ async function sendEmailNotifications(
   >()
 
   for (const record of results) {
-    if (
-      (record.status !== 'success' && record.status !== 'rejected') ||
-      !record.createdBy
-    ) {
+    if (record.status !== 'success' && record.status !== 'rejected') {
       continue
     }
 
@@ -413,14 +411,19 @@ async function sendEmailNotifications(
         externalRecordsByCountry.get(externalCountry) ?? []
 
       countryRecords.push(toRecordToEmail(record))
-
       externalRecordsByCountry.set(externalCountry, countryRecords)
 
       continue
     }
 
+    if (!record.createdBy) {
+      continue
+    }
+
     internalRecords.push(record)
   }
+  console.log("internalRecords: ", JSON.stringify(internalRecords))
+  console.log("externalRecordsByCountry: ", externalRecordsByCountry)
 
   // Internal notifications
   for (const [userId, records] of groupByUser(internalRecords)) {
@@ -441,6 +444,7 @@ async function sendEmailNotifications(
       )
     }
   }
+
 
   // External notifications
   for (const [countryCode, records] of externalRecordsByCountry) {

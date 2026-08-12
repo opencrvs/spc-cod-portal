@@ -15,6 +15,7 @@ import { EventDocument } from '@opencrvs/toolkit/events'
 import { importEvent } from '../../analytics/analytics'
 import { getClient } from '../../analytics/postgres'
 import { logger } from '@countryconfig/logger'
+import { COUNTRY_CONFIG, CountryCode } from '@countryconfig/constants'
 export interface ActionConfirmationRequest extends Hapi.Request {
   payload: EventDocument
 }
@@ -65,26 +66,15 @@ export async function externalRecordToEncodeHandler(
   const { countryCode } = request.params
   const { trackingId } = event
 
-  const mappingLocation = {
-    TUV: 'Tuvalu Office',
-    NIU: 'Niue Office',
-    TON: 'Tonga Office'
-  }
+  const officeName =
+    COUNTRY_CONFIG[countryCode as CountryCode].analyticsDashboardLocation
 
   console.log(
     'Payload received by externalRecordToEncodeHandler :>> ',
     JSON.stringify(event)
   )
 
-  // TODO: Hardcode an incoming country action to a MR_OFFICER user in this system that represents their country
-
-  // Set deceased.certificateKey = = `EXT_$(countryCode)_$(trackingId)`
-  // We want to save a row in analytics like this.  Note that it is a DECLARE row:
   const externalCertKey = `EXT_${countryCode}_${trackingId}`
-
-  const officeName =
-    mappingLocation[countryCode as keyof typeof mappingLocation] ||
-    'Unknown Office'
 
   const dbClient = getClient()
 

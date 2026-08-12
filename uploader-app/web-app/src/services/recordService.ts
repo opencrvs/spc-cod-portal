@@ -309,7 +309,7 @@ export async function sendProcessingNotificationEmail(
 
 export async function notifyCodedRecordsExternally(
   token: string,
-  results: RecordsToEmail[],
+  records: RecordsToEmail[],
   countryCode: CountryCode
 ): Promise<void> {
   const url = new URL(
@@ -317,16 +317,18 @@ export async function notifyCodedRecordsExternally(
     COUNTRY_CONFIG_HOST
   ).toString()
 
+  const notifyPayload = {
+      records,
+      countryCode
+    }
+
   await fetch(url, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      results,
-      countryCode
-    })
+    body: JSON.stringify(notifyPayload)
   })
 }
 

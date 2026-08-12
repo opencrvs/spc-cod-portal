@@ -47,6 +47,7 @@ export interface CountryConfig {
     }
     email: string
   }
+  analyticsDashboardLocation: string
 }
 
 export const COUNTRY_CONFIG: Record<CountryCode, CountryConfig> = {
@@ -57,11 +58,12 @@ export const COUNTRY_CONFIG: Record<CountryCode, CountryConfig> = {
     codingUrl: env.TUVALU_SPC_CODING_URL,
     recipient: {
       name: {
-        firstname: env.TUVALU_EMAIL_RECIPIENT_FIRSTNAME || '',
-        surname: env.TUVALU_EMAIL_RECIPIENT_SURNAME || ''
+        firstname: env.TUVALU_EMAIL_RECIPIENT_FIRSTNAME || 'Frances',
+        surname: env.TUVALU_EMAIL_RECIPIENT_SURNAME || 'Dobson'
       },
-      email: env.TUVALU_EMAIL_RECIPIENT || ''
-    }
+      email: env.TUVALU_EMAIL_RECIPIENT || 'spccodportal@gmail.com'
+    },
+    analyticsDashboardLocation: 'Tuvalu Office'
   } /*,
   NIU: {
     clientId: env.NIUE_CLIENT_ID || '',
