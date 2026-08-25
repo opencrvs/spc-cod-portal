@@ -14,7 +14,12 @@ import {
   notifyCodedRecordsExternally,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, CountryCode, COUNTRY_CODES } from './constants'
+import {
+  REQUIRED_HEADERS,
+  CountryCode,
+  COUNTRY_CODES,
+  COUNTRY_CONFIG_HOST
+} from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -200,11 +205,13 @@ export const processCSVRow = async (
         
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error)
       return {
         rowIndex,
         id,
         status: 'error',
-        message: `Country could not receive the updated record an error: ${JSON.stringify(error)}`
+        message: `Country could not receive the updated record an error: ${errorMessage}`
       }
     }
 
