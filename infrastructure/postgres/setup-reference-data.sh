@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
   code text NOT NULL,
+  uc_label text NOT NULL,
   chapter_no text NOT NULL,
   chapter_range text NOT NULL,
   chapter_name text NOT NULL,
@@ -75,6 +76,8 @@ CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   updated_at timestamp with time zone DEFAULT now() NOT NULL,
   valid_until timestamp with time zone
 );
+
+ALTER TABLE reference_data.icd10 ADD COLUMN IF NOT EXISTS uc_label text NOT NULL DEFAULT '';
 
 GRANT USAGE ON SCHEMA reference_data TO ${REFERENCE_DATA_EDITOR_USER};
 
