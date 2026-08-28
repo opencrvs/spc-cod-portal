@@ -203,7 +203,10 @@ export async function notifyEncodingExternally(
     records
   }
 
-  const responseCode = await sendCoDEmail(externalEmails, true)
+  const responseCode = await sendCoDEmail(
+    externalEmails,
+    countryCode as CountryCode
+  )
   if (responseCode === 'success') {
     return h.response({ success: true }).code(200)
   }

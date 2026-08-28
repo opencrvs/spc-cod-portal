@@ -48,6 +48,7 @@ export interface CountryConfig {
     email: string
   }
   analyticsDashboardLocation: string
+  applicationName: string
 }
 
 export const COUNTRY_CONFIG: Record<CountryCode, CountryConfig> = {
@@ -63,7 +64,8 @@ export const COUNTRY_CONFIG: Record<CountryCode, CountryConfig> = {
       },
       email: env.TUVALU_EMAIL_RECIPIENT || 'spccodportal@gmail.com'
     },
-    analyticsDashboardLocation: 'Tuvalu Office'
+    analyticsDashboardLocation: 'Tuvalu Office',
+    applicationName: 'Pankajland CRVS'
   } /*,
   NIU: {
     clientId: env.NIUE_CLIENT_ID || '',

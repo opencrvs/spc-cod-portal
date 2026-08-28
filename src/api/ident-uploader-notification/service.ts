@@ -2,7 +2,11 @@ import * as Hapi from '@hapi/hapi'
 import { sendEmail } from '../notification/email-service'
 import { SENDER_EMAIL_ADDRESS } from '../notification/constant'
 import { applicationConfig } from '../application/application-config'
-import { LOGIN_URL } from '@countryconfig/constants'
+import {
+  COUNTRY_CONFIG,
+  CountryCode,
+  LOGIN_URL
+} from '@countryconfig/constants'
 import { logger, maskEmail } from '@countryconfig/logger'
 import { IdentUploaderNotificationPayload, RecordsToEmail } from './handler'
 
@@ -10,22 +14,25 @@ const renderSection = (
   records: RecordsToEmail[],
   intro: string,
   plural: boolean = true,
-  isExternal: boolean = false
+  countryCode?: CountryCode
 ) => {
   if (!records.length) return ''
+  const isExternal = Boolean(countryCode)
   const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
+  const applicationName =
+    COUNTRY_CONFIG[countryCode as CountryCode].applicationName
   return `
     <p>${intro}</p>
     <ul>
       ${records
         .map(
           (record) =>
-            `<li>TrackingID: ${record.trackingId}${isExternal ? ` / Certificate Key: ${record.certKey}` : ''}${record.ucCode ? ` / UC Code: ${record.ucCode}` : ''}</li>`
+            `<li>TrackingID: ${record.trackingId}${isExternal ? '' : ` / Certificate Key: ${record.certKey}`}${record.ucCode ? ` / UC Code: ${record.ucCode}` : ''}</li>`
         )
         .join('')}
     </ul>
     <p>
-      Login to <a href="${loginUrl}">${loginUrl}</a> to access ${
+      Login to ${isExternal ? applicationName : `<a href="${loginUrl}">${loginUrl}</a>`} to access ${
         plural ? 'these records' : 'this record'
       }.
     </p>
@@ -34,8 +41,9 @@ const renderSection = (
 
 export async function sendCoDEmail(
   payload: IdentUploaderNotificationPayload,
-  isExternal: boolean = false
+  countryCode?: CountryCode
 ): Promise<'success' | 'failed' | 'skipped'> {
+  const isExternal = Boolean(countryCode)
   if (!payload.recipient.email) {
     return 'skipped'
   }
@@ -73,12 +81,16 @@ export async function sendCoDEmail(
     successRecords,
     !isExternal
       ? 'The following death records have been encoded with cause of death codes and are ready to view:'
-      : 'The following death records have been encoded with cause of death codes and are ready for a registrar to import:'
+      : 'The following death records have been encoded with cause of death codes and are ready for a registrar to import:',
+    successRecords.length > 1,
+    countryCode
   )}
 
   ${renderSection(
     rejectedRecords,
-    'The following death records were rejected and could not be coded:'
+    'The following death records were rejected and could not be coded:',
+    rejectedRecords.length > 1,
+    countryCode
   )}
 
   ${renderSection(
@@ -86,7 +98,8 @@ export async function sendCoDEmail(
     !isExternal
       ? 'The following death record has been corrected with new information and is ready to view:'
       : 'The following death record has been corrected with new information and is ready for a registrar to import:',
-    false
+    correctedRecords.length > 1,
+    countryCode
   )}
 
   <p>Best regards,<br>${applicationName}</p>
