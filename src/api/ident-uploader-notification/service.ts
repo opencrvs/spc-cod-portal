@@ -19,8 +19,9 @@ const renderSection = (
   if (!records.length) return ''
   const isExternal = Boolean(countryCode)
   const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
-  const applicationName =
-    COUNTRY_CONFIG[countryCode as CountryCode].applicationName
+  const applicationName = isExternal
+    ? COUNTRY_CONFIG[countryCode as CountryCode].applicationName
+    : undefined
   return `
     <p>${intro}</p>
     <ul>
