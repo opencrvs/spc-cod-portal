@@ -156,9 +156,8 @@ export async function submitCodedRecordExternally(request: Hapi.Request) {
     config.clientSecret,
     config.authUrl
   )
-  const url = `${config.codingUrl}/notification`
 
-  return await fetch(url, {
+  return await fetch(config.codingUrl, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
