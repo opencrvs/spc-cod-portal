@@ -21,7 +21,7 @@ export async function syncReferenceData() {
   const client = getClient()
 
   const icd10Records = await readCSVToJSON<Icd10CodeRecord[]>(
-    './src/data-seeding/reference-data/source/dictionary.csv'
+    './src/data-seeding/reference-data/source/aug-25-dictionary.csv'
   )
 
   await client.transaction().execute(async (trx) => {
@@ -40,6 +40,7 @@ export async function syncReferenceData() {
             id: l.id,
             label: l.label,
             code: l.code,
+            ucLabel: l.uc_label,
             chapterNo: l.chapter_no,
             chapterRange: l.chapter_range,
             chapterName: l.chapter_name,
@@ -61,6 +62,11 @@ export async function syncReferenceData() {
               WHEN excluded.code IS NOT NULL
               THEN excluded.code
               ELSE reference_data.icd10.code
+            END`,
+            ucLabel: () => sql`CASE
+              WHEN excluded.uc_label IS NOT NULL
+              THEN excluded.uc_label
+              ELSE reference_data.icd10.uc_label
             END`,
             chapterNo: () => sql`CASE
               WHEN excluded.chapter_no IS NOT NULL

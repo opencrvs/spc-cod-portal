@@ -1,14 +1,25 @@
 import * as Papa from 'papaparse'
-import { CSVRow, ProcessingResult, ProcessingSummary, RecordsToEmail } from './types'
+import {
+  CSVRow,
+  ProcessingResult,
+  ProcessingSummary,
+  RecordsToEmail
+} from './types'
 import {
   findRecordByCertificateKey,
   updateRecordWithCauseOfDeath,
   getCreatedByFromLegalStatuses,
   getUserById,
   sendProcessingNotificationEmail,
+  notifyCodedRecordsExternally,
   clearExternalRecords
 } from '../services/recordService'
-import { REQUIRED_HEADERS, COUNTRY_CONFIG_HOST } from './constants'
+import {
+  REQUIRED_HEADERS,
+  CountryCode,
+  COUNTRY_CODES,
+  COUNTRY_CONFIG_HOST
+} from './constants'
 
 export const validateCSVHeaders = (
   headers: string[]
@@ -71,6 +82,11 @@ type ExternalSpcCodingDatabaseRecord = {
   comments: string
 }
 
+type SubmitEncodingExternallyPayload = {
+  countryCode: string
+  record: ExternalSpcCodingDatabaseRecord
+}
+
 export const processCSVRow = async (
   row: CSVRow,
   rowIndex: number,
@@ -78,7 +94,7 @@ export const processCSVRow = async (
 ): Promise<ProcessingResult> => {
   const id = row.CertificateKey?.trim()
   const rowStatus = row.Status
-  
+
   if (!id) {
     return {
       rowIndex,
@@ -97,7 +113,10 @@ export const processCSVRow = async (
     }
   }
 
-  if(rowStatus === 'Rejected' && (!row.FreeText || row.FreeText.trim() === '')){
+  if (
+    rowStatus === 'Rejected' &&
+    (!row.FreeText || row.FreeText.trim() === '')
+  ) {
     return {
       rowIndex,
       id: '',
@@ -106,7 +125,7 @@ export const processCSVRow = async (
     }
   }
 
-  if(rowStatus === 'Final' && (!row.UCCode || row.UCCode.trim() === '')){
+  if (rowStatus === 'Final' && (!row.UCCode || row.UCCode.trim() === '')) {
     return {
       rowIndex,
       id: '',
@@ -115,42 +134,50 @@ export const processCSVRow = async (
     }
   }
 
-  let assignedTo=""
+  let assignedTo = ''
   // Check if there are any IRIS output fields to update
   const hasIrisData =
-    row.UCCode || row.SelectedCodes || row.MultipleCodes || row.Comments || row.FreeText
+    row.UCCode ||
+    row.SelectedCodes ||
+    row.MultipleCodes ||
+    row.Comments ||
+    row.FreeText
 
   try {
     try {
-      const prefix = "EXT_"
+      const prefix = 'EXT_'
       if (id.includes(prefix) && hasIrisData) {
         // External record
-        const [, countryCode, trackingId] = id.split("_");
-        if(countryCode === "TUV"){
-          const externalRecord: ExternalSpcCodingDatabaseRecord = {
+        const [, countryCode, trackingId] = id.split('_')
+        const externalRecord: ExternalSpcCodingDatabaseRecord = {
             trackingId,
             status: rowStatus,
-            ucCode: row.UCCode || "",
-            selectedCodes: row.SelectedCodes || "",
-            multipleCodes: row.MultipleCodes || "",
-            freeText: row.FreeText || "",
-            comments: row.Comments || ""
+            ucCode: row.UCCode || '',
+            selectedCodes: row.SelectedCodes || '',
+            multipleCodes: row.MultipleCodes || '',
+            freeText: row.FreeText || '',
+            comments: row.Comments || ''
           }
 
-          console.log("Sending to Tuvalu: ",JSON.stringify(externalRecord))
+          const externalPayload: SubmitEncodingExternallyPayload = {
+              countryCode,
+              record: externalRecord
+            }
+        
+          console.log('Sending to external system: ', JSON.stringify(externalPayload))
 
-          const url = new URL(
-              'submit-coded-record-externally',
-              COUNTRY_CONFIG_HOST
-            ).toString()
+         const url = new URL(
+            'submit-coded-record-externally',
+            COUNTRY_CONFIG_HOST
+          ).toString()
 
-           const response = await fetch(url, {
+          const response = await fetch(url, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(externalRecord)
+            body: JSON.stringify(externalPayload)
           })
 
           if (!response.ok) {
@@ -163,32 +190,33 @@ export const processCSVRow = async (
             }
           }
 
-          await clearExternalRecords(token, id) // Remove the external records from IDENT & MEDCOD as they have been processed
-          
+          await clearExternalRecords(token, id) 
+
           return {
             rowIndex,
             id,
             status: 'success',
-            message: 'Successfully updated with IRIS output data',
-            createdBy: undefined,  // TODO: decide how to set when sending a notification
-            trackingId: "", // TODO: decide how to set when sending a notification
-            certKey: "", // TODO: decide how to set when sending a notification
+            message: 'Iris response sent to country successfully',
+            createdBy: undefined,
+            trackingId,
+            certKey: id,
             ucCode: row.UCCode
           }
-        }
+        
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error)
       return {
         rowIndex,
         id,
         status: 'error',
-        message: `Country could not receive the updated record an error: ${JSON.stringify(error)}`
+        message: `Country could not receive the updated record an error: ${errorMessage}`
       }
     }
 
     // Else continue
     const record = await findRecordByCertificateKey(token, id)
-   
 
     if (!record) {
       return {
@@ -198,10 +226,10 @@ export const processCSVRow = async (
         message: `Record with ID "${id}" not found in database`
       }
     }
-    assignedTo=record?.assignedTo || ""
+    assignedTo = record?.assignedTo || ''
     const markedAsRegisteredInOcrvs = record.status === 'REGISTERED'
     const markedAsRejectedInOcrvs = record.flags?.includes('rejected')
-    
+
     if (markedAsRegisteredInOcrvs) {
       return {
         rowIndex,
@@ -220,8 +248,6 @@ export const processCSVRow = async (
       }
     }
 
-    
-
     if (!hasIrisData) {
       return {
         rowIndex,
@@ -232,11 +258,7 @@ export const processCSVRow = async (
       }
     }
 
-    const updated = await updateRecordWithCauseOfDeath(
-      token,
-      record,
-      row
-    )
+    const updated = await updateRecordWithCauseOfDeath(token, record, row)
 
     if (!updated) {
       return {
@@ -253,7 +275,6 @@ export const processCSVRow = async (
     const createdBy = getCreatedByFromLegalStatuses(record.legalStatuses)
 
     if (rowStatus === 'Rejected') {
-
       return {
         rowIndex,
         id,
@@ -264,9 +285,6 @@ export const processCSVRow = async (
         certKey
       }
     }
-
-    
-    
 
     return {
       rowIndex,
@@ -279,7 +297,7 @@ export const processCSVRow = async (
       ucCode: row.UCCode
     }
   } catch (error) {
-    if(error instanceof Error && error.message==="CONFLICT"){
+    if (error instanceof Error && error.message === 'CONFLICT') {
       const userInfo = await getUserById(token, assignedTo)
       if (userInfo) {
         return {
@@ -297,12 +315,13 @@ export const processCSVRow = async (
           message: `Unable to process this record because it is currently assigned to another unknown user. Please ask them to unassign the record first, then re-upload the CSV to process this record again.`
         }
       }
-    }else{
+    } else {
       return {
         rowIndex,
         id,
         status: 'error',
-        message: error instanceof Error ? error.message : 'Unknown error occurred'
+        message:
+          error instanceof Error ? error.message : 'Unknown error occurred'
       }
     }
   }
@@ -311,7 +330,11 @@ export const processCSVRow = async (
 export const processCSV = async (
   rows: CSVRow[],
   token: string,
-  onProgress?: (current: number, total: number, currentCertificateKey: string) => void
+  onProgress?: (
+    current: number,
+    total: number,
+    currentCertificateKey: string
+  ) => void
 ): Promise<ProcessingSummary> => {
   const results: ProcessingResult[] = []
 
@@ -332,7 +355,8 @@ export const processCSV = async (
     rejected: results.filter((r) => r.status === 'rejected').length,
     results
   }
- 
+
+  console.log(JSON.stringify(results, null, 2))
   // Send email notifications - one email per user with all their processed records
   await sendEmailNotifications(token, results)
 
@@ -344,55 +368,106 @@ export const processCSV = async (
  * Groups all successful records by createdBy user and sends ONE email per user
  * containing all their processed record IDs.
  */
+
+
+function toRecordToEmail(record: ProcessingResult): RecordsToEmail {
+  return {
+    status: record.status,
+    trackingId: record.trackingId || record.id,
+    certKey: record.certKey || record.id,
+    ucCode: record.ucCode || ''
+  }
+}
+
+function groupByUser(records: ProcessingResult[]) {
+  const grouped = new Map<string, RecordsToEmail[]>()
+
+  for (const record of records) {
+    const userRecords = grouped.get(record.createdBy!) ?? []
+
+    userRecords.push(toRecordToEmail(record))
+
+    grouped.set(record.createdBy!, userRecords)
+  }
+
+  return grouped
+}
+
 async function sendEmailNotifications(
   token: string,
   results: ProcessingResult[]
 ): Promise<void> {
-  // Filter successful or rejected results that have a createdBy user
-  const successfulOrRejectedResults = results.filter(
-    (r) => (r.status === 'success' || r.status === 'rejected') && r.createdBy
-  )
+  const internalRecords: ProcessingResult[] = []
 
-  if (successfulOrRejectedResults.length === 0) {
-    return
-  }
+  const externalRecordsByCountry = new Map<
+    CountryCode,
+    RecordsToEmail[]
+  >()
 
-  // Group ALL records by createdBy user - one entry per user with all their records
-  const recordsByUser = new Map<string, RecordsToEmail[]>()
-  for (const result of successfulOrRejectedResults) {
-    if (result.createdBy) {
-      const existing = recordsByUser.get(result.createdBy) || []
-      existing.push({ "status": result.status, "trackingId": result.trackingId || result.id, "certKey": result.certKey || result.id, "ucCode": result.ucCode || "" })
-      recordsByUser.set(result.createdBy, existing)
+  for (const record of results) {
+    if (record.status !== 'success' && record.status !== 'rejected') {
+      continue
     }
+
+    const externalCountry = COUNTRY_CODES.find((countryCode) =>
+      record.certKey?.startsWith(`EXT_${countryCode}`)
+    )
+
+    if (externalCountry) {
+      const countryRecords =
+        externalRecordsByCountry.get(externalCountry) ?? []
+
+      countryRecords.push(toRecordToEmail(record))
+      externalRecordsByCountry.set(externalCountry, countryRecords)
+
+      continue
+    }
+
+    if (!record.createdBy) {
+      continue
+    }
+
+    internalRecords.push(record)
   }
+  console.log("internalRecords: ", JSON.stringify(internalRecords))
+  console.log("externalRecordsByCountry: ", externalRecordsByCountry)
 
-  // Send ONE email per user with ALL their records
-  for (const [userId, records] of recordsByUser) {
+  // Internal notifications
+  for (const [userId, records] of groupByUser(internalRecords)) {
     try {
-      const userInfo = await getUserById(token, userId)
-      
-      if (!userInfo) {
-        continue
-      }
+      const user = await getUserById(token, userId)
 
-      if (!userInfo.email) {
-        continue
-      }
- 
-      // Send single email with all record IDs for this user
-      const result = await sendProcessingNotificationEmail(
-        token,
-        userInfo,
-        records
-      )
+      if (!user?.email) continue
+
+      await sendProcessingNotificationEmail(token, user, records)
+
       console.log(
-        `[EMAIL-NOTIFICATION] Email sent to user ${userId} for ${records.length} records. Result:`,
-        result
+        `[EMAIL-NOTIFICATION] Email sent to ${userId} for ${records.length} records.`
       )
     } catch (error) {
       console.error(
-        `[EMAIL-NOTIFICATION] Error sending email to user ${userId}:`,
+        `[EMAIL-NOTIFICATION] Error sending email to ${userId}:`,
+        error
+      )
+    }
+  }
+
+
+  // External notifications
+  for (const [countryCode, records] of externalRecordsByCountry) {
+    try {
+      await notifyCodedRecordsExternally(
+        token,
+        records,
+        countryCode
+      )
+
+      console.log(
+        `[EXTERNAL-NOTIFICATION] Sent ${records.length} records to ${countryCode}.`
+      )
+    } catch (error) {
+      console.error(
+        `[EXTERNAL-NOTIFICATION] Error sending records to ${countryCode}:`,
         error
       )
     }

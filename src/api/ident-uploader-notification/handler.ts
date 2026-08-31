@@ -11,12 +11,7 @@
 import * as Hapi from '@hapi/hapi'
 import * as Joi from 'joi'
 import { sendCoDEmail } from './service'
-import {
-  TUVALU_SPC_CODING_URL,
-  TUVALU_CLIENT_SECRET,
-  TUVALU_CLIENT_ID,
-  TUVALU_AUTH_URL
-} from '@countryconfig/constants'
+import { COUNTRY_CONFIG, CountryCode } from '@countryconfig/constants'
 
 /**
  * Payload schema for ident uploader notification
@@ -75,17 +70,33 @@ export async function identUploaderNotificationHandler(
 ) {
   const payload = request.payload as IdentUploaderNotificationPayload
 
-  return await sendCoDEmail(payload, h)
+  const responseCode = await sendCoDEmail(payload)
+  if (responseCode === 'success') {
+    return h.response({ success: true }).code(200)
+  }
+
+  if (responseCode === 'skipped') {
+    return h
+      .response({ success: true, message: 'Notification skipped' })
+      .code(200)
+  }
+
+  return h
+    .response({ success: false, message: 'Failed to send email' })
+    .code(500)
 }
 
 export const externalSpcCodingDatabaseRecordSchema = Joi.object({
-  trackingId: Joi.string().required(),
-  status: Joi.string().required(),
-  ucCode: Joi.string().required(),
-  selectedCodes: Joi.string().required(),
-  multipleCodes: Joi.string().required(),
-  freeText: Joi.string().required(),
-  comments: Joi.string().required()
+  countryCode: Joi.string().required(),
+  record: Joi.object({
+    trackingId: Joi.string().required(),
+    status: Joi.string().required(),
+    ucCode: Joi.string().allow('').required(),
+    selectedCodes: Joi.string().allow('').required(),
+    multipleCodes: Joi.string().allow('').required(),
+    freeText: Joi.string().allow('').required(),
+    comments: Joi.string().allow('').required()
+  })
 })
 
 type ExternalSpcCodingDatabaseRecord = {
@@ -96,6 +107,11 @@ type ExternalSpcCodingDatabaseRecord = {
   multipleCodes: string
   freeText: string
   comments: string
+}
+
+type SubmitEncodingExternallyPayload = {
+  countryCode: string
+  record: ExternalSpcCodingDatabaseRecord
 }
 
 type TokenResponse = { access_token: string; token_type: string }
@@ -111,7 +127,6 @@ async function getAccessToken(
 
   const url = new URL('token', countryAuthBase)
 
-  console.log('Requesting access token from:', url.toString())
   const res = await fetch(url.toString(), {
     method: 'POST',
     headers: {
@@ -132,17 +147,17 @@ async function getAccessToken(
 }
 
 export async function submitCodedRecordExternally(request: Hapi.Request) {
+  const { countryCode, record: externalRecord } =
+    request.payload as SubmitEncodingExternallyPayload
+
+  const config = COUNTRY_CONFIG[countryCode as CountryCode]
   const token = await getAccessToken(
-    TUVALU_CLIENT_ID || '',
-    TUVALU_CLIENT_SECRET || '',
-    TUVALU_AUTH_URL
+    config.clientId,
+    config.clientSecret,
+    config.authUrl
   )
-  // TODO: get TUVALU_CLIENT_ID, TUVALU_CLIENT_SECRET, TUVALU_COUNTRY_CONFIG_URL from VITE vars
-  const externalRecord = request.payload as ExternalSpcCodingDatabaseRecord
 
-  console.log('Sending to Tuvalu: ', JSON.stringify(externalRecord))
-
-  return await fetch(TUVALU_SPC_CODING_URL, {
+  return await fetch(config.codingUrl, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -150,4 +165,59 @@ export async function submitCodedRecordExternally(request: Hapi.Request) {
     },
     body: JSON.stringify(externalRecord)
   })
+}
+
+export const notifyCodedRecordsExternallySchema = Joi.object({
+  countryCode: Joi.string().required(),
+  records: Joi.array()
+    .items(
+      Joi.object({
+        status: Joi.string()
+          .valid('success', 'rejected', 'corrected')
+          .required(),
+        trackingId: Joi.string().required(),
+        certKey: Joi.string().required(),
+        ucCode: Joi.string().allow('')
+      })
+    )
+    .min(1)
+    .required()
+})
+
+type NotifyCodedRecordsExternallyPayload = {
+  countryCode: string
+  records: RecordsToEmail[]
+}
+
+export async function notifyEncodingExternally(
+  request: Hapi.Request,
+  h: Hapi.ResponseToolkit
+) {
+  const { countryCode, records } =
+    request.payload as NotifyCodedRecordsExternallyPayload
+
+  const config = COUNTRY_CONFIG[countryCode as CountryCode]
+
+  const externalEmails: IdentUploaderNotificationPayload = {
+    recipient: config.recipient,
+    records
+  }
+
+  const responseCode = await sendCoDEmail(
+    externalEmails,
+    countryCode as CountryCode
+  )
+  if (responseCode === 'success') {
+    return h.response({ success: true }).code(200)
+  }
+
+  if (responseCode === 'skipped') {
+    return h
+      .response({ success: true, message: 'Notification skipped' })
+      .code(200)
+  }
+
+  return h
+    .response({ success: false, message: 'Failed to send email' })
+    .code(500)
 }

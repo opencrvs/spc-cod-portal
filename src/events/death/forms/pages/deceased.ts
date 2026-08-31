@@ -94,6 +94,16 @@ export const deceased = defineFormPage({
               .get('data.exists')
               .isEqualTo(true)
           )
+        },
+        {
+          message: {
+            id: 'event.death.action.declare.field.certificateKey.reserved.error',
+            defaultMessage:
+              'Certificate key cannot contain the reserved string "EXT_"',
+            description:
+              'Error shown when certificate key contains reserved EXT_ string'
+          },
+          validator: not(field('deceased.certificateKey').matches('.*EXT_.*'))
         }
       ]
     },

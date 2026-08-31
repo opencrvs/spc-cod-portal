@@ -8,6 +8,7 @@ export const Icd10CodeRecord = z.object({
   id: UUID,
   label: z.string(),
   code: z.string().nullish(),
+  ucLabel: z.string(),
   chapterNo: z.string().nullish(),
   chapterRange: z.string().nullish(),
   chapterName: z.string().nullish(),

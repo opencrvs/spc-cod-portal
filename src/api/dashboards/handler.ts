@@ -15,6 +15,7 @@ import { EventDocument } from '@opencrvs/toolkit/events'
 import { importEvent } from '../../analytics/analytics'
 import { getClient } from '../../analytics/postgres'
 import { logger } from '@countryconfig/logger'
+import { COUNTRY_CONFIG, CountryCode } from '@countryconfig/constants'
 export interface ActionConfirmationRequest extends Hapi.Request {
   payload: EventDocument
 }
@@ -28,6 +29,35 @@ export async function mapGeojsonHandler(
   return h.response(fileContents).type('text/plain')
 }
 
+function renameCauseOfDeathIntervalProperties(payload: any) {
+  for (const action of payload.actions ?? []) {
+    const declaration = action.declaration
+
+    if (!declaration || typeof declaration !== 'object') {
+      continue
+    }
+
+    for (const key of Object.keys(declaration)) {
+      const match = key.match(
+        /^eventDetails\.causeOfDeath(A|B|C|D|E|Other)\.interval$/
+      )
+
+      if (!match) {
+        continue
+      }
+
+      const cause = match[1]
+
+      const newKey = `eventDetails.causeOfDeath${cause}.symptom.one.interval`
+
+      declaration[newKey] = declaration[key]
+      delete declaration[key]
+    }
+  }
+
+  return payload
+}
+
 export async function externalRecordToEncodeHandler(
   request: ActionConfirmationRequest,
   h: Hapi.ResponseToolkit
@@ -36,26 +66,15 @@ export async function externalRecordToEncodeHandler(
   const { countryCode } = request.params
   const { trackingId } = event
 
-  const mappingLocation = {
-    TUV: 'Tuvalu Office',
-    NIU: 'Niue Office',
-    TON: 'Tonga Office'
-  }
+  const officeName =
+    COUNTRY_CONFIG[countryCode as CountryCode].analyticsDashboardLocation
 
   console.log(
     'Payload received by externalRecordToEncodeHandler :>> ',
     JSON.stringify(event)
   )
 
-  // TODO: Hardcode an incoming country action to a MR_OFFICER user in this system that represents their country
-
-  // Set deceased.certificateKey = = `EXT_$(countryCode)_$(trackingId)`
-  // We want to save a row in analytics like this.  Note that it is a DECLARE row:
   const externalCertKey = `EXT_${countryCode}_${trackingId}`
-
-  const officeName =
-    mappingLocation[countryCode as keyof typeof mappingLocation] ||
-    'Unknown Office'
 
   const dbClient = getClient()
 
@@ -72,36 +91,32 @@ export async function externalRecordToEncodeHandler(
     logger.error(errorMessage)
   }
 
+  if (countryCode == 'TUV') {
+    // Tuvalu has a different structure for causeOfDeath intervals, so we need to rename them to match the expected structure in analytics.
+    // They dont use the add another sypmtom button
+    renameCauseOfDeathIntervalProperties(event)
+  }
+
   const updatedObject = {
     ...event,
     actions: event.actions.map((action) => {
-      if (!('declaration' in action)) {
-        return action
-      }
+      const hasDeclaration =
+        'declaration' in action && ['NOTIFY', 'DECLARE'].includes(action.type)
 
-      if (action.type === 'NOTIFY' && action.status === 'Requested') {
+      if (!hasDeclaration) {
         return {
           ...action,
-          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
-          declaration: {
-            ...action.declaration,
-            'deceased.certificateKey': externalCertKey
-          }
+          createdAtLocation: spcLocation?.[0]?.id ?? action.createdAtLocation
         }
       }
-
-      if (action.type === 'DECLARE' && action.status === 'Requested') {
-        return {
-          ...action,
-          createdAtLocation: spcLocation[0]?.id || action.createdAtLocation,
-          declaration: {
-            ...action.declaration,
-            'deceased.certificateKey': externalCertKey
-          }
+      return {
+        ...action,
+        createdAtLocation: spcLocation?.[0]?.id ?? action.createdAtLocation,
+        declaration: {
+          ...action.declaration,
+          'deceased.certificateKey': externalCertKey
         }
       }
-
-      return action
     })
   }
 
