@@ -13,15 +13,10 @@ import { IdentUploaderNotificationPayload, RecordsToEmail } from './handler'
 const renderSection = (
   records: RecordsToEmail[],
   intro: string,
-  plural: boolean = true,
   countryCode?: CountryCode
 ) => {
   if (!records.length) return ''
   const isExternal = Boolean(countryCode)
-  const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
-  const applicationName = isExternal
-    ? COUNTRY_CONFIG[countryCode as CountryCode].applicationName
-    : undefined
   return `
     <p>${intro}</p>
     <ul>
@@ -32,11 +27,6 @@ const renderSection = (
         )
         .join('')}
     </ul>
-    <p>
-      Login to ${isExternal ? applicationName : `<a href="${loginUrl}">${loginUrl}</a>`} to access ${
-        plural ? 'these records' : 'this record'
-      }.
-    </p>
   `
 }
 
@@ -72,7 +62,11 @@ export async function sendCoDEmail(
     (r) => r.status === 'corrected'
   )
 
-  const applicationName = applicationConfig.APPLICATION_NAME || 'OpenCRVS'
+  const loginUrl = LOGIN_URL || 'https://login.spc-cod.opencrvs.org'
+  const applicationName = isExternal
+    ? COUNTRY_CONFIG[countryCode as CountryCode].applicationName
+    : applicationConfig.APPLICATION_NAME || 'OpenCRVS'
+  const plural = payload.records.length > 1
 
   // Build email content
   const emailBody = `
@@ -83,14 +77,14 @@ export async function sendCoDEmail(
     !isExternal
       ? 'The following death records have been encoded with cause of death codes and are ready to view:'
       : 'The following death records have been encoded with cause of death codes and are ready for a registrar to import:',
-    successRecords.length > 1,
     countryCode
   )}
 
   ${renderSection(
     rejectedRecords,
-    'The following death records were rejected and could not be coded:',
-    rejectedRecords.length > 1,
+    !isExternal
+      ? 'The following death records were rejected and could not be coded:'
+      : 'The following death records were rejected. They could not be coded and are ready for a registrar to import with the reason for rejection:',
     countryCode
   )}
 
@@ -99,9 +93,14 @@ export async function sendCoDEmail(
     !isExternal
       ? 'The following death record has been corrected with new information and is ready to view:'
       : 'The following death record has been corrected with new information and is ready for a registrar to import:',
-    correctedRecords.length > 1,
     countryCode
   )}
+
+  <p>
+    Login to ${isExternal ? applicationName : `<a href="${loginUrl}">${loginUrl}</a>`} to access ${
+      plural ? 'these records' : 'this record'
+    }.
+  </p>
 
   <p>Best regards,<br>${applicationName}</p>
 `
