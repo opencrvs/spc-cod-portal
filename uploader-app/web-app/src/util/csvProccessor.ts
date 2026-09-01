@@ -192,18 +192,30 @@ export const processCSVRow = async (
 
           await clearExternalRecords(token, id) 
 
-          return {
-            rowIndex,
-            id,
-            status: 'success',
-            message: 'Iris response sent to country successfully',
-            createdBy: undefined,
-            trackingId,
-            certKey: id,
-            ucCode: row.UCCode
+          if (rowStatus === 'Rejected') {
+            return {
+              rowIndex,
+              id,
+              status: 'rejected',
+              message: 'Iris rejected response sent to country successfully',
+              createdBy: undefined,
+              trackingId,
+              certKey: id
+            }
+          } else {
+
+            return {
+              rowIndex,
+              id,
+              status: 'success',
+              message: 'Iris uc code response sent to country successfully',
+              createdBy: undefined,
+              trackingId,
+              certKey: id,
+              ucCode: row.UCCode
+            }
           }
-        
-      }
+        }
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error)
