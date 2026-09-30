@@ -288,3 +288,62 @@ When the OpenCRVS Core servers start up with un-seeded databases they call the f
 # Action Confirmation
 
 The Action Confirmation is a feature of OpenCRVS that allows for asynchronous confirmation of event actions. See documentation here: [Action Confirmation](./src/api/action-confirmation.md)
+
+# Adding a country
+
+Adding a country administrative area or location using APIs on the SPC servers must be performed within the servers themselves due to restrictions on external use of curl. Blocked by SPC Cloudflare.
+
+Here are the commands used to create Vanuatu after going live using throwaway pods ...
+
+NAMESPACE=
+
+kubectl run curl-test \
+  --namespace="$NAMESPACE" \
+  --image=appropriate/curl \
+  --restart=Never \
+  --rm -i \
+  --command -- \
+  curl -i --connect-timeout 10 --max-time 60 \
+  "http://gateway.${NAMESPACE}.svc.cluster.local:7070/events/locations.list" \
+  -H "Authorization: Bearer $TOKEN"
+
+kubectl run curl-test \
+  --namespace="$NAMESPACE" \
+  --image=appropriate/curl \
+  --restart=Never \
+  --rm -i \
+  --command -- \
+  curl -i --connect-timeout 10 --max-time 60 -X POST \
+  "http://gateway.${NAMESPACE}.svc.cluster.local:7070/events/administrativeAreas.set" \
+  -H "Authorization: Bearer $TOKEN$" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "json": [{
+      "id": "2e99f309-6178-4d09-bc4f-745422e61826",
+      "name": "Vanuatu",
+      "externalId": "vanuatu",
+      "parentId": null,
+      "validUntil": "3000-01-01T00:00:00.000Z"
+    }]
+  }'
+
+  kubectl run curl-test \
+  --namespace="$NAMESPACE" \
+  --image=appropriate/curl \
+  --restart=Never \
+  --rm -i \
+  --command -- \
+  curl -i --connect-timeout 10 --max-time 60 -X POST \
+  "http://gateway.${NAMESPACE}.svc.cluster.local:7070/events/locations.set" \
+  -H "Authorization: Bearer $TOKEN$" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "json": [{
+      "id": "060a7ad8-30c4-41a8-a449-463ba3c4f5f1",
+      "name": "Vanuatu Office",
+      "externalId": "vanuatu-office",
+      "administrativeAreaId": "2e99f309-6178-4d09-bc4f-745422e61826",
+      "locationType": "CRVS_OFFICE",
+      "validUntil": "3000-01-01T00:00:00.000Z"
+    }]
+  }'
