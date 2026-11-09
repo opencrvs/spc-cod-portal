@@ -16,7 +16,6 @@ export default defineClientConfig({
   // Country code in uppercase ALPHA-3 format
   COUNTRY: 'FAR',
   LANGUAGES: ['en'],
-  SENTRY: '',
   REGISTER_BACKGROUND: {
     backgroundImage: `data:image/jpg;base64,${fs
       .readFileSync(join(__dirname, 'ocean.jpg'))

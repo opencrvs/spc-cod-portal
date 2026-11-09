@@ -23,7 +23,6 @@ export default defineLoginConfig({
       .toString('base64')}`,
     imageFit: 'FILL'
   },
-  SENTRY: '',
   USER_NOTIFICATION_DELIVERY_METHOD:
     applicationConfig.USER_NOTIFICATION_DELIVERY_METHOD,
   INFORMANT_NOTIFICATION_DELIVERY_METHOD:
