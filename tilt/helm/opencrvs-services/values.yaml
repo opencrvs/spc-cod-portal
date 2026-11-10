@@ -14,3 +14,6 @@
 # Country specific overrides for the opencrvs-services chart in local Tilt development.
 # Applied on top of tilt/examples/opencrvs-services/values.yaml and never overwritten by
 # 'opencrvs upgrade'.
+dashboards:
+  enabled: true
+  use_default_credentials: false
