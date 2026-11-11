@@ -109,4 +109,8 @@ setup_opencrvs(
     countryconfig_image_tag=countryconfig_image_tag,
 )
 
+# FIXME: Upsteam this fix to common.tilt, then remove it from here.
+# Country specific customisation (e.g. uploader app), see ./tilt/custom.tilt
+include('./tilt/custom.tilt')
+
 print("✅ Tiltfile configuration loaded successfully.")

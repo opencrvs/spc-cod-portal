@@ -1,0 +1,164 @@
+##########################################################################
+# Country specific Tilt customisation (included from ./Tiltfile)
+#
+# Deploys the SPC uploader companion app (./uploader-app) next to OpenCRVS,
+# using the same `uploader` helm chart as the real environments:
+#   - uploader      : Vite web app served by nginx  (uploader-app/web-app/Dockerfile)
+#   - uploader-api  : Hono.js backend               (uploader-app/api/Dockerfile)
+#
+# The chart lives in the infrastructure repository and is cloned to
+# ./tilt/.uploader-charts on first run. Delete that directory (or change
+# UPLOADER_CHARTS_REF) to fetch it again.
+#
+# Everything can be overridden with environment variables:
+#   UPLOADER_CHARTS_REF=main          infrastructure repository branch/tag
+#   UPLOADER_NAMESPACE=opencrvs-dev   namespace to deploy to
+#   UPLOADER_HOSTNAME=opencrvs.localhost
+#                                     chart `hostname`, the app is served on uploader.<hostname>
+#   UPLOADER_DOMAIN=opencrvs.localhost
+#                                     chart `env.DOMAIN` (nginx CSP frame-ancestors)
+#   UPLOADER_CSP_WILDCARD=*.opencrvs.localhost
+#                                     chart `env.CONTENT_SECURITY_POLICY_WILDCARD`
+#
+# Further chart overrides go to ./tilt/helm/uploader/values.yaml (optional).
+
+##########################################################################
+# Dashboards (Metabase) label
+#
+# common.tilt does not group the optional `dashboards` workload, so it ends up
+# unlabelled. Label it together with the other OpenCRVS services, but only
+# when it is enabled (k8s_resource fails for a workload that does not exist).
+# Enabled state is read from the same values files setup_opencrvs() deploys
+# with: tilt/examples first, then the country overrides in tilt/helm.
+
+# FIXME: Upsteam this fix to common.tilt, then remove it from here.
+def _dashboards_enabled():
+  enabled = False
+  for f in ["./examples/opencrvs-services/values.yaml", "./helm/opencrvs-services/values.yaml"]:
+    if os.path.exists(f):
+      values = decode_yaml(read_file(f)) or {}
+      dashboards = values.get("dashboards") or {}
+      if "enabled" in dashboards:
+        enabled = dashboards["enabled"]
+  return enabled
+
+if _dashboards_enabled():
+  k8s_resource(
+    "dashboards",
+    labels=["1.OpenCRVS"],
+    resource_deps=["elasticsearch", "minio", "redis", "postgres"],
+  )
+
+##########################################################################
+# Helm chart checkout
+
+uploader_charts_dir = ".uploader-charts"
+uploader_charts_repo_url = 'https://github.com/opencrvs/spc-cod-portal-infrastructure.git'
+uploader_charts_ref = os.getenv("UPLOADER_CHARTS_REF", "main")
+uploader_charts_marker = "{}/.tilt-ref-{}".format(uploader_charts_dir, uploader_charts_ref.replace("/", "_"))
+
+# Tilt re-evaluates this file on every reload, so clone only once per ref.
+if not os.path.exists(uploader_charts_marker):
+  print("Cloning Uploader Helm chart ({}) from {}...".format(uploader_charts_ref, uploader_charts_repo_url))
+  # set -e and git -C: a failed clone must never leave git running in the country config repository
+  local("""
+    set -e
+    rm -rf {uploader_charts_dir}
+    git clone \
+      --depth 1 \
+      --filter=blob:none \
+      --sparse \
+      --branch {uploader_charts_ref} \
+      {uploader_charts_repo_url} \
+      {uploader_charts_dir}
+    git -C {uploader_charts_dir} sparse-checkout set charts
+    touch {uploader_charts_marker}
+  """.format(
+    uploader_charts_ref=uploader_charts_ref,
+    uploader_charts_dir=uploader_charts_dir,
+    uploader_charts_repo_url=uploader_charts_repo_url,
+    uploader_charts_marker=uploader_charts_marker
+  ))
+else:
+  print("Using Uploader Helm chart ({}) from {}".format(uploader_charts_ref, uploader_charts_dir))
+
+uploader_chart_path = "{}/charts/uploader".format(uploader_charts_dir)
+if not os.path.exists("{}/Chart.yaml".format(uploader_chart_path)):
+  fail("Uploader Helm chart not found in {}, delete {} and reload Tilt to clone it again".format(uploader_chart_path, uploader_charts_dir))
+
+##########################################################################
+# Configuration
+
+uploader_namespace = os.getenv("UPLOADER_NAMESPACE", "opencrvs-dev")
+uploader_hostname = os.getenv("UPLOADER_HOSTNAME", "opencrvs.localhost")
+uploader_domain = os.getenv("UPLOADER_DOMAIN", "opencrvs.localhost")
+uploader_csp_wildcard = os.getenv("UPLOADER_CSP_WILDCARD", "*.{}".format(uploader_domain))
+uploader_tilt_label = "6.Uploader"
+
+# Relative to this file (paths in included Tilt files resolve from ./tilt)
+uploader_context = "../uploader-app"
+
+# Image names must match `uploader.image.name` / `uploader_api.image.name` in the chart's values.yaml
+uploader_web_image = "opencrvs/spc-cod-uploader"
+uploader_api_image = "opencrvs/spc-cod-uploader-api"
+uploader_image_tag = "local"
+
+# The API listens on a fixed port (uploader-app/api/src/index.ts)
+uploader_api_port = 3068
+
+# Optional country specific chart overrides
+uploader_values = []
+if os.path.exists("./helm/uploader/values.yaml"):
+  uploader_values.append("./helm/uploader/values.yaml")
+
+##########################################################################
+# Setup
+
+def setup_uploader():
+  print("🚀 Deploying uploader app at http://uploader.{}".format(uploader_hostname))
+
+  # Both Dockerfiles expect ./uploader-app as the build context
+  docker_build(
+    "{}:{}".format(uploader_web_image, uploader_image_tag),
+    uploader_context,
+    dockerfile="{}/web-app/Dockerfile".format(uploader_context),
+    network="host",
+    ignore=["**/node_modules", "**/dist"],
+  )
+  docker_build(
+    "{}:{}".format(uploader_api_image, uploader_image_tag),
+    uploader_context,
+    dockerfile="{}/api/Dockerfile".format(uploader_context),
+    network="host",
+    ignore=["**/node_modules", "**/dist"],
+  )
+
+  # Same values as the deploy pipeline passes to `helm upgrade --install uploader`
+  k8s_yaml(helm(
+    uploader_chart_path,
+    name="uploader",
+    namespace=uploader_namespace,
+    values=uploader_values,
+    set=[
+      "uploader.image.name={}".format(uploader_web_image),
+      "uploader.image.tag={}".format(uploader_image_tag),
+      "uploader_api.image.name={}".format(uploader_api_image),
+      "uploader_api.image.tag={}".format(uploader_image_tag),
+      "uploader_api.port={}".format(uploader_api_port),
+      "hostname={}".format(uploader_hostname),
+      "env.DOMAIN={}".format(uploader_domain),
+      "env.CONTENT_SECURITY_POLICY_WILDCARD={}".format(uploader_csp_wildcard),
+    ],
+  ))
+
+  k8s_resource("uploader", port_forwards=["3069:80"], labels=[uploader_tilt_label])
+  k8s_resource("uploader-api", port_forwards=["{0}:{0}".format(uploader_api_port)], labels=[uploader_tilt_label])
+  # IngressRoutes need the Traefik CRDs
+  k8s_resource(
+    objects=["uploader:ingressroute", "uploader-api:ingressroute"],
+    new_name="uploader-ingress-routes",
+    resource_deps=["traefik"],
+    labels=["5.Traefik"],
+  )
+
+setup_uploader()
