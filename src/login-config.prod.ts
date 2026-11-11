@@ -10,7 +10,6 @@
  */
 import { defineLoginConfig } from '@opencrvs/toolkit/application-config'
 import { applicationConfig } from '@countryconfig/api/application/application-config'
-import { env } from './environment'
 import * as fs from 'fs'
 import { join } from 'path'
 
@@ -24,7 +23,6 @@ export default defineLoginConfig({
       .toString('base64')}`,
     imageFit: 'FILL'
   },
-  SENTRY: env.SENTRY_DSN ?? '',
   USER_NOTIFICATION_DELIVERY_METHOD:
     applicationConfig.USER_NOTIFICATION_DELIVERY_METHOD,
   INFORMANT_NOTIFICATION_DELIVERY_METHOD:
