@@ -1,12 +1,4 @@
 #!/bin/bash
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# OpenCRVS is also distributed under the terms of the Civil Registration
-# & Healthcare Disclaimer located at http://opencrvs.org/license.
-#
-# Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
 set -euo pipefail
 
 # Configuration
@@ -15,14 +7,10 @@ set -euo pipefail
 : "${POSTGRES_PASSWORD:?Must set POSTGRES_PASSWORD}"
 : "${POSTGRES_USER:?Must set POSTGRES_USER}"
 : "${ANALYTICS_POSTGRES_USER:?Must set ANALYTICS_POSTGRES_USER}"
-
-if [[ -z "${REFERENCE_DATA_POSTGRES_PASSWORD:-}" ||
-      -z "${REFERENCE_DATA_POSTGRES_USER:-}" ||
-      -z "${REFERENCE_DATA_EDITOR_PASSWORD:-}" ||
-      -z "${REFERENCE_DATA_EDITOR_USER:-}" ]]; then
-  echo "Required variables are not set, skipping..."
-  exit 0
-fi
+: "${REFERENCE_DATA_POSTGRES_PASSWORD:?Must set REFERENCE_DATA_POSTGRES_PASSWORD}"
+: "${REFERENCE_DATA_POSTGRES_USER:?Must set REFERENCE_DATA_POSTGRES_USER}"
+: "${REFERENCE_DATA_EDITOR_PASSWORD:?Must set REFERENCE_DATA_EDITOR_PASSWORD}"
+: "${REFERENCE_DATA_EDITOR_USER:?Must set REFERENCE_DATA_EDITOR_USER}"
 : "${KEEP_ALIVE_SECONDS:=0}" # Prevent Swarm from marking this task as failed due to early exit
 
 TARGET_DB=${TARGET_DB:-"events"}
@@ -76,10 +64,20 @@ CREATE TABLE IF NOT EXISTS reference_data.icd10 (
   id text PRIMARY KEY,
   label text NOT NULL,
   code text NOT NULL,
+  uc_label text NOT NULL,
+  chapter_no text NOT NULL,
+  chapter_range text NOT NULL,
+  chapter_name text NOT NULL,
+  subchapter_code text NOT NULL,
+  subchapter_name text NOT NULL,
+  ncd_cd_injuries text,
+  ill_defined text NOT NULL,
   created_at timestamp with time zone DEFAULT now() NOT NULL,
   updated_at timestamp with time zone DEFAULT now() NOT NULL,
   valid_until timestamp with time zone
 );
+
+ALTER TABLE reference_data.icd10 ADD COLUMN IF NOT EXISTS uc_label text NOT NULL DEFAULT '';
 
 GRANT USAGE ON SCHEMA reference_data TO ${REFERENCE_DATA_EDITOR_USER};
 
@@ -98,10 +96,12 @@ ON reference_data.icd10
 USING gin (label gin_trgm_ops);
 
 GRANT USAGE ON SCHEMA reference_data TO ${REFERENCE_DATA_POSTGRES_USER};
+GRANT USAGE ON SCHEMA reference_data TO ${ANALYTICS_POSTGRES_USER};
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA reference_data TO ${REFERENCE_DATA_POSTGRES_USER};
+GRANT SELECT ON ALL TABLES IN SCHEMA reference_data TO ${ANALYTICS_POSTGRES_USER};
 
 EOSQL
 
 
-echo ":white_check_mark: reference-data schema and icd10 table initialized"
+echo "✅ reference-data schema and icd10 table initialized"
