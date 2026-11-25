@@ -2303,3 +2303,88 @@ wq.noRecords.readyToPrint,No records messages for ready to print tab,No records 
 wq.noRecords.requiresUpdate,No records messages for require updates tab,No records require updates
 wq.noRecords.sentForApproval,No records messages for sent for approval tab,No records sent for approval
 wq.noRecords.sentForReview,No records messages for sent for review tab,No records sent for review
+action.assign.label,,Assign
+action.noActionsAvailable,Message shown on action menu if no actions are available,No actions available
+action.unassign.label,,Unassign
+actions.edit,Edit action label,Edit
+actions.notify,Notify action label,Notify
+actions.read,Action label for reading a record from the workqueue,Review
+advancedSearch.registrationNumber,Label for registration number field,Registration number
+buttons.backToLogin,Button label to navigate back to the login page,Back to login
+buttons.clear,Label for the button clearing all fields on the form page,Clear
+buttons.goToReview,Go to review button text,Go to review
+buttons.unarchive,Unarchive button text,Unarchive
+clearForm.desc.clearFormConfirm,Description for clear form confirmation modal,All fields on this page will be cleared. Are you sure you want to continue?
+clearForm.title.clearFormConfirm,Title for clear form confirmation modal,Clear form?
+configuration.timeField.outputFormat,Default output format for time fields,hh:mm a
+configuration.timeOnlyFormat,"Time format for the time line of the ""When"" column",hh.mm a
+constants.audit,Label for the audit header,Audit
+correction.correctionReject.description,The description for reject correction modal,Rejecting this correction request will leave the original record unchanged. A reason for rejection should be provided.
+duplicates.content.notDuplicateContentConfirmationDescription,Not a duplicate content confirmation description message,"By clicking 'Confirm', the event will be marked as not a duplicate."
+duplicates.reviewUnavailable.description,Body of the banner shown when the user cannot access every record matched as a potential duplicate,"It is flagged against a record registered outside your jurisdiction, which you are not permitted to view. The review must be completed by someone with access to both records."
+duplicates.reviewUnavailable.title,Title of the banner shown when the user cannot access every record matched as a potential duplicate,You cannot review this record for duplicates
+editPageBanner.declaredMessage,The message for the edit page banner,You are editing a record declared by {name} ({role} at {location})
+editPageBanner.notifiedMessage,The message for the edit page banner,You are editing a record notified by {name} ({role} at {location})
+error.officeInactive,Title shown when a user's assigned office is inactive,Your assigned office has been made inactive
+error.officeInactiveDescription,Description shown when a user's assigned office is inactive,Please contact your administrator to be reassigned
+error.pdf,PDF load Error,Failed to load PDF
+event.birth.action.reject.label,This is the label for the reject action,Reject
+event.birth.action.unarchive.label,Label for unarchive record button in dropdown menu,Unarchive
+event.declaration.potentialDuplicateDetected,Notification for potential duplicate declaration. Shown when a potential duplicate is detected after declaring an event.,{trackingId} is a potential duplicate. Record is ready for review.
+event.edit.cancelEdits,"Label for ""Cancel edits"" in edit action menu",Cancel edits
+event.edit.comment.label,The label for the comment,Comments
+event.edit.notifyWithEdits.label,Label for `Notify with edits` in edit action menu,Notify with edits
+event.edit.registerWithEdits.label,Label for `Register with edits` in edit action menu,Register with edits
+event.summary.redacted,Accessible name for a value the user is not permitted to see,Hidden
+events.history.awaitingConfirmationBanner,Banner shown in the action detail dialog when the action is still awaiting external validation,"This action has been initiated, but is still awaiting validation from an external system."
+events.history.status.accepted,Status badge shown on an action that has been confirmed,Accepted
+events.history.status.awaitingConfirmation,Placeholder label in the audit dropdown for an action that has not been accepted or rejected yet,Awaiting confirmation
+events.history.status.rejected,Status badge shown on an action that was rejected,Rejected
+events.history.status.requested,Label for the requested action shown in the expanded audit dropdown,Requested
+events.history.systemUpdatedFields.title,Heading for declaration fields an external system populated when it confirmed the action,Updated by the system
+events.history.toggleConfirmationDetails,Accessible label for the toggle that expands a row to show who accepted or rejected the action and when,Show validation details
+events.history.when,Header for the column showing when an action happened,When
+events.overview.tabs.audit,Title of the Audit tab,Audit
+events.overview.tabs.record,Title of the Record tab,Record
+events.overview.tabs.summary,Title of the Summary tab,Summary
+flags.builtin.edit-in-progress.label,Flag label for edit in progress,Edit in progress
+form.field.label.imageLoadFailed,shown when a supporting document image fails to load,Failed to load document
+form.field.label.removeDraftsWarningBody,Body for the confirmation dialog when a change removes a user in-progress drafts,Changing this user's role or office will remove their in-progress drafts. Do you want to continue?
+form.field.label.removeDraftsWarningTitle,Title for the confirmation dialog when a change removes a user in-progress drafts,Change role or office?
+form.field.label.userFullName,User's full English name,User's full name
+imageEditorModal.description,Description for the image editor modal,Resize and position the chosen image
+imageEditorModal.title,Title for the image editor modal,Crop & resize image
+integrations.clientDetails,Label for the client details menu item and dialog title,Client details
+integrations.clientName,Heading for the client name field in the details dialog,Client name
+integrations.clientSecretHiddenNote,Note shown in place of the client secret in the reveal keys dialog,"The client secret is only shown once, when created. To refresh it, select ""Refresh secret"" from the client's action menu."
+integrations.createdOn,Label showing when an integration was created (no user info),Created {date}
+integrations.createdOnBy,Label showing when an integration was created and by whom,Created {date} by {user}
+integrations.refreshSecret,Label for the refresh secret action menu item and confirmation button,Refresh secret
+integrations.refreshSecretSuccessText,Message shown alongside the newly generated client secret after a refresh,Copy the new client secret now. For security it won't be shown again. The integration will stop working until this secret is configured in the integrating client.
+integrations.refreshSecretText,Prompt shown before refreshing an integration client secret,This will generate a new client secret and immediately invalidate the current one. Are you sure you want to continue?
+integrations.refreshSecretWarning,Warning alert shown in the refresh client secret confirmation dialog,The integration will stop working until the new secret is configured in the integrating client.
+integrations.scopes,Heading for the scopes list in the client details dialog,Scopes
+integrations.type,Labels for integration types,"{type, select, HEALTH {Health integration} NATIONAL_ID {National ID} RECORD_SEARCH {Record search} other {Custom}}"
+integrations.type.api,Label for integration clients registered by the country configuration without a legacy system type,API integration
+register.selectVitalEvent.goToReviewButton,,Go to review
+reloadmodal.button.loginAgain,Label of log in again button after version update,Log in again
+review.annotations.title,Title for the annotations accordion section in review,Annotations
+settings.changeAvatar.avatarProcessingError,Avatar processing error message,There was an error processing the image. Please try again.
+sysAdHome.toggleActivateStatusError,The label for error notification when toggling user activate status,"Failed to update {name}'s account status to ""{status}"""
+sysAdHome.toggleActivateStatusSuccess,The label for success notification when toggling user activate status,"Updated {name}'s account status to ""{status}"""
+system.user.emailAddressUnchangedError,Email address unchanged error message,This is already your email address. Please enter a different email address
+system.user.mobileNumberUnchangedError,Mobile number unchanged error message,This is already your phone number. Please enter a different phone number
+user.avatar,Aria label for user avatar button,User avatar
+user.profile.auditList.activateIntegration,Description for activate integration audit action,Activated integration
+user.profile.auditList.createIntegration,Description for create integration audit action,Created integration
+user.profile.auditList.created,Description for created audit action,Created
+user.profile.auditList.deactivateIntegration,Description for deactivate integration audit action,Deactivated integration
+user.profile.auditList.deleteIntegration,Description for delete integration audit action,Deleted integration
+user.profile.auditList.download,Description for download audit action,Downloaded record
+user.profile.auditList.refreshSecret,Description for refresh integration client secret audit action,Refreshed client secret
+user.profile.auditList.resendInvite,Description for resending user invite audit action,Resent invite
+user.profile.auditList.search,Description for search audit action,Searched record
+v2.event.record.offline.description,Message shown on the Record page when the user is offline and the record has not been cached locally,This record has not been downloaded yet so it cannot be opened offline. Please reconnect to the internet to view it.
+v2.event.record.offline.title,Title shown on the Record page when the user is offline,No connection
+v2.suspense.offline.description,Message shown when a screen cannot load because the user is offline and the data has not been cached locally,"This content has not been downloaded yet, so it cannot be shown offline. It will load automatically once you are back online."
+v2.suspense.offline.title,Title shown on a loading screen when the user is offline,No connection

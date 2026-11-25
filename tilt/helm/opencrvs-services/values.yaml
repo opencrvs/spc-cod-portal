@@ -1,0 +1,39 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# OpenCRVS is also distributed under the terms of the Civil Registration
+# & Healthcare Disclaimer located at http://opencrvs.org/license.
+#
+# Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
+
+##################################################################################
+# Use this file to customize helm chart behavior
+# Please make sure your custom changes doesn't conflict with values.yaml
+##################################################################################
+# Country specific overrides for the opencrvs-services chart in local Tilt development.
+# Applied on top of tilt/examples/opencrvs-services/values.yaml and never overwritten by
+# 'opencrvs upgrade'.
+dashboards:
+  enabled: true
+  use_default_credentials: false
+
+countryconfig:
+  env:
+    COD_URL: http://countryconfig.localhost/causes-of-death?terms=
+    TUVALU_AUTH_URL: https://auth.pankaj-qa.opencrvs.dev
+    TUVALU_SPC_CODING_URL: https://countryconfig.pankaj-qa.opencrvs.dev/spc-coding
+    REFERENCE_DATA_DATABASE_URL: postgres://events_reference_data:events_reference_data@postgres.opencrvs-deps-dev.svc.cluster.local:5432/events
+    TUVALU_CLIENT_ID: undefined
+    TUVALU_CLIENT_SECRET: undefined
+    TUVALU_EMAIL_RECIPIENT_FIRSTNAME: undefined
+    TUVALU_EMAIL_RECIPIENT_SURNAME: undefined
+    TUVALU_EMAIL_RECIPIENT: undefined
+    UPLOADER_APP_URL: https://uploader.pankaj-qa.opencrvs.dev
+
+postgres_on_deploy:
+  env:
+    REFERENCE_DATA_POSTGRES_PASSWORD: events_reference_data
+    REFERENCE_DATA_POSTGRES_USER: events_reference_data
+    REFERENCE_DATA_EDITOR_PASSWORD: events_reference_data_editor
+    REFERENCE_DATA_EDITOR_USER: events_reference_data_editor

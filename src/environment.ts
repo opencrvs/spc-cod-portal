@@ -20,7 +20,6 @@ export const env = cleanEnv(process.env, {
   AUTH_URL: url({ devDefault: 'http://localhost:4040' }),
   COUNTRY_CONFIG_URL: url({ devDefault: 'http://localhost:3040' }),
   UPLOADER_APP_URL: url({ devDefault: 'http://localhost:3069/' }),
-  SENTRY_DSN: str({ default: undefined }),
   TWO_FA_ENABLED: bool({ default: true }),
   OPENCRVS_ENVIRONMENT: str({ devDefault: 'development' }),
   ANALYTICS_DATABASE_URL: url({
@@ -45,5 +44,21 @@ export const env = cleanEnv(process.env, {
   }),
   TUVALU_EMAIL_RECIPIENT_FIRSTNAME: str({ devDefault: undefined }),
   TUVALU_EMAIL_RECIPIENT_SURNAME: str({ devDefault: undefined }),
-  TUVALU_EMAIL_RECIPIENT: str({ devDefault: undefined })
+  TUVALU_EMAIL_RECIPIENT: str({ devDefault: undefined }),
+  TELEMETRY_ENABLED: bool({
+    default: true,
+    desc: 'When true, usage telemetry received from the events service is forwarded to the OpenCRVS status service.'
+  }),
+  COUNTRY_CODE: str({
+    default: 'FAR',
+    desc: 'ISO-style country code of this instance, reported with telemetry.'
+  }),
+  ORGANISATION: str({
+    default: 'SPC',
+    desc: 'Organisation running this instance, reported with telemetry. Empty by default.'
+  }),
+  ENVIRONMENT_NAME: str({
+    default: 'development',
+    desc: 'Environment name (e.g. "production", "staging") reported as the telemetry environment.'
+  })
 })

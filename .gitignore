@@ -29,3 +29,5 @@ data
 .secrets
 .env*
 notebooks
+# Uploader helm chart checkout (cloned by tilt/custom.tilt)
+tilt/.uploader-charts

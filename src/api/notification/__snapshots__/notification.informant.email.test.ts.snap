@@ -54,12 +54,12 @@ exports[`Informant notification - Email > birth - REGISTER 1`] = `
         Please visit Windmill village registrar office with your ID to collect your birth certificate. Your registration tracking ID is
         PRZIB7.
     </p>
-    </br>
+    <br />
     <p>
         Best regards, <br />
         SPC Mortality Coding Portal Team
     </p>
-    </br>
+    <br />
     <i>This is an automated message. Please do not reply to this email.</i>
 </body>
 
@@ -124,12 +124,12 @@ exports[`Informant notification - Email > death - REGISTER 1`] = `
         Please visit Windmill village registrar office with your ID to collect your death certificate. Your registration tracking ID is
         <strong>PRZIB7</strong>.
     </p>
-    </br>
+    <br />
     <p>
         Best regards, <br />
         SPC Mortality Coding Portal Team
     </p>
-    </br>
+    <br />
     <i>This is an automated message. Please do not reply to this email.</i>
 </body>
 

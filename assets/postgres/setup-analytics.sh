@@ -1,4 +1,12 @@
 #!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# OpenCRVS is also distributed under the terms of the Civil Registration
+# & Healthcare Disclaimer located at http://opencrvs.org/license.
+#
+# Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
 set -euo pipefail
 
 # NOTE!
@@ -102,6 +110,8 @@ ON analytics.event_actions (event_id);
 ALTER TABLE analytics.event_actions ADD COLUMN IF NOT EXISTS custom_action_type TEXT;
 ALTER TABLE analytics.event_actions ALTER COLUMN created_by_role DROP NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_event_actions_event_id ON analytics.event_actions (event_id);
+
+ALTER TABLE analytics.locations ALTER COLUMN location_type DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS analytics.location_levels (
   id text PRIMARY KEY,

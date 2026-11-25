@@ -18,14 +18,12 @@ import Joi from 'joi'
 import * as Pino from 'hapi-pino'
 import * as JWT from 'hapi-auth-jwt2'
 import * as inert from '@hapi/inert'
-import * as Sentry from 'hapi-sentry'
 import fetch from 'node-fetch'
 import {
   CLIENT_APP_URL,
   UPLOADER_APP_URL,
   DOMAIN,
   LOGIN_URL,
-  SENTRY_DSN,
   COUNTRY_CONFIG_HOST,
   COUNTRY_CONFIG_PORT,
   AUTH_URL,
@@ -93,6 +91,11 @@ import { submitCodedRecordExternally } from './api/ident-uploader-notification/h
 import { onSearchHandler } from './data-seeding/reference-data/handler'
 import { syncReferenceData } from './data-seeding/reference-data/reference-data'
 import { Event } from './events/utils/types'
+import {
+  telemetryHandler,
+  telemetrySchema,
+  TELEMETRY_DISABLED_NOTICE
+} from './api/telemetry/handler'
 
 export interface ITokenPayload {
   sub: string
@@ -114,20 +117,6 @@ export default function getPlugins() {
       }
     })
   }
-
-  if (SENTRY_DSN) {
-    plugins.push({
-      plugin: Sentry,
-      options: {
-        client: {
-          environment: process.env.NODE_ENV,
-          dsn: SENTRY_DSN
-        },
-        catchLogErrors: true
-      }
-    })
-  }
-
   return plugins
 }
 
@@ -686,7 +675,7 @@ export async function createServer() {
 
   server.route({
     method: 'GET',
-    path: '/triggers/system/ready',
+    path: '/trigger/system/ready',
     handler: (_request, h) => {
       // Not implemented by default
       // You can use this endpoint to for instance set up integration clients
@@ -698,14 +687,19 @@ export async function createServer() {
     }
   })
 
-  server.ext({
-    type: 'onRequest',
-    method(request: Hapi.Request & { sentryScope?: any }, h) {
-      request.sentryScope?.setExtra('payload', request.payload)
-      return h.continue
+  server.route({
+    method: 'POST',
+    path: '/trigger/telemetry',
+    handler: telemetryHandler,
+    options: {
+      tags: ['api', 'triggers'],
+      validate: {
+        payload: telemetrySchema
+      },
+      description:
+        'Receives a usage report from the events service and forwards it to the status service when telemetry is enabled'
     }
   })
-
   server.ext('onPostHandler', async (request, h) => {
     const response = request.response as Hapi.ResponseObject
     const parsedPath = /^\/trigger\/events\/[^/]+\/actions\/([^/]+)$/.exec(
@@ -787,6 +781,10 @@ export async function createServer() {
     logger.info(
       `Server successfully started on ${COUNTRY_CONFIG_HOST}:${COUNTRY_CONFIG_PORT}`
     )
+
+    if (!env.TELEMETRY_ENABLED) {
+      logger.info(TELEMETRY_DISABLED_NOTICE)
+    }
   }
 
   return { server, start, stop }
