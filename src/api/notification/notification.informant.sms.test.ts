@@ -10,16 +10,6 @@ vi.mock(import('./constant'), async (importOriginal) => {
   }
 })
 
-vi.mock(import('../application/application-config'), async (importOriginal) => {
-  const actual = await importOriginal()
-  return {
-    applicationConfig: {
-      ...actual.applicationConfig,
-      INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'sms'
-    }
-  }
-})
-
 vi.mock('node-fetch', () => {
   return {
     default: vi.fn().mockResolvedValue({
