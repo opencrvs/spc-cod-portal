@@ -4,7 +4,7 @@
 # https://github.com/opencrvs/infrastructure/blob/develop/Tiltfile
 
 # OpenCRVS core images tag:
-core_images_tag = os.getenv("OPENCRVS_CORE_IMAGE_TAG", "v2.1.2")
+core_images_tag = os.getenv("OPENCRVS_CORE_IMAGE_TAG", "v2.1.3")
 
 core_ref = os.getenv("OPENCRVS_CORE_REF", "release/2.1.2")
 
@@ -108,9 +108,5 @@ setup_opencrvs(
     countryconfig_image_name=countryconfig_image_name,
     countryconfig_image_tag=countryconfig_image_tag,
 )
-
-# FIXME: Upsteam this fix to common.tilt, then remove it from here.
-# Country specific customisation (e.g. uploader app), see ./tilt/custom.tilt
-include('./tilt/custom.tilt')
 
 print("✅ Tiltfile configuration loaded successfully.")
